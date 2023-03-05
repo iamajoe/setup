@@ -1,0 +1,68 @@
+set nocompatible
+filetype off
+set clipboard=unnamed,unnamedplus " default the clipboard
+
+" set layout colors
+syntax on 
+" colorscheme darkblueA
+set t_Co=256
+set background=dark
+
+" fix backgrounds on terminal
+hi Normal ctermbg=none
+highlight NonText ctermbg=none
+
+" keep N lines/columns when scrolling
+set scrolloff=4
+set sidescroll=4
+
+" set general settings for vim
+set number "line numbers
+set cursorline "color the cursorline
+set autoindent "auto indenting
+set incsearch "search as characters are entered
+set hlsearch "higlight matches
+
+" set backspace
+set backspace=indent,eol,start
+
+let g:autofmt_autosave = 1 " auto fmt the file
+
+" old settings
+set hidden
+set title
+set number
+set history=1000
+set nofoldenable
+set laststatus=2
+set encoding=utf-8
+set showmatch
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+set t_ut=
+
+" Buffer
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+" nmap <leader>t :enew<cr>
+nmap <leader>n :enew<cr>
+
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" easier navigation between split windows
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>w :bp <BAR> bd #<CR>
+

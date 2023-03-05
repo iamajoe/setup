@@ -1,0 +1,51 @@
+- name: generallinux
+  hosts: "*"
+  tasks:
+    - name: upgrade apt
+      apt:
+        update_cache: yes
+        upgrade: 'yes'
+      become: true
+    
+    - name: install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'git', 'vim', 'tmux', 'neovim']
+
+    - name: set timezone
+      shell: timedatectl set-timezone UTC
+      become: true
+
+    #################################
+    # DOCKER RELATED
+
+    - name: Add Docker GPG apt Key
+      become: true
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker Repository
+      become: true
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    - name: Update apt and install docker-ce
+      become: true
+      apt: update_cache=yes name=docker-ce state=latest
+    - name: Permissions (group)
+      shell: groupadd docker || true
+      become: true
+    - name: Permissions (user)
+      shell: usermod -aG docker {{ ansible_ssh_user }}
+      become: true
+    - name: Enable boot (docker)
+      shell: systemctl enable docker.service
+      become: true
+    - name: Enable boot (containerd)
+      shell: systemctl enable containerd.service
+      become: true
+    - name: Permissions (socket)
+      shell: chmod 666 /var/run/docker.sock
+      become: true

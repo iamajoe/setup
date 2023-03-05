@@ -1,0 +1,15 @@
+- name: general
+  hosts: "*"
+  tasks:
+    - name: copy neovim configurations
+      template:
+        src: "{{ item }}"
+        dest: "{{ ~ | expanduser  }}/.config/nvim"
+      with_fileglob:
+        - ../templates/nvim/*
+
+    - name: copy vim configurations
+      template: src=../templates/vimrc dest="{{ ~ | expanduser  }}/.vimrc"
+
+    - name: copy tmux configurations
+      template: src=../templates/tmux.conf dest="{{ ~ | expanduser  }}/.tmux.conf"

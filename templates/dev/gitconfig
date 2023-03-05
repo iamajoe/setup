@@ -1,0 +1,9 @@
+[user]
+        name = {{USER_NAME}}
+        email = {{USER_EMAIL}}
+[core]
+        editor = neovim
+[color]
+        ui = auto
+[init]
+        defaultBranch = master
