@@ -58,6 +58,7 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+  vim.keymap.set("n", "ff", function() vim.lsp.buf.format({ async = true }) end, opts)
 end)
 
 lsp.setup()
@@ -65,3 +66,8 @@ lsp.setup()
 vim.diagnostic.config({
     virtual_text = true
 })
+
+-- format on save
+vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({ async = true })]]
+vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]]
+
