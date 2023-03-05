@@ -18,6 +18,10 @@
       shell: timedatectl set-timezone UTC
       become: true
 
+    - name: install neovim packer
+      become: true
+      shell: git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.config/nvim/site/pack/packer/start/packer.nvim
+
     #################################
     # DOCKER RELATED
 

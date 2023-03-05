@@ -6,7 +6,8 @@
     - import_playbook: dev.yml
     
     - name: install nodejs
-      ansible.builtin.command: brew install node@18 tmux neovim git
+      shell: brew install node@18
+      become: true
 
     - name: install npm distributed command-line tools
       npm:

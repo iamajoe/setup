@@ -75,3 +75,13 @@
     - name: update homebrew
       homebrew: update_homebrew=yes
       become: no
+
+    # Install needed packages
+
+    - name: install dependencies
+      become: true
+      shell: brew install tmux neovim git
+
+    - name: install neovim packer
+      become: true
+      shell: git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.config/nvim/site/pack/packer/start/packer.nvim
