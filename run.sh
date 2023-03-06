@@ -6,11 +6,7 @@ usage="${usage}\n | =====================|======================================
 usage="${usage}\n | dev                  | <linux|mac> <user> <user name> <user email>            |"
 usage="${usage}\n"
 
-if [ -z "$1" ] || [ $1 = "help" ]; then
-  echo "\n$usage"
-  exit
-else
-  echo "\nNot able to deploy \"$1\". Please check the script usage"
+if [ -z "$(echo $1 | grep -o "dev")" ] || [ $1 = "help" ]; then
   echo "\n$usage"
   exit
 fi
