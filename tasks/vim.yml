@@ -1,0 +1,13 @@
+- name: copy neovim configurations
+  template:
+    src: "{{ item }}"
+    dest: "{{ ~ | expanduser  }}/.config/nvim"
+    with_fileglob:
+      - ../templates/nvim/*
+
+- name: copy vim configurations
+  template: src=../templates/vimrc dest="{{ ~ | expanduser  }}/.vimrc"
+
+- name: install neovim packer
+  become: true
+  shell: git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.config/nvim/site/pack/packer/start/packer.nvim

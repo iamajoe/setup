@@ -46,6 +46,18 @@ return require('packer').startup(function(use)
 	  }
   }
 
+  use {
+      "folke/which-key.nvim",
+      config = function()
+          vim.o.timeout = true
+          vim.o.timeoutlen = 300
+          require("which-key").setup {
+              ignore_missing = true,
+              show_help = false
+          }
+      end
+  }
+
   use({
       "kylechui/nvim-surround",
       tag = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -56,3 +68,4 @@ return require('packer').startup(function(use)
       end
   })
 end)
+

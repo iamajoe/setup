@@ -1,0 +1,5 @@
+- name: copy tmux configurations
+  template: src=../templates/tmux.conf dest="{{ ~ | expanduser  }}/.tmux.conf"
+
+- name: copy tmux theme configurations
+  template: src=../templates/tmux.default.theme dest="{{ ~ | expanduser  }}/.tmux.default.theme"

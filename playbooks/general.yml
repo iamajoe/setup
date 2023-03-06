@@ -1,18 +1,7 @@
-- name: general
+- name: generallinux
   hosts: "*"
   tasks:
-    - name: copy neovim configurations
-      template:
-        src: "{{ item }}"
-        dest: "{{ ~ | expanduser  }}/.config/nvim"
-      with_fileglob:
-        - ../templates/nvim/*
-
-    - name: copy vim configurations
-      template: src=../templates/vimrc dest="{{ ~ | expanduser  }}/.vimrc"
-
-    - name: copy tmux configurations
-      template: src=../templates/tmux.conf dest="{{ ~ | expanduser  }}/.tmux.conf"
-
-    - name: copy tmux theme configurations
-      template: src=../templates/tmux.default.theme dest="{{ ~ | expanduser  }}/.tmux.default.theme"
+    - include_tasks: basic.yml
+    - include_tasks: basicdev.yml
+    - include_tasks: vim.yml
+    - include_tasks: tmux.yml

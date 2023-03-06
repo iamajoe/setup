@@ -1,39 +1,11 @@
-- name: dev 
+- name: dev
   hosts: local
   tasks:
-    - name: copy profile configurations
-      template: src=../templates/dev/profile dest="{{ ~ | expanduser  }}/.profile"
-
-    - name: copy userrc configurations
-      template: src=../templates/dev/userrc dest="{{ ~ | expanduser  }}/.userrc"
-
-    - name: copy gitconfig configurations
-      template: src=../templates/dev/gitconfig dest="{{ ~ | expanduser  }}/.gitconfig"
-
-    # - import_playbook: xfce.yml
-
-    - name: set github work folder
-      shell: mkdir -p {{ ~ | expanduser  }}/work/src/github.com
-      become: true
-    
-    - name: set local work folder
-      shell: mkdir -p {{ ~ | expanduser  }}/work/src/local
-      become: true
-
-    ##########################
-    # NODE RELATED
-
-    - name: copy npm configurations
-      shell: printf 'prefix = {{ ~ | expanduser  }}/npm' > .npmrc
-
-    ##########################
-    # GOLANG RELATED
-    
-    - import_role:
-        name: abdennour.golang
-      become: yes
-      vars:
-        golang_versoin: "1.19"
-        golang_users:
-          - "{{ ansible_ssh_user }}"
-
+    - include_tasks: basic.yml
+    - include_tasks: basicdev.yml
+    - include_tasks: homebrew.yml
+    - include_tasks: vim.yml
+    - include_tasks: tmux.yml
+    - include_tasks: docker.yml
+    - include_tasks: go.yml
+    - include_tasks: node.yml

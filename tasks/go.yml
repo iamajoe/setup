@@ -1,0 +1,7 @@
+- import_role:
+  name: abdennour.golang
+  become: yes
+  vars:
+    golang_versoin: "1.19"
+    golang_users:
+      - "{{ ansible_ssh_user }}"
