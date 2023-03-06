@@ -4,16 +4,18 @@
   apt:
     update_cache: yes
     upgrade: 'yes'
-    become: true
+  become: true
 
 - name: install aptitude using apt
   when: ansible_os_family == "Debian"
   apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  become: true
 
 - name: install required system packages
   when: ansible_os_family == "Debian"
   apt: name={{ item }} state=latest update_cache=yes
   loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'git', 'vim', 'tmux', 'neovim']
+  become: true
 
 - name: set timezone
   when: ansible_os_family == "Debian"

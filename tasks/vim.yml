@@ -1,12 +1,13 @@
 - name: copy neovim configurations
-  template:
-    src: "{{ item }}"
-    dest: "{{ ~ | expanduser  }}/.config/nvim"
-    with_fileglob:
-      - ../templates/nvim/*
+  copy:
+    src: ../templates/nvim 
+    dest: "{{ ansible_env.HOME  }}/.config/"
+    directory_mode:
+  tags:
+    - parentdir
 
 - name: copy vim configurations
-  template: src=../templates/vimrc dest="{{ ~ | expanduser  }}/.vimrc"
+  template: src=../templates/vimrc dest="{{ ansible_env.HOME  }}/.vimrc"
 
 - name: install neovim packer
   become: true

@@ -1,5 +1,5 @@
 - import_role:
-  name: abdennour.golang
+    name: abdennour.golang
   become: yes
   vars:
     golang_versoin: "1.19"

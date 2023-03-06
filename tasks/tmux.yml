@@ -1,5 +1,5 @@
 - name: copy tmux configurations
-  template: src=../templates/tmux.conf dest="{{ ~ | expanduser  }}/.tmux.conf"
+  template: src=../templates/tmux.conf dest="{{ ansible_env.HOME  }}/.tmux.conf"
 
 - name: copy tmux theme configurations
-  template: src=../templates/tmux.default.theme dest="{{ ~ | expanduser  }}/.tmux.default.theme"
+  template: src=../templates/tmux.default.theme dest="{{ ansible_env.HOME  }}/.tmux.default.theme"

@@ -1,5 +1,5 @@
 - name: copy npm configurations
-  shell: printf 'prefix = {{ ~ | expanduser  }}/npm' > .npmrc
+  shell: printf 'prefix = {{ ansible_env.HOME  }}/npm' > .npmrc
 
 # MAC related
 - name: install nodejs

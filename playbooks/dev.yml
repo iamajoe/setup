@@ -1,11 +1,11 @@
 - name: dev
   hosts: local
   tasks:
-    - include_tasks: basic.yml
-    - include_tasks: basicdev.yml
-    - include_tasks: homebrew.yml
-    - include_tasks: vim.yml
-    - include_tasks: tmux.yml
-    - include_tasks: docker.yml
-    - include_tasks: go.yml
-    - include_tasks: node.yml
+    - include_tasks: ../tasks/homebrew.yml
+    - include_tasks: ../tasks/basic.yml
+    - include_tasks: ../tasks/basicdev.yml
+    - include_tasks: ../tasks/vim.yml
+    - include_tasks: ../tasks/tmux.yml
+    - include_tasks: ../tasks/docker.yml
+    - include_tasks: ../tasks/go.yml
+    - include_tasks: ../tasks/node.yml

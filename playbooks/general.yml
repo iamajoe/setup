@@ -1,7 +1,7 @@
 - name: generallinux
   hosts: "*"
   tasks:
-    - include_tasks: basic.yml
-    - include_tasks: basicdev.yml
-    - include_tasks: vim.yml
-    - include_tasks: tmux.yml
+    - include_tasks: ../tasks/basic.yml
+    - include_tasks: ../tasks/basicdev.yml
+    - include_tasks: ../tasks/vim.yml
+    - include_tasks: ../tasks/tmux.yml

@@ -1,13 +1,13 @@
 # MAC related
-- name: Make sure Homebrew directories exists
+- name: make sure Homebrew directories exists
   when: ansible_os_family == "Darwin"
   file: 
-  path: /usr/local/*
-  state: directory
-  mode: 0775
-  owner: root
-  group: wheel
-  recurse: yes
+    path: /usr/local/*
+    state: directory
+    mode: 0775
+    owner: root
+    group: wheel
+    recurse: yes
   become: yes
 
 - name: download homebrew installation script
@@ -17,6 +17,7 @@
     dest: /tmp/install
 
 - name: install homebrew
+  when: ansible_os_family == "Darwin"
   shell: /usr/bin/ruby /tmp/install < /dev/null
     # 🎉 https://stackoverflow.com/a/39864317/503463
 
@@ -37,12 +38,12 @@
 - name: set permissions for /usr/local/* #multiple users
   when: ansible_os_family == "Darwin"
   file: 
-  path: '{{ item }}'
-  mode: '0775'
-  owner: '{{ username }}'
-  group: wheel
-  recurse: yes
-  state: directory
+    path: '{{ item }}'
+    mode: '0775'
+    owner: '{{ username }}'
+    group: wheel
+    recurse: yes
+    state: directory
   become: yes
   with_items: '{{ homebrew_paths }}'
   ignore_errors: yes
@@ -54,3 +55,23 @@
   command: 'chmod -r +a "group:admin allow list,add_file,search,delete,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" {{ item }}'
   args:
     warn: no
+
+- name: reset the homebrew library repo
+  when: ansible_os_family == "Darwin"
+  git: 
+    repo=https://github.com/Homebrew/brew.git
+    dest=/usr/local/Homebrew/Library
+    clone=no
+    update=yes
+    force=yes
+
+- name: update homebrew (first try may fail)
+  when: ansible_os_family == "Darwin"
+  homebrew: update_homebrew=yes
+  become: no
+  ignore_errors: yes
+
+- name: update homebrew
+  when: ansible_os_family == "Darwin"
+  homebrew: update_homebrew=yes
+  become: no

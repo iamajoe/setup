@@ -3,7 +3,7 @@
 usage="Usage: /bin/bash run.sh <service> [params]\n"
 usage="${usage}\n | SERVICE              | PARAMS                                                 |"
 usage="${usage}\n | =====================|======================================================= |"
-usage="${usage}\n | dev                  | <linux|mac> <user> <user name> <user email>            |"
+usage="${usage}\n | dev                  | <user> <user name> <user email>            |"
 usage="${usage}\n"
 
 if [ -z "$(echo $1 | grep -o "dev")" ] || [ $1 = "help" ]; then
@@ -15,12 +15,7 @@ echo "Deploying $1..."
 
 if [ $1 = "dev" ]; then
   ansible-galaxy install abdennour.golang
-
-  if [ $2 = "linux" ]; then
-      ansible-playbook ./playbooks/devlinux.yml --user $3 --ask-pass --ask-become-pass -i ./inventory/hosts --extra-vars="USER_NAME=$4 USER_EMAIL=$5"
-  elif [ $2 = "mac" ]; then
-      ansible-playbook ./playbooks/devmac.yml --user $3 --ask-pass --ask-become-pass -i ./inventory/hosts --extra-vars="USER_NAME=$4 USER_EMAIL=$5"
-  fi
+  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook ./playbooks/dev.yml --user $2 --ask-pass --ask-become-pass -i ./inventory/hosts --extra-vars="USER_NAME=$3 USER_EMAIL=$4"
 fi
 
 echo ""

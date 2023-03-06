@@ -1,15 +1,15 @@
 - name: copy xfce resources
-  template: src=../templates/xfce/Xresources dest="{{ ~ | expanduser  }}/.Xresources"
+  template: src=../templates/xfce/Xresources dest="{{ ansible_env.HOME  }}/.Xresources"
 
 - name: copy xfce defaults
-  template: src=../templates/xfce/Xdefaults dest="{{ ~ | expanduser  }}/.Xdefaults"
+  template: src=../templates/xfce/Xdefaults dest="{{ ansible_env.HOME  }}/.Xdefaults"
 
 - name: copy xfce keyboard layout
-  template: src=../templates/xfce/xfconf/xfce-perchannel-xml/keyboard-layout.xml dest="{{ ~ | expanduser  }}/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml"
+  template: src=../templates/xfce/xfconf/xfce-perchannel-xml/keyboard-layout.xml dest="{{ ansible_env.HOME  }}/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml"
 
 - name: copy xfce keyboard configurations
-  template: src=../templates/xfce/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml dest="{{ ~ | expanduser  }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+  template: src=../templates/xfce/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml dest="{{ ansible_env.HOME  }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
 
 - name: copy xfce panel configurations
-  template: src=../templates/xfce/xfconf/xfce-perchannel-xml/xfce4-panel.xml dest="{{ ~ | expanduser  }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+  template: src=../templates/xfce/xfconf/xfce-perchannel-xml/xfce4-panel.xml dest="{{ ansible_env.HOME  }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
 
