@@ -34,3 +34,6 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 -- Show keymaps
 vim.keymap.set("n", "<leader>km", ":Telescope keymaps<CR>")
+
+-- Fix all eslint
+vim.keymap.set("n", "<leader>fa", ":EslintFixAll<CR>")
