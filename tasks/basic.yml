@@ -14,7 +14,7 @@
 - name: install required system packages
   when: ansible_os_family == "Debian"
   apt: name={{ item }} state=latest update_cache=yes
-  loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'git', 'vim', 'tmux', 'neovim']
+  loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'git', 'vim', 'tmux', 'neovim', 'ripgrep']
   become: true
 
 - name: set timezone
@@ -26,5 +26,5 @@
 - name: install dependencies
   when: ansible_os_family == "Darwin"
   become: true
-  shell: brew install tmux neovim git
+  shell: brew install tmux neovim git ripgrep
 
