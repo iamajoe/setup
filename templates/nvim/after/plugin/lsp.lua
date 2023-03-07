@@ -68,9 +68,8 @@ vim.diagnostic.config({
 })
 
 -- format on save
-vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({ async = true })]]
-vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]]
-vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]]
+-- vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({ async = true })]]
+-- vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]]
 -- vim.api.nvim_create_autocmd("BufWritePost", {
 --     callback = function()
 --         vim.lsp.buf.format() 
