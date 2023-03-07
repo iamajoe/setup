@@ -45,6 +45,14 @@ lsp.set_preferences({
     }
 })
 
+function FormatFile() 
+  if vim.o.ft == "javascript" or vim.o.ft == "typescript" then
+    vim.cmd("EslintFixAll")
+  else
+    vim.lsp.buf.format({ async = true }) 
+  end
+end
+
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
 
@@ -58,7 +66,7 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-  vim.keymap.set("n", "ff", function() vim.lsp.buf.format({ async = true }) end, opts)
+  vim.keymap.set("n", "ff", FormatFile, opts)
 end)
 
 lsp.setup()
@@ -75,9 +83,8 @@ vim.diagnostic.config({
 --         vim.lsp.buf.format() 
 --     end
 -- })
--- vim.api.nvim_create_autocmd('BufWritePre', {
---   pattern = { '*.tsx', '*.ts', '*.jsx', '*.js' },
---   command = 'silent! EslintFixAll',
---   group = vim.api.nvim_create_augroup('MyAutocmdsJavaScripFormatting', {}),
--- })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  callback = FormatFile
+})
+
 vim.keymap.set("n", "<leader>km", ":Telescope keymaps<CR>")
