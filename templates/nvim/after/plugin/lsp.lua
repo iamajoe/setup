@@ -32,7 +32,8 @@ cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
-  mapping = cmp_mappings
+  mapping = cmp_mappings,
+  snippet = { expand = function() end },
 })
 
 lsp.set_preferences({
@@ -77,7 +78,7 @@ vim.diagnostic.config({
 
 -- format on save
 -- vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({ async = true })]]
--- vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]]
+
 -- vim.api.nvim_create_autocmd("BufWritePost", {
 --     callback = function()
 --         vim.lsp.buf.format() 

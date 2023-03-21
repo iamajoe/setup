@@ -18,6 +18,15 @@ return require('packer').startup(function(use)
   }
 
   use 'Mofiqul/dracula.nvim'
+  -- use {
+  --   'ray-x/go.nvim',
+  --   requires = {
+  --     {"ray-x/guihua.lua"},
+  --     -- {"neovim/nvim-lspconfig"},
+  --     {"nvim-treesitter/nvim-treesitter"}
+  --   }
+  -- }
+  -- use 'ray-x/guihua.lua'
   use({ 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate'} })
   use("nvim-treesitter/nvim-treesitter-context");
   use({ 'nvim-lua/plenary.nvim' })

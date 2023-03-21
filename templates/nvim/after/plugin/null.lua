@@ -2,7 +2,9 @@ local null_ls = require("null-ls")
 local h = require("null-ls.helpers")
 local u = require("null-ls.utils")
 
-local lSsources = {
+local sources = {
+  -- null_ls.builtins.diagnostics.revive,
+
 	null_ls.builtins.formatting.prettier,
   null_ls.builtins.diagnostics.eslint.with({
     cwd = h.cache.by_bufnr(function(params)
@@ -26,6 +28,12 @@ local lSsources = {
 	-- null_ls.builtins.diagnostics.golangci_lint,
 	null_ls.builtins.formatting.gofmt,
 	null_ls.builtins.formatting.goimports,
+  -- null_ls.builtins.formatting.golines.with({
+  --   extra_args = {
+  --     -- "--max-len=180",
+  --     "--base-formatter=gofumpt",
+  --   },
+  -- }),
 
 	-- null_ls.builtins.diagnostics.jsonlint,
 	-- null_ls.builtins.formatting.json_tool,
@@ -35,8 +43,18 @@ local lSsources = {
 }
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
+-- local gotest = require("go.null_ls").gotest()
+-- local gotest_codeaction = require("go.null_ls").gotest_action()
+-- local golangci_lint = require("go.null_ls").golangci_lint()
+-- table.insert(sources, gotest, golangci_lint)
+-- table.insert(sources, gotest)
+-- table.insert(sources, golangci_lint)
+-- table.insert(sources, gotest_codeaction)
+
 null_ls.setup({
-	sources = lSsources,
+	sources = sources,
+  debounce = 1000, 
+  default_timeout = 5000
 
   -- on_attach = function(client, bufnr)
   --   if client.supports_method("textDocument/formatting") then
