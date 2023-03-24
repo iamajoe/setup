@@ -3,28 +3,31 @@ local h = require("null-ls.helpers")
 local u = require("null-ls.utils")
 
 local sources = {
+  -- TS / JS
+  -- DEV: commented because we already have something else
+  -- null_ls.builtins.diagnostics.eslint.with({
+    --   cwd = h.cache.by_bufnr(function(params)
+      --     return u.root_pattern(
+      --     ".eslintrc",
+      --     ".eslintrc.js",
+      --     ".eslintrc.cjs",
+      --     ".eslintrc.yaml",
+      --     ".eslintrc.yml",
+      --     ".eslintrc.json"
+      --     )(params.bufname)
+      --   end),
+      -- }),
+      -- null_ls.builtins.formatting.eslint,
+  null_ls.builtins.diagnostics.tsc,
+
   -- null_ls.builtins.diagnostics.revive,
 
 	null_ls.builtins.formatting.prettier,
-  null_ls.builtins.diagnostics.eslint.with({
-    cwd = h.cache.by_bufnr(function(params)
-      return u.root_pattern(
-      ".eslintrc",
-      ".eslintrc.js",
-      ".eslintrc.cjs",
-      ".eslintrc.yaml",
-      ".eslintrc.yml",
-      ".eslintrc.json"
-      )(params.bufname)
-    end),
-  }),
-  null_ls.builtins.formatting.eslint,
-
 	-- null_ls.builtins.formatting.stylua,
-
 	-- null_ls.builtins.diagnostics.actionlint,
 	-- null_ls.builtins.diagnostics.ansiblelint,
 
+  -- GO
 	-- null_ls.builtins.diagnostics.golangci_lint,
 	null_ls.builtins.formatting.gofmt,
 	null_ls.builtins.formatting.goimports,
@@ -37,7 +40,6 @@ local sources = {
 
 	-- null_ls.builtins.diagnostics.jsonlint,
 	-- null_ls.builtins.formatting.json_tool,
-	null_ls.builtins.diagnostics.tsc,
   -- null_ls.builtins.formatting.sql_formatter,
 
 }

@@ -38,3 +38,8 @@ vim.opt.writebackup = false -- if a file is being edited by another program (or 
 
 vim.opt.list = true
 vim.opt.listchars:append "eol:↴"
+
+-- netrw
+vim.g.netrw_browse_split = 0
+-- vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
