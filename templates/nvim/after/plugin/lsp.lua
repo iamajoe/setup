@@ -3,10 +3,10 @@ local lsp = require("lsp-zero")
 lsp.preset("recommended")
 
 lsp.ensure_installed({
-  -- 'eslint-ls',
-  -- 'gofumpt',
-  -- 'goimports',
-  -- 'gopls',
+  'html',
+  'cssls',
+  'gopls',
+  'eslint',
   'tsserver',
   'rust_analyzer',
 })
@@ -37,7 +37,6 @@ cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings,
-  snippet = { expand = function() end },
 })
 
 lsp.set_preferences({
@@ -82,12 +81,6 @@ vim.diagnostic.config({
 
 -- format on save
 -- vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format({ async = true })]]
-
--- vim.api.nvim_create_autocmd("BufWritePost", {
---     callback = function()
---         vim.lsp.buf.format() 
---     end
--- })
 vim.api.nvim_create_autocmd("BufWritePre", {
   callback = FormatFile
 })

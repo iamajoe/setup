@@ -21,12 +21,11 @@ return require('packer').startup(function(use)
 
   use 'Mofiqul/dracula.nvim'
   use({ 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate'} })
-  use("nvim-treesitter/nvim-treesitter-context");
+  use {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'}
   use({ 'nvim-lua/plenary.nvim' })
   use({ 'ThePrimeagen/harpoon' })
   use({ 'mbbill/undotree' })
   use({ 'tpope/vim-fugitive' })
-  -- use("mrjones2014/nvim-ts-rainbow")
   use "lukas-reineke/indent-blankline.nvim"
 
   use {
@@ -87,5 +86,6 @@ return require('packer').startup(function(use)
 	"windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
   }
+
 end)
 
