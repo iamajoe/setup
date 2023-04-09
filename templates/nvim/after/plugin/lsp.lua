@@ -53,7 +53,7 @@ function FormatFile()
   if vim.o.ft == "javascript" or vim.o.ft == "typescript" then
     vim.cmd("EslintFixAll")
   else
-    vim.lsp.buf.format({ async = true }) 
+    vim.lsp.buf.format({}) 
   end
 end
 
