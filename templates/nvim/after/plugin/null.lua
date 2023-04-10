@@ -55,8 +55,8 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 null_ls.setup({
 	sources = sources,
-  debounce = 1000, 
-  default_timeout = 5000
+  debounce = 250, 
+  default_timeout = 1000
 
   -- on_attach = function(client, bufnr)
   --   if client.supports_method("textDocument/formatting") then
