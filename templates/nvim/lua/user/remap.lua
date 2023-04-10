@@ -45,7 +45,7 @@ vim.keymap.set("n", "<leader>cf", "", {
   callback = function()
     if vim.bo.filetype == "netrw" then
       vim.cmd("let netrw_selected_file=getcwd() .. '/' .. netrw#Call('NetrwGetWord')")
-      vim.cmd("let netrw_copy_to_file=input('Copy to > ', netrw_selected_file .. '.bkp')")
+      vim.cmd("let netrw_copy_to_file=input('Copy to > ', netrw_selected_file)")
       vim.cmd("silent exec '!cp ' .. netrw_selected_file .. ' ' .. netrw_copy_to_file")
       vim.cmd("e .")
     else
