@@ -1,10 +1,6 @@
 - name: copy neovim configurations
-  copy:
-    src: ../templates/nvim 
-    dest: "{{ ansible_env.HOME  }}/.config/"
-    directory_mode:
-  tags:
-    - parentdir
+  become: true
+  shell: git clone --depth 1 https://github.com/iamajoe/nvim ~/.config/nvim
 
 - name: copy vim configurations
   template: src=../templates/vimrc dest="{{ ansible_env.HOME  }}/.vimrc"
