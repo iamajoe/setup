@@ -3,7 +3,7 @@
   when: ansible_os_family == "Debian"
   apt:
     update_cache: yes
-    upgrade: 'yes'
+    upgrade: "yes"
   become: true
 
 - name: install aptitude using apt
@@ -14,7 +14,22 @@
 - name: install required system packages
   when: ansible_os_family == "Debian"
   apt: name={{ item }} state=latest update_cache=yes
-  loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'git', 'vim', 'tmux', 'neovim', 'ripgrep']
+  loop:
+    [
+      "apt-transport-https",
+      "ca-certificates",
+      "curl",
+      "software-properties-common",
+      "python3-pip",
+      "virtualenv",
+      "python3-setuptools",
+      "git",
+      "vim",
+      "tmux",
+      "neovim",
+      "ripgrep",
+      "bat",
+    ]
   become: true
 
 - name: set timezone
@@ -26,5 +41,4 @@
 - name: install dependencies
   when: ansible_os_family == "Darwin"
   become: true
-  shell: brew install tmux neovim git ripgrep
-
+  shell: brew install tmux neovim git ripgrep bat
