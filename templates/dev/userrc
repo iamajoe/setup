@@ -1,13 +1,47 @@
-alias gitgui='git citool'
-
-# Common
-export GOPATH=$HOME/work;
 export PATH="/usr/local/bin:/usr/local/sbin:$HOME/bin:$HOME/.local/bin:$PATH";
-export PATH="/usr/local/go/bin:$GOPATH/bin:$PATH";
+export PATH="/usr/local/go/bin:$PATH";
 export PATH="$HOME/npm/bin:$PATH";
-export PATH="$HOME/Apps:$PATH";
+
+#####################################
+# Homebrew
+
+# Set PATH, MANPATH, etc., for Homebrew.
+# eval "$(/opt/homebrew/bin/brew shellenv)"
+
+#####################################
+# Node
+
+# export PATH="/opt/homebrew/opt/node@18/bin:$HOME/npm/bin:$PATH"
+# source $(brew --prefix nvm)/nvm.sh
+
+# For compilers to find node@18
+# export LDFLAGS="-L/opt/homebrew/opt/node@18/lib"
+# export CPPFLAGS="-I/opt/homebrew/opt/node@18/include"
 
 export TERM="xterm-256color"
+
+#####################################
+# Go
+
+export GOPATH=$HOME/work
+export GOBIN=$GOPATH/bin
+export PATH="$GOBIN:$PATH"
+
+#####################################
+# Apps
+
+# export PATH="$PATH:/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code/"
+# alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
+# alias fork="/Applications/Fork.app/Contents/Resources/fork_cli"
+# alias gitgui="/Applications/Sublime\ Merge.app/Contents/MacOS/sublime_merge"
+# alias gitgui="fork"
+alias gitgui='git citool'
+alias gitlog="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)' --all"
+alias vi="nvim"
+alias vim="nvim"
+
+#####################################
+# Terminal prompt line
 
 # Profile
 # get current branch in git repo
@@ -58,6 +92,7 @@ function parse_git_dirty {
 }
 
 export PS1="\[\e[1;33m\]\\$\[\e[m\] \[\e[1;36m\]\W\[\e[m\] \[\e[1;31m\]\`parse_git_branch\`\[\e[m\] "
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 ###################################
 ## Work
