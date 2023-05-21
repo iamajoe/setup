@@ -1,0 +1,26 @@
+- name: setup directories
+  shell: mkdir -p {{ansible_env.HOME}}/.config/zsh/dot && mkdir -p {{ansible_env.HOME}}/.config/zsh/custom
+  become: true
+
+- name: install auto suggestion
+  shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-autosuggestions
+  become: true
+
+- name: install syntax highlighting
+  shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-syntax-highlighting
+  become: true
+
+# - name: install fast syntax highlighting
+#   shell: git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/fast-syntax-highlighting
+#   become: true
+
+- name: install auto complete
+  shell: git clone https://github.com/marlonrichert/zsh-autocomplete.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-autocomplete
+  become: true
+
+- name: copy zshell configurations
+  template: src=../templates/dev/zshrc dest="{{ ansible_env.HOME  }}/.config/zsh/dot/zshrc"
+
+- name: install oh my zsh
+  shell: KEEP_ZSHRC=yes ZDOTDIR=~/.config/zsh/dot ZSH=~/.config/zsh/lib sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+  become: true
