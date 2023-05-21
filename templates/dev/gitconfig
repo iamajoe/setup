@@ -5,5 +5,3 @@
         editor = neovim
 [color]
         ui = auto
-[init]
-        defaultBranch = master

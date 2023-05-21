@@ -1,9 +1,2 @@
 - name: copy tmux configurations
   template: src=../templates/tmux.conf dest="{{ ansible_env.HOME  }}/.tmux.conf"
-
-- name: copy tmux theme configurations
-  template: src=../templates/tmux.default.theme dest="{{ ansible_env.HOME  }}/.tmux.default.theme"
-
-- name: install plugin management
-  become: true
-  shell: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
