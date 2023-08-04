@@ -1,7 +1,13 @@
 [user]
-        name = {{USER_NAME}}
-        email = {{USER_EMAIL}}
+  name = {{USER_NAME}}
+  email = {{USER_EMAIL}}
+[init]
+  defaultBranch = main
 [core]
-        editor = neovim
+  editor = neovim
 [color]
-        ui = auto
+  ui = auto
+[pull]
+  rebase = true
+[pager]
+  branch = false
