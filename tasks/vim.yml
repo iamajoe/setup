@@ -4,7 +4,3 @@
 
 - name: copy vim configurations
   template: src=../templates/vimrc dest="{{ ansible_env.HOME  }}/.vimrc"
-
-- name: install neovim packer
-  become: true
-  shell: git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.config/nvim/site/pack/packer/start/packer.nvim
