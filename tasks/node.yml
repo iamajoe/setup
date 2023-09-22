@@ -1,19 +1,9 @@
 - name: copy npm configurations
   shell: printf 'prefix = {{ ansible_env.HOME  }}/npm' > .npmrc
 
-# MAC related
-- name: install nodejs
-  when: ansible_os_family == "Darwin"
-  shell: brew install node@18
+- name: install nvm
+  shell: curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
   become: true
-    
-# Linux related
-- name: add nodejs apt key
-  when: ansible_os_family == "Debian"
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
-    become: true
 
 - name: add nodejs 18.x ppa for apt repo
   when: ansible_os_family == "Debian"
@@ -21,13 +11,6 @@
     repo: deb https://deb.nodesource.com/node_18.x bionic main
     update_cache: true
     become: true
-
-- name: install nodejs
-  when: ansible_os_family == "Debian"
-  apt:
-    name: nodejs
-    state: present
-    update_cache: true
 
 # Dependencies
 - name: install npm distributed command-line tools

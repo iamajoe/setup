@@ -1,6 +1,6 @@
 - name: copy neovim configurations
   become: true
-  shell: git clone --depth 1 https://github.com/iamajoe/nvim ~/.config/nvim
+  shell: rm -rf ~/.config/nvim && git clone --depth 1 https://github.com/iamajoe/nvim ~/.config/nvim
 
 - name: copy vim configurations
   template: src=../templates/vimrc dest="{{ ansible_env.HOME  }}/.vimrc"

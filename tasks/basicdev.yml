@@ -6,7 +6,7 @@
 
 - name: copy terminal configurations
   become: true
-  shell: git clone --depth 1 https://github.com/iamajoe/terminal_config ~/.config/terminal
+  shell: git clone git@github.com:iamajoe/terminal_config.git ~/.config/terminal
 
 - name: set github work folder
   shell: mkdir -p {{ ansible_env.HOME  }}/work/src/github.com

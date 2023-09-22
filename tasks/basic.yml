@@ -26,11 +26,17 @@
       "git",
       "vim",
       "tmux",
-      "neovim",
       "ripgrep",
       "bat",
+      "thunar-archive-plugin",
     ]
   become: true
+
+- name: Install snap required packages
+  when: ansible_os_family == "Debian"
+  snap:
+    name: neovim
+    classic: yes
 
 - name: set timezone
   when: ansible_os_family == "Debian"
