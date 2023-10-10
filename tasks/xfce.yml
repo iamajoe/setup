@@ -4,6 +4,9 @@
 - name: copy xfce defaults
   template: src=../templates/xfce/Xdefaults dest="{{ ansible_env.HOME  }}/.Xdefaults"
 
+- name: copy xfce keyboard mod
+  template: src=../templates/xfce/Xmodmap dest="{{ ansible_env.HOME  }}/.Xmodmap"
+
 - name: copy xfce keyboard layout
   template: src=../templates/xfce/xfconf/xfce-perchannel-xml/keyboard-layout.xml dest="{{ ansible_env.HOME  }}/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml"
 
@@ -21,3 +24,6 @@
   become: true
   shell: gsettings set org.gnome.desktop.interface gtk-theme "Dracula" && gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
 
+- name: terminal template
+  become: true
+  shell: curl -o /usr/share/xfce4/terminal/colorschemes/Dracula.theme https://raw.githubusercontent.com/dracula/xfce4-terminal/master/Dracula.theme

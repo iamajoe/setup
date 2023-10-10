@@ -5,13 +5,6 @@
   shell: curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
   become: true
 
-- name: add nodejs 18.x ppa for apt repo
-  when: ansible_os_family == "Debian"
-  apt_repository:
-    repo: deb https://deb.nodesource.com/node_18.x bionic main
-    update_cache: true
-    become: true
-
 # Dependencies
 - name: install npm distributed command-line tools
   npm:
@@ -19,3 +12,4 @@
     name: "{{ item }}"
     with_item:
       - typescript
+      - prettier

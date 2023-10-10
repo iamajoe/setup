@@ -1,3 +1,9 @@
+- name: install zsh
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["zsh"]
+  become: true
+
 - name: setup directories
   shell: mkdir -p {{ansible_env.HOME}}/.config/zsh/dot && mkdir -p {{ansible_env.HOME}}/.config/zsh/custom
   become: true
