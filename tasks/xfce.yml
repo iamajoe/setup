@@ -4,8 +4,12 @@
 - name: copy xfce defaults
   template: src=../templates/xfce/Xdefaults dest="{{ ansible_env.HOME  }}/.Xdefaults"
 
-- name: copy xfce keyboard mod
-  template: src=../templates/xfce/Xmodmap dest="{{ ansible_env.HOME  }}/.Xmodmap"
+- name: copy keyboard defaults
+  template: src=../templates/xfce/keyboard_default dest="/etc/default/keyboard"
+
+- name: reconfigure keyboard
+  become: true
+  shell: dpkg-reconfigure keyboard-configuration
 
 - name: copy xfce keyboard layout
   template: src=../templates/xfce/xfconf/xfce-perchannel-xml/keyboard-layout.xml dest="{{ ansible_env.HOME  }}/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml"
