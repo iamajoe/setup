@@ -1,0 +1,22 @@
+- name: dev
+  hosts: donkey
+  tasks:
+    - include_tasks: ../tasks/basic.yml
+    - include_tasks: ../tasks/dev.yml
+    - include_tasks: ../tasks/zsh.yml
+    - include_tasks: ../tasks/docker.yml
+
+    - name: copy docker compose
+      template: src=../templates/donkey/docker-compose.yml dest="{{ ansible_env.HOME  }}/docker-compose.yml"
+
+    - name: copy transmission
+      template: src=../templates/donkey/transmission.json dest="{{ ansible_env.HOME  }}/docker-config/transmission"
+
+    - name: copy homeassistant config
+      template: src=../templates/donkey/homeassistant_configuration.yaml dest="{{ ansible_env.HOME  }}/docker-config/homeassistant/configuration.yaml"
+
+    - name: copy hass configurator
+      template: src=../templates/donkey/hass_configurator_settings.conf dest="{{ ansible_env.HOME  }}/docker-config/hass_configurator/config/settings.conf"
+
+    - name: copy mosquitto configurator
+      template: src=../templates/donkey/mosquitto.conf dest="{{ ansible_env.HOME  }}/docker-config/ha_mosquitto/config/mosquitto.conf"

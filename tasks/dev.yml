@@ -1,0 +1,16 @@
+- name: copy profile configurations
+  template: src=../templates/cli/profile dest="{{ ansible_env.HOME  }}/.profile"
+
+- name: copy gitconfig configurations
+  template: src=../templates/cli/gitconfig dest="{{ ansible_env.HOME  }}/.gitconfig"
+
+- name: copy terminal configurations
+  become: true
+  shell: git clone --depth 1 https://github.com/iamajoe/terminal_config ~/.config/terminal
+
+- name: copy tmux configurations
+  template: src=../templates/cli/tmux.conf dest="{{ ansible_env.HOME  }}/.tmux.conf"
+
+- name: copy neovim configurations
+  become: true
+  shell: git clone --depth 1 https://github.com/iamajoe/nvim ~/.config/nvim

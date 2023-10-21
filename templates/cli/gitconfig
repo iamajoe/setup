@@ -1,6 +1,6 @@
 [user]
-  name = {{USER_NAME}}
-  email = {{USER_EMAIL}}
+  name = Joel Santos
+  email = joe@joesantos.io
 [init]
   defaultBranch = main
 [core]

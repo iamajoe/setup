@@ -1,0 +1,250 @@
+version: "3.9"
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - 9000:9000
+      - 9443:9443
+    volumes:
+      - ./docker-data/portainer:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  warden:
+    container_name: warden
+    image: vaultwarden/server:latest
+    ports:
+      - 8980:80
+    environment:
+      - TZ=Europe/Lisbon
+      # TODO: need to disable this the first time
+      #       so we are able to create an user
+      - SIGNUPS_ALLOWED=false
+      - DISABLE_ADMIN_TOKEN=true
+    volumes:
+      - ./docker-data/vaultwarden:/data
+    restart: unless-stopped
+
+  huginn:
+    container_name: huginn
+    image: huginn/huginn
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+    ports:
+      - 3001:3000
+    volumes:
+      - ./docker-data/huginn/mysql:/var/lib/mysql
+    restart: unless-stopped
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+    ports:
+      - 7575:7575
+    volumes:
+      - ./docker-config/huginn/configs:/app/data/configs
+      - ./docker-config/huginn/icons:/app/public/icons
+    restart: unless-stopped
+
+  # TODO: would adguard/adguardhome be better?
+  # pihole:
+  #   container_name: pihole
+  #   image: pihole/pihole:latest
+  #   # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+  #   ports:
+  #     - "53:53/tcp"
+  #     - "53:53/udp"
+  #     - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+  #     - "80:80/tcp"
+  #   environment:
+  #     - PGID=1000
+  #     - PUID=1000
+  #     - TZ=Europe/Lisbon
+  #     - WEBPASSWORD=babyshit_donkey
+  #   volumes:
+  #     - "./docker-data/pihole/etc-pihole:/etc/pihole"
+  #     - "./docker-data/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
+  #   cap_add:
+  #     - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+  #   restart: unless-stopped
+
+  ##########################################
+  # Video
+  ##########################################
+
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+    volumes:
+      - ./docker-config/transmission:/config
+      - ./docker-data/transmission/torrents:/watch
+      - ./docker-data/transmission/complete:/downloads/complete
+      - ./docker-data/transmission/incomplete:/downloads/incomplete
+    restart: unless-stopped
+
+  handbrake:
+    image: jlesage/handbrake
+    container_name: handbrake
+    ports:
+      - 5800:5800
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+      - KEEP_APP_RUNNING=1
+      - AUTOMATED_CONVERSION_KEEP_SOURCE=0
+      - AUTOMATED_CONVERSION_FORMAT=mkv
+      # - AUTOMATED_CONVERSION_PRESET=General/HQ 1080p30 Surround
+      # TODO: need to generate the profile with the GUI!!!!!
+      #       add the audio and subtitles track behaviour to add any and all
+      - AUTOMATED_CONVERSION_PRESET=Custom/custom/h264_mkv_1080p30_subs
+      - AUTOMATED_CONVERSION_OUTPUT_DIR=/output
+    volumes:
+      - ./docker-config/handbrake:/config
+      - ./docker-data/transmission/complete:/watch
+      - ./docker-data/handbrake/complete:/output
+    restart: unless-stopped
+
+  ##########################################
+  # Development
+  ##########################################
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:1.20.5-rootless
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+    ports:
+      - 3000:3000
+      - 2222:2222
+    volumes:
+      - ./docker-config/gitea:/etc/gitea
+      - ./docker-data/gitea:/var/lib/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+
+  ##########################################
+  # Home assistant
+  ##########################################
+
+  # DEV: https://iotechonline.com/home-assistant-install-with-docker-compose/
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - ./docker-config/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
+    network_mode: host
+    environment:
+      - TZ=Europe/Lisbon
+    devices:
+      - /dev/zigbee
+    depends_on:
+      - ha_mariadb
+      - ha_mosquitto
+    restart: unless-stopped
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  ha_mariadb:
+    image: mariadb/server:10.3
+    container_name: ha_mariadb
+    environment:
+      - MYSQL_DATABASE=ha_db
+      - MYSQL_USER=homeassistant
+      - MYSQL_ROOT_PASSWORD=ha_maria_root_pass
+      - MYSQL_PASSWORD=ha_maria_pass
+      - PGID=1000
+      - PUID=1000
+    volumes:
+      - ./docker-data/ha_mariadb:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  # TODO: missing the zigbee config
+
+  ha_mosquitto:
+    image: eclipse-mosquitto
+    container_name: ha_mosquitto
+    ports:
+      - 1883:1883
+    volumes:
+      - ./docker-config/ha_mosquitto/config:/mosquitto/config
+      - ./docker-config/ha_mosquitto/data:/mosquitto/data
+      - ./docker-config/ha_mosquitto/log:/mosquitto/log
+    environment:
+      - TZ=Europe/Lisbon
+    user: "${PUID}:${PGID}"
+    restart: unless-stopped
+
+  ha_nodered:
+    container_name: ha_nodered
+    image: nodered/node-red
+    ports:
+      - 1880:1880
+    volumes:
+      - ./docker-config/ha_nodered:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - homeassistant
+      - ha_mosquitto
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+    restart: unless-stopped
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  hass_configurator:
+    image: causticlab/hass-configurator-docker:x86_64
+    container_name: hass_configurator
+    restart: unless-stopped
+    ports:
+      - 3218:3218/tcp
+    depends_on:
+      - homeassistant
+    volumes:
+      - ./docker-config/hass_configurator:/config
+      - ./docker-config/homeassistant:/hass-config
+    user: "${PUID}:${PGID}"
+
+  ha_zigbee2mqtt:
+    image: koenkk/zigbee2mqtt
+    container_name: ha_zigbee2mqtt
+    restart: unless-stopped
+    ports:
+      - 8099:8080
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Lisbon
+    privileged: true
+    # --device=/dev/ttyACM0 \
+    volumes:
+      - ./docker-data/ha_zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    user: "${LOCAL_USER}:${LOCAL_USER}"

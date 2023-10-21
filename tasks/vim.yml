@@ -1,3 +1,0 @@
-- name: copy neovim configurations
-  become: true
-  shell: rm -rf ~/.config/nvim && git clone --depth 1 https://github.com/iamajoe/nvim ~/.config/nvim

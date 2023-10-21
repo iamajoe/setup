@@ -1,2 +1,5 @@
 [local]
 localhost
+
+[donkey]
+192.168.0.10
