@@ -248,3 +248,20 @@ services:
       - ./docker-data/ha_zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
     user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  ha_esphome:
+    container_name: ha_esphome
+    image: esphome/esphome
+    restart: unless-stopped
+    ports:
+      - 6052:6052/tcp
+    environment:
+      - TZ=Europe/Lisbon
+    # mDNS doesn't work across VLANs, use static IP for devices when disabling mDNS
+    #   - ESPHOME_DASHBOARD_USE_PING=true
+    volumes:
+      - ./docker-config/ha_esphome/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0
+    network_mode: host
