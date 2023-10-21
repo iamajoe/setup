@@ -20,3 +20,6 @@
 
     - name: copy mosquitto configurator
       template: src=../templates/donkey/mosquitto.conf dest="{{ ansible_env.HOME  }}/docker-config/ha_mosquitto/config/mosquitto.conf"
+
+    - name: copy zigbee2mqtt config
+      template: src=../templates/donkey/zigbee2mqtt_configuration.yaml dest="{{ ansible_env.HOME  }}/docker-config/ha_zigbee2mqtt/configuration.yaml"

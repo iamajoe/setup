@@ -5,6 +5,7 @@ services:
     image: portainer/portainer-ce:latest
     container_name: portainer
     ports:
+      - 8000:8000
       - 9000:9000
       - 9443:9443
     volumes:
@@ -77,6 +78,18 @@ services:
   #     - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
   #   restart: unless-stopped
 
+  # Automatic Image Updates
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+
   ##########################################
   # Video
   ##########################################
@@ -148,6 +161,7 @@ services:
   ##########################################
 
   # DEV: https://iotechonline.com/home-assistant-install-with-docker-compose/
+  # DEV: https://gist.github.com/ryanlaycock/24ee13970ef6ad9e32c4136f9bb718da
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
@@ -164,6 +178,9 @@ services:
     depends_on:
       - ha_mariadb
       - ha_mosquitto
+      - ha_zigbee2mqtt
+      - ha_nodered
+      - ha_esphome
     restart: unless-stopped
     user: "${LOCAL_USER}:${LOCAL_USER}"
 
@@ -184,13 +201,12 @@ services:
     restart: unless-stopped
     user: "${LOCAL_USER}:${LOCAL_USER}"
 
-  # TODO: missing the zigbee config
-
   ha_mosquitto:
     image: eclipse-mosquitto
     container_name: ha_mosquitto
     ports:
       - 1883:1883
+      - 9001:9001
     volumes:
       - ./docker-config/ha_mosquitto/config:/mosquitto/config
       - ./docker-config/ha_mosquitto/data:/mosquitto/data
@@ -243,9 +259,13 @@ services:
       - PUID=1000
       - TZ=Europe/Lisbon
     privileged: true
-    # --device=/dev/ttyACM0 \
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      #      - /dev/ttyUSB0:/dev/ttyUSB0
+      #      - /dev/ttyUSB1:/dev/ttyUSB1
+      #      - /dev/ttyACM0:/dev/ttyACM0
     volumes:
-      - ./docker-data/ha_zigbee2mqtt:/app/data
+      - ./docker-config/ha_zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
     user: "${LOCAL_USER}:${LOCAL_USER}"
 
