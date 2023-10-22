@@ -162,6 +162,7 @@ services:
 
   # DEV: https://iotechonline.com/home-assistant-install-with-docker-compose/
   # DEV: https://gist.github.com/ryanlaycock/24ee13970ef6ad9e32c4136f9bb718da
+  # TODO: run this https://hacs.xyz/docs/setup/download/
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
