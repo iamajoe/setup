@@ -8,13 +8,11 @@ http:
     - 192.168.1.1/24
     - 172.17.0.0/16
     - 127.0.0.1
-    - {{hostvars['donkey'].ansible_host}}
 
 panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    # url: http://{{hostvars['donkey'].ansible_host}}:3218/
     url: http://127.0.0.1:3218/
     require_admin: true
   portainer:
@@ -25,7 +23,6 @@ panel_iframe:
   nodered:
     title: Node-Red
     icon: mdi:shuffle-variant
-    # url: http://{{hostvars['donkey'].ansible_host}}:1880/
     url: http://127.0.0.1:1880/
     require_admin: true
   esphome:
@@ -36,16 +33,13 @@ panel_iframe:
   zigbee2mqtt:
     title: Zigbee2MQTT
     icon: mdi:zigbee
-    # url: http://{{hostvars['donkey'].ansible_host}}:8099
     url: http://127.0.0.1:8099
     require_admin: true
 
 mqtt:
-  # broker: {{hostvars['donkey'].ansible_host}}
   broker: 127.0.0.1
 
 recorder:
-  # db_url: mysql://homeassistant:ha_maria_pass@{{hostvars['donkey'].ansible_host}}:3306/ha_db?charset=utf8
   db_url: mysql://homeassistant:ha_maria_pass@127.0.0.1:3306/ha_db?charset=utf8
   purge_keep_days: 30
 

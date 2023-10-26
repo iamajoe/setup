@@ -6,26 +6,49 @@
 
 - name: setup directories
   shell: mkdir -p {{ansible_env.HOME}}/.config/zsh/dot && mkdir -p {{ansible_env.HOME}}/.config/zsh/custom
-  become: true
 
 - name: install auto suggestion
-  shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-autosuggestions
-  become: true
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ ansible_env.HOME }}/.config/zsh/custom/plugins/zsh-autosuggestions"
+    accept_hostkey: true
+  environment:
+    GIT_TERMINAL_PROMPT: false
+    GIT_SSL_NO_VERIFY: true
+  # shell: git clone https://github.com/zsh-users/zsh-autosuggestions.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-autosuggestions
 
 - name: install syntax highlighting
-  shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-syntax-highlighting
-  become: true
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ansible_env.HOME }}/.config/zsh/custom/plugins/zsh-syntax-highlighting"
+    accept_hostkey: true
+  environment:
+    GIT_TERMINAL_PROMPT: false
+    GIT_SSL_NO_VERIFY: true
+  # shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-syntax-highlighting
 
 - name: install fast syntax highlighting
-  shell: git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/fast-syntax-highlighting
-  become: true
+  git:
+    repo: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+    dest: "{{ ansible_env.HOME }}/.config/zsh/custom/plugins/fast-syntax-highlighting"
+    accept_hostkey: true
+  environment:
+    GIT_TERMINAL_PROMPT: false
+    GIT_SSL_NO_VERIFY: true
+  # shell: git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/fast-syntax-highlighting
 
 - name: install auto complete
-  shell: git clone https://github.com/marlonrichert/zsh-autocomplete.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-autocomplete
-  become: true
+  git:
+    repo: https://github.com/marlonrichert/zsh-autocomplete.git
+    dest: "{{ ansible_env.HOME }}/.config/zsh/custom/plugins/zsh-autocomplete"
+    accept_hostkey: true
+  environment:
+    GIT_TERMINAL_PROMPT: false
+    GIT_SSL_NO_VERIFY: true
+  # shell: git clone https://github.com/marlonrichert/zsh-autocomplete.git {{ansible_env.HOME}}/.config/zsh/custom/plugins/zsh-autocomplete
 
 - name: copy zshell configurations
-  template: src=../templates/dev/zshrc dest="{{ ansible_env.HOME  }}/.config/zsh/dot/zshrc"
+  template: src=../templates/cli/zshrc dest="{{ ansible_env.HOME  }}/.config/zsh/dot/zshrc"
 
 - name: install oh my zsh
   shell: KEEP_ZSHRC=yes ZDOTDIR=~/.config/zsh/dot ZSH=~/.config/zsh/lib sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended

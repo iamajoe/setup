@@ -34,9 +34,7 @@
 
 - name: Install snap required packages
   when: ansible_os_family == "Debian"
-  snap:
-    name: neovim
-    classic: yes
+  shell: mkdir -p {{ ansible_env.HOME }}/Apps && rm -rf {{ ansible_env.HOME }}/Apps/nvim.appimage* && wget -P {{ ansible_env.HOME }}/Apps/ https://github.com/neovim/neovim/releases/download/stable/nvim.appimage && chmod u+x {{ ansible_env.HOME }}/Apps/nvim.appimage
 
 - name: set timezone
   when: ansible_os_family == "Debian"
