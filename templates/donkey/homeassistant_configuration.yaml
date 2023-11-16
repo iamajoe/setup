@@ -2,45 +2,46 @@ default_config:
 
 # For homeassistant v2021.7.0 and above add this http block
 http:
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 192.168.1.0/24
-    - 192.168.1.1/24
-    - 172.17.0.0/16
-    - 127.0.0.1
+  # use_x_forwarded_for: true
+  # trusted_proxies:
+  #   - 192.168.0.1/24
+  #   - 172.17.0.0/16
+  #   - 192.168.0.128
+  #   - 127.0.0.1
 
+# TODO: dont forget to set the right ips (192.168.0.128)
 panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: http://127.0.0.1:3218/
+    url: http://192.168.0.128:3218/
     require_admin: true
   portainer:
     title: Portainer
-    url: http://127.0.0.1:9000
+    url: http://192.168.0.128:9001
     icon: mdi:docker
     require_admin: true
   nodered:
     title: Node-Red
     icon: mdi:shuffle-variant
-    url: http://127.0.0.1:1880/
+    url: http://192.168.0.128:1880/
     require_admin: true
   esphome:
     title: ESPHome
     icon: mdi:chip
-    url: http://127.0.0.1:6052
+    url: http://192.168.0.128:6052
     require_admin: true
   zigbee2mqtt:
     title: Zigbee2MQTT
     icon: mdi:zigbee
-    url: http://127.0.0.1:8099
+    url: http://192.168.0.128:8099
     require_admin: true
 
 mqtt:
-  broker: 127.0.0.1
+  broker: 192.168.0.128
 
 recorder:
-  db_url: mysql://homeassistant:ha_maria_pass@127.0.0.1:3306/ha_db?charset=utf8
+  db_url: mysql://homeassistant:ha_maria_pass@192.168.0.128:3306/ha_db?charset=utf8
   purge_keep_days: 30
 
 tts:

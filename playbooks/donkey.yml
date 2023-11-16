@@ -13,7 +13,7 @@
       template: src=../templates/donkey/docker-compose.yml dest="{{ ansible_env.HOME }}/docker-compose.yml"
 
     - name: copy transmission
-      template: src=../templates/donkey/transmission.json dest="{{ ansible_env.HOME }}/docker-config/transmission"
+      template: src=../templates/donkey/transmission.json dest="{{ ansible_env.HOME }}/docker-config/transmission/settings.json"
 
     - name: ensure homeassistant directory exists
       shell: mkdir -p {{ ansible_env.HOME }}/docker-config/homeassistant

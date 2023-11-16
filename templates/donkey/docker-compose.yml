@@ -6,7 +6,7 @@ services:
     container_name: portainer
     ports:
       - 8000:8000
-      - 9000:9000
+      - 9001:9000
       - 9443:9443
     volumes:
       - ./docker-data/portainer:/data
@@ -14,27 +14,28 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  warden:
-    container_name: warden
-    image: vaultwarden/server:latest
-    ports:
-      - 8980:80
-    environment:
-      - TZ=Europe/Lisbon
-      # TODO: need to disable this the first time
-      #       so we are able to create an user
-      - SIGNUPS_ALLOWED=false
-      - DISABLE_ADMIN_TOKEN=true
-    volumes:
-      - ./docker-data/vaultwarden:/data
-    restart: unless-stopped
+  # TODO: this will fail not being localhost and not having https
+  #       it needs a reverse proxy with certificates
+  #       https://github.com/dani-garcia/vaultwarden/wiki/Using-Docker-Compose#caddy-with-dns-challenge
+  # warden:
+  #   container_name: warden
+  #   image: vaultwarden/server:latest
+  #   ports:
+  #     - 8980:80
+  #   environment:
+  #     - TZ=Europe/Lisbon
+  #     # TODO: need to disable this the first time
+  #     #       so we are able to create an user
+  #     - SIGNUPS_ALLOWED=false
+  #     - DISABLE_ADMIN_TOKEN=true
+  #   volumes:
+  #     - ./docker-data/vaultwarden:/data
+  #   restart: unless-stopped
 
   huginn:
     container_name: huginn
     image: huginn/huginn
     environment:
-      - PGID=1000
-      - PUID=1000
       - TZ=Europe/Lisbon
     ports:
       - 3001:3000
@@ -46,14 +47,14 @@ services:
     container_name: homarr
     image: ghcr.io/ajnart/homarr:latest
     environment:
-      - PGID=1000
-      - PUID=1000
       - TZ=Europe/Lisbon
     ports:
       - 7575:7575
     volumes:
-      - ./docker-config/huginn/configs:/app/data/configs
-      - ./docker-config/huginn/icons:/app/public/icons
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-config/homarr/data:/data
+      - ./docker-config/homarr/configs:/app/data/configs
+      - ./docker-config/homarr/icons:/app/public/icons
     restart: unless-stopped
 
   # TODO: would adguard/adguardhome be better?
@@ -102,8 +103,6 @@ services:
       - 51413:51413
       - 51413:51413/udp
     environment:
-      - PGID=1000
-      - PUID=1000
       - TZ=Europe/Lisbon
     volumes:
       - ./docker-config/transmission:/config
@@ -118,8 +117,6 @@ services:
     ports:
       - 5800:5800
     environment:
-      - PGID=1000
-      - PUID=1000
       - TZ=Europe/Lisbon
       - KEEP_APP_RUNNING=1
       - AUTOMATED_CONVERSION_KEEP_SOURCE=0
@@ -143,8 +140,6 @@ services:
     container_name: gitea
     image: gitea/gitea:1.20.5-rootless
     environment:
-      - PGID=1000
-      - PUID=1000
       - TZ=Europe/Lisbon
     ports:
       - 3000:3000
@@ -152,33 +147,6 @@ services:
     volumes:
       - ./docker-config/gitea:/etc/gitea
       - ./docker-data/gitea:/var/lib/gitea
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
-
-  invoiceninja:
-    container_name: invoiceninja
-    image: invoiceninja/invoiceninja
-    environment:
-      - PGID=1000
-      - PUID=1000
-      - TZ=Europe/Lisbon
-      - APP_ENV=production
-      - APP_DEBUG=0
-      - APP_URL=http://localhost:3001
-      - APP_KEY='base64:sxKQjdzwTQKFdsI72BecRWhSgAWkQOX54Ezavo8RRHs='
-      - APP_CIPHER='AES-256-CBC'
-      - DB_TYPE=mysql
-      - DB_STRICT=false
-      - DB_HOST=localhost
-      - DB_DATABASE=ninja
-      - DB_USERNAME=ninja
-      - DB_PASSWORD=ninja
-    ports:
-      - 3001:80
-    volumes:
-      - ./docker-data/invoiceninja/public:/var/app/public
-      - ./docker-data/invoiceninja/storage:/var/app/storage
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
@@ -213,7 +181,7 @@ services:
     user: "${LOCAL_USER}:${LOCAL_USER}"
 
   ha_mariadb:
-    image: mariadb/server:10.3
+    image: mariadb:11.1.3
     container_name: ha_mariadb
     environment:
       - MYSQL_DATABASE=ha_db
@@ -234,7 +202,7 @@ services:
     container_name: ha_mosquitto
     ports:
       - 1883:1883
-      - 9001:9001
+      - 9002:9001
     volumes:
       - ./docker-config/ha_mosquitto/config:/mosquitto/config
       - ./docker-config/ha_mosquitto/data:/mosquitto/data
@@ -254,7 +222,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - homeassistant
       - ha_mosquitto
     environment:
       - PGID=1000
@@ -286,16 +253,17 @@ services:
       - PGID=1000
       - PUID=1000
       - TZ=Europe/Lisbon
-    privileged: true
+    # privileged: true
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
-      #      - /dev/ttyUSB0:/dev/ttyUSB0
-      #      - /dev/ttyUSB1:/dev/ttyUSB1
-      #      - /dev/ttyACM0:/dev/ttyACM0
+    #      - /dev/ttyUSB0:/dev/ttyUSB0
+    #      - /dev/ttyUSB1:/dev/ttyUSB1
+    #      - /dev/ttyACM0:/dev/ttyACM0
     volumes:
       - ./docker-config/ha_zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
-    user: "${LOCAL_USER}:${LOCAL_USER}"
+    # user: "${LOCAL_USER}:${LOCAL_USER}"
+    user: "${PUID}:${PGID}"
 
   ha_esphome:
     container_name: ha_esphome
@@ -304,7 +272,10 @@ services:
     ports:
       - 6052:6052/tcp
     environment:
+      - PGID=1000
+      - PUID=1000
       - TZ=Europe/Lisbon
+    # privileged: true
     # mDNS doesn't work across VLANs, use static IP for devices when disabling mDNS
     #   - ESPHOME_DASHBOARD_USE_PING=true
     volumes:
@@ -313,3 +284,4 @@ services:
     # devices:
     #   - /dev/ttyUSB0:/dev/ttyUSB0
     network_mode: host
+    user: "${PUID}:${PGID}"
