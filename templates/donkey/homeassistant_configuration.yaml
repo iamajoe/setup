@@ -38,7 +38,7 @@ panel_iframe:
     require_admin: true
 
 mqtt:
-  broker: 192.168.0.128
+  broker: 192.168.0.128:1883
 
 recorder:
   db_url: mysql://homeassistant:ha_maria_pass@192.168.0.128:3306/ha_db?charset=utf8
