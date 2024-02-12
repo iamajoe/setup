@@ -29,6 +29,7 @@
       "ripgrep",
       "bat",
       "thunar-archive-plugin",
+      "xclip",
     ]
   become: true
 
@@ -37,21 +38,9 @@
   shell: timedatectl set-timezone UTC
   become: true
 
-- name: install flatpak
-  when: ansible_os_family == "Debian"
-  apt: name={{ item }} state=latest update_cache=yes
-  loop: ["flatpak"]
-  become: true
-
-- name: configure flatpak flathub
-  when: ansible_os_family == "Debian"
-  shell: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  become: true
-
 - name: install neovim
   when: ansible_os_family == "Debian"
-  # shell: mkdir -p {{ ansible_env.HOME }}/Apps && rm -rf {{ ansible_env.HOME }}/Apps/nvim.appimage* && wget -P {{ ansible_env.HOME }}/Apps/ https://github.com/neovim/neovim/releases/download/stable/nvim.appimage && chmod u+x {{ ansible_env.HOME }}/Apps/nvim.appimage
-  shell: flatpak install flathub io.neovim.nvim
+  shell: mkdir -p {{ ansible_env.HOME }}/Apps && rm -rf {{ ansible_env.HOME }}/Apps/nvim.appimage* && wget -P {{ ansible_env.HOME }}/Apps/ https://github.com/neovim/neovim/releases/download/stable/nvim.appimage && chmod u+x {{ ansible_env.HOME }}/Apps/nvim.appimage
 
 # MAC related
 - name: install dependencies

@@ -35,3 +35,9 @@
     GIT_TERMINAL_PROMPT: false
     GIT_SSL_NO_VERIFY: true
   # shell: git clone --depth 1 https://github.com/iamajoe/nvim ~/.config/nvim
+
+- name: install screenshot util
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["shutter"]
+  become: true
