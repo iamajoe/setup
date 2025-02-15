@@ -1,0 +1,44 @@
+- name: install required system packages
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: [
+      "apt-transport-https",
+      "ca-certificates",
+      "curl",
+      "software-properties-common",
+      "python3-pip",
+      "virtualenv",
+      "python3-setuptools",
+      "ripgrep",
+      "bat",
+      "xclip",
+      "fd-find",
+      "fzf",
+      "htop",
+      "jq",
+      "ripgrep",
+      "tree",
+      # TODO: should add these
+      # pkgs.watch
+      # pkgs.chromium
+      # pkgs.firefox
+      # pkgs.rofi
+      # pkgs.valgrind
+      # pkgs.zathura
+    ]
+  become: true
+
+- name: copy inputrc configurations
+  template: src=../templates/inputrc dest="{{ ansible_env.HOME }}/.inputrc"
+
+- name: copy profile configurations
+  template: src=../templates/profile.sh dest="{{ ansible_env.HOME }}/.profile"
+
+- name: ensure terminal directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/terminal"
+    state: directory
+    mode: "0770"
+
+- name: copy bash configurations
+  template: src=../templates/bashrc.sh dest="{{ ansible_env.HOME }}/.config/terminal/bashrc.sh"

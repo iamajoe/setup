@@ -1,0 +1,23 @@
+- name: copy setup repo
+  git:
+    repo: https://github.com/iamajoe/setup
+    dest: "{{ansible_env.HOME}}/work/src/github.com/iamajoe/setup"
+    accept_hostkey: true
+    force: true
+  environment:
+    GIT_TERMINAL_PROMPT: false
+    GIT_SSL_NO_VERIFY: true
+
+- name: check if git remote upstream exists
+  ansible.builtin.shell: |
+    git remote | grep -q upstream
+  args:
+    chdir: "{{ ansible_env.HOME }}/work/src/github.com/iamajoe/setup"
+  register: git_origin_check
+  ignore_errors: yes # Prevent failure if remote does not exist
+
+- name: add git remote origin if not exists
+  ansible.builtin.command: git remote add upstream git@github.com:iamajoe/setup.git
+  args:
+    chdir: "{{ansible_env.HOME}}/work/src/github.com/iamajoe/setup"
+  when: git_origin_check.rc != 0 # Only run if remote does not exist

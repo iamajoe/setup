@@ -1,0 +1,30 @@
+# Linux related
+- name: install tmux (linux)
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["tmux"]
+  become: true
+
+# MAC related
+- name: install tmux (mac)
+  when: ansible_os_family == "Darwin"
+  become: true
+  shell: brew install tmux
+
+- name: copy base tmux configuration
+  template: src=../templates/tmux.conf dest="{{ ansible_env.HOME  }}/.tmux.conf"
+
+- name: ensure tmux directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/terminal/tmux"
+    state: directory
+    mode: "0770"
+
+- name: copy tmux configuration
+  template: src=../templates/tmux_main.conf dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/main.conf"
+
+# - name: copy tmux dracula theme
+#   template: src=../templates/tmux_dracula.theme dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/dracula.theme"
+
+- name: copy tmux catppucin theme
+  template: src=../templates/tmux_catppucin.theme dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/catppucin.theme"

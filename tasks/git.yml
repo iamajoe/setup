@@ -1,0 +1,25 @@
+# Linux related
+- name: install required system packages
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop:
+    [
+      "apt-transport-https",
+      "ca-certificates",
+      "curl",
+      "software-properties-common",
+      "python3-pip",
+      "virtualenv",
+      "python3-setuptools",
+      "git",
+    ]
+  become: true
+
+# MAC related
+- name: install dependencies
+  when: ansible_os_family == "Darwin"
+  become: true
+  shell: brew install git
+
+- name: copy gitconfig configurations
+  template: src=../templates/gitconfig.yml dest="{{ ansible_env.HOME }}/.gitconfig"

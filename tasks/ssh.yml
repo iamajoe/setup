@@ -1,0 +1,45 @@
+- name: check if we have sufficient variables
+  ansible.builtin.fail:
+    msg: "The variable 'ssh_src_dir' is required."
+  when: ssh_src_dir is not defined
+
+- name: install required system packages
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["openssh-client", "openssh-server"]
+  become: true
+
+- name: ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "/{{ansible_env.HOME}}/.ssh"
+    state: directory
+    mode: "0700"
+
+- name: copy SSH directory
+  ansible.builtin.copy:
+    src: "{{ssh_src_dir}}/"
+    dest: "/{{ansible_env.HOME}}/.ssh"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0600"
+    directory_mode: "0700"
+  become: true
+
+- name: remove UseKeychain from SSH config
+  when: ansible_os_family == "Debian"
+  ansible.builtin.lineinfile:
+    path: "/{{ansible_env.HOME}}/.ssh/config"
+    state: absent
+    regexp: "^UseKeychain"
+  become: yes
+
+- name: set correct permissions for SSH keys
+  ansible.builtin.file:
+    path: "{{ansible_env.HOME}}/.ssh/authorized_keys"
+    mode: "0600"
+# - name: ensure SSH agent is running and add key
+#   ansible.builtin.shell: |
+#     eval $(ssh-agent -s)
+#     ssh-add {{ansible_env.HOME}}/.ssh/id_rsa
+#   args:
+#     executable: /bin/bash

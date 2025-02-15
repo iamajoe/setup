@@ -1,0 +1,31 @@
+- name: remove go if it exists
+  ansible.builtin.file:
+    path: "/usr/local/go"
+    state: absent
+  become: yes
+
+- name: download go
+  ansible.builtin.get_url:
+    url: "https://go.dev/dl/go1.24.0.linux-arm64.tar.gz"
+    dest: "/tmp/go124.tar.gz"
+    mode: "0644"
+
+- name: ensure /usr/local/go directory exists
+  ansible.builtin.file:
+    path: "/usr/local/go"
+    state: directory
+    mode: "0755"
+  become: yes # Run as root if needed
+
+- name: extract and install go
+  ansible.builtin.unarchive:
+    src: "/tmp/go124.tar.gz"
+    dest: "/usr/local/go"
+    remote_src: yes
+    extra_opts: [--strip-components=1] # Ensures correct structure
+  become: yes
+
+- name: install go globals
+  ansible.builtin.shell: >
+    /usr/local/go/bin/go install golang.org/x/tools/gopls@latest
+  become: yes

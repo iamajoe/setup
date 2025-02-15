@@ -23,12 +23,6 @@
       "python3-pip",
       "virtualenv",
       "python3-setuptools",
-      "git",
-      "vim",
-      "tmux",
-      "ripgrep",
-      "bat",
-      "thunar-archive-plugin",
       "xclip",
     ]
   become: true
@@ -37,13 +31,3 @@
   when: ansible_os_family == "Debian"
   shell: timedatectl set-timezone UTC
   become: true
-
-- name: install neovim
-  when: ansible_os_family == "Debian"
-  shell: mkdir -p {{ ansible_env.HOME }}/Apps && rm -rf {{ ansible_env.HOME }}/Apps/nvim.appimage* && wget -P {{ ansible_env.HOME }}/Apps/ https://github.com/neovim/neovim/releases/download/stable/nvim.appimage && chmod u+x {{ ansible_env.HOME }}/Apps/nvim.appimage
-
-# MAC related
-- name: install dependencies
-  when: ansible_os_family == "Darwin"
-  become: true
-  shell: brew install tmux neovim git ripgrep bat

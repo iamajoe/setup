@@ -1,0 +1,12 @@
+# Linux related
+- name: install i3
+  ansible.builtin.apt:
+    name: i3
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: copy i3 configurations
+  template: src=../templates/i3_config dest="{{ ansible_env.HOME }}/i3/config"
+
+- name: copy i3 status configurations
+  template: src=../templates/i3_i3status dest="{{ ansible_env.HOME }}/i3/i3status"

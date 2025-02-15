@@ -39,6 +39,10 @@ set-option -g window-status-format "#[bg=#282a36,fg=#66675a] #I:#W "
 
 # Remove padding at the left hand side
 set -g status-left ""
-# Show a clock at the right hand side
-set -g status-right "#[bg=#ff79ca,fg=#44475a] #(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD) #[bg=#6272a4,fg=#f8f8f2] %Y-%m-%d %H:%M "
+
+# with git and clock on the right
+# set -g status-right "#[bg=#ff79ca,fg=#44475a] #(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD) #[bg=#6272a4,fg=#f8f8f2] %Y-%m-%d %H:%M "
+set -g status-right "#[bg=#6272a4,fg=#f8f8f2] %Y-%m-%d %H:%M "
+
+set -g status-position top
 
