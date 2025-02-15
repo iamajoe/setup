@@ -1,0 +1,17 @@
+- name: ensure GRUB config has correct GFXMODE
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_GFXMODE="
+    line: "GRUB_GFXMODE={{machine_resolution}}"
+    state: present
+  become: true
+
+- name: update GRUB configuration
+  ansible.builtin.command: update-grub
+  when: ansible_facts['os_family'] == "Debian"
+  become: true
+
+- name: update GRUB on RHEL-based systems
+  ansible.builtin.command: grub2-mkconfig -o /boot/grub2/grub.cfg
+  when: ansible_facts['os_family'] == "RedHat"
+  become: true

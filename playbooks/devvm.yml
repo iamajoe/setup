@@ -11,8 +11,10 @@
     - include_tasks: ../tasks/go.yml
     - include_tasks: ../tasks/zig.yml
     - include_tasks: ../tasks/node.yml
+    - include_tasks: ../tasks/resolution.yml
     - include_tasks: ../tasks/vmware.yml
     - include_tasks: ../tasks/coreafter.yml
+    - include_tasks: ../tasks/i3.yml
 
     # create necessary folders
     - name: set local work folder

@@ -27,6 +27,7 @@ USER_FULL_NAME="${USER_FULL_NAME:-""}"
 
 PLAYBOOK_FOLDER="${PLAYBOOK_FOLDER:-"./playbooks"}"
 
+RESOLUTION="${RESOLUTION:-1920x1080}"
 SSH_SRC_DIR="${SSH_SRC_DIR:-$HOME/.ssh}"
 INVENTORY_PATH="${INVENTORY_PATH:-./inventory/hosts}"
 INVENTORY="${INVENTORY:-"-i $INVENTORY_PATH"}"
@@ -54,7 +55,7 @@ fi
 
 # deploy...
 echo "Deploying $SERVICE to $USERNAME:$SUBSET...";
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook $PLAYBOOK_FOLDER/$SERVICE.yml --user $USERNAME --ask-pass --ask-become-pass $INVENTORY -e="ssh_src_dir=$SSH_SRC_DIR target=$TARGET git_user_email=$USER_EMAIL git_user_fullname=$USER_FULL_NAME"
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook $PLAYBOOK_FOLDER/$SERVICE.yml --user $USERNAME --ask-pass --ask-become-pass $INVENTORY -e="ssh_src_dir=$SSH_SRC_DIR target=$TARGET git_user_email=$USER_EMAIL git_user_fullname=$USER_FULL_NAME machine_resolution=$RESOLUTION"
 
 # cleanup tmps
 if [[ -n "$IP_ADDR" ]]; then

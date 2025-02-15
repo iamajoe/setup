@@ -1,12 +1,24 @@
 # Linux related
-- name: install i3
-  ansible.builtin.apt:
-    name: i3
-    state: present
-  when: ansible_facts['os_family'] == "Debian"
+- name: install i3 packages
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["i3", "rofi"]
+  become: true
+
+- name: ensure config i3 directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/i3"
+    state: directory
+    mode: "0755"
 
 - name: copy i3 configurations
-  template: src=../templates/i3_config dest="{{ ansible_env.HOME }}/i3/config"
+  template: src=../templates/i3_config dest="{{ ansible_env.HOME }}/.config/i3/config"
+  when: ansible_os_family == "Debian"
 
 - name: copy i3 status configurations
-  template: src=../templates/i3_i3status dest="{{ ansible_env.HOME }}/i3/i3status"
+  template: src=../templates/i3_i3status dest="{{ ansible_env.HOME }}/.config/i3/i3status"
+  when: ansible_os_family == "Debian"
+
+- name: copy rofi configurations
+  template: src=../templates/rofi dest="{{ ansible_env.HOME }}/.config/rofi"
+  when: ansible_os_family == "Debian"
