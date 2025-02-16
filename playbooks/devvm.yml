@@ -2,7 +2,6 @@
   hosts: "{{target}}"
   tasks:
     - include_tasks: ../tasks/corebefore.yml
-    - include_tasks: ../tasks/ssh.yml
     - include_tasks: ../tasks/git.yml
     - include_tasks: ../tasks/terminal.yml
     - include_tasks: ../tasks/tmux.yml
@@ -11,7 +10,7 @@
     - include_tasks: ../tasks/go.yml
     - include_tasks: ../tasks/zig.yml
     - include_tasks: ../tasks/node.yml
-    - include_tasks: ../tasks/resolution.yml
+    # - include_tasks: ../tasks/resolution.yml
     - include_tasks: ../tasks/vmware.yml
     - include_tasks: ../tasks/coreafter.yml
     - include_tasks: ../tasks/i3.yml
@@ -19,4 +18,4 @@
     # create necessary folders
     - name: set local work folder
       shell: mkdir -p {{ ansible_env.HOME  }}/work/src/local
-      become: true
+      become_user: "{{ansible_user}}"

@@ -9,18 +9,7 @@
 - name: install required neovim packages
   when: ansible_os_family == "Debian"
   apt: name={{ item }} state=latest update_cache=yes
-  loop: ["fuse", "libfuse2"]
-  become: true
-
-- name: install luarocks
-  when: ansible_os_family == "Debian"
-  ansible.builtin.shell: >
-    curl -R -O http://www.lua.org/ftp/lua-5.3.5.tar.gz
-    tar -zxf lua-5.3.5.tar.gz
-    cd lua-5.3.5
-    make linux test
-    sudo make install
-    rm -rf lua-5*
+  loop: ["fuse", "libfuse2", "liblua5.1-0-dev"]
   become: true
 
 - name: install neovim
@@ -37,11 +26,12 @@
   become: true
   shell: brew install neovim
 
-- name: ensure config directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config"
-    state: directory
-    mode: "0770"
+- name: download luarocks
+  ansible.builtin.get_url:
+    url: "http://www.lua.org/ftp/lua-5.3.5.tar.gz"
+    dest: "/tmp/lua535.tar.gz"
+    mode: "0644"
+  become: true
 
 - name: copy neovim configurations
   git:
@@ -60,11 +50,10 @@
   args:
     chdir: "{{ansible_env.HOME}}/.config/nvim"
   register: git_origin_check
-  ignore_errors: yes # Prevent failure if remote does not exist
+  ignore_errors: yes # prevent failure if remote does not exist
 
 - name: add git remote origin if not exists
   ansible.builtin.command: git remote add upstream git@github.com:iamajoe/nvim.git
   args:
     chdir: "{{ansible_env.HOME}}/.config/nvim"
-  when: git_origin_check.rc != 0 # Only run if remote does not exist
-
+  when: git_origin_check.rc != 0 # only run if remote does not exist

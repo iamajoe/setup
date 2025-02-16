@@ -5,6 +5,7 @@ Ansible machine setup.
 ## Requirements
 
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [jq](https://jqlang.org/download/)
 
 ## Configuration
 
@@ -32,6 +33,8 @@ ENV_FILE=.env sh ./run.sh
 
 - [ ] [Setup i3](https://github.com/i3/i3)
 - [ ] [Setup rofi](https://github.com/adi1090x/rofi)
+- [ ] Chromium task and install on devvm
+- [ ] Firefox task and install on devvm
 
 ## References
 

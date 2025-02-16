@@ -1,3 +1,5 @@
+eval $(keychain --eval --agents ssh --quiet)
+
 export PATH=$PATH:/usr/local/bin/
 
 ##############
