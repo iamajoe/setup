@@ -24,7 +24,7 @@
 - name: install neovim
   when: ansible_os_family == "Darwin"
   become: true
-  shell: brew install neovim
+  shell: brew install luajit neovim
 
 - name: copy neovim configurations
   git:
