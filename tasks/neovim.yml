@@ -26,13 +26,6 @@
   become: true
   shell: brew install neovim
 
-- name: download luarocks
-  ansible.builtin.get_url:
-    url: "http://www.lua.org/ftp/lua-5.3.5.tar.gz"
-    dest: "/tmp/lua535.tar.gz"
-    mode: "0644"
-  become: true
-
 - name: copy neovim configurations
   git:
     repo: https://github.com/iamajoe/nvim
