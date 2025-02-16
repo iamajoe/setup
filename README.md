@@ -1,18 +1,31 @@
 # Setup
 
-Ansible personal setup.
+Ansible machine setup.
 
-## Install
+## Requirements
 
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+
+## Configuration
+
+- `cp .env.dist .env`
+- Change `.env` vars
+
+### Custom projects
+
+You can run a custom project by creating a `custom/project_name.yml` and add it to `PLAYBOOKS` environment variable inside the `.env` file.
+You can follow [custom/project_example.yml](./custom/project_example.yml) as an example.
 
 ## Run
 
 ### With .env file
 
 ```sh
-cp .env.dist .env # Don't forget to change the vars
 sh ./run.sh
+
+# or
+
+ENV_FILE=.env sh ./run.sh
 ```
 
 ## TODO

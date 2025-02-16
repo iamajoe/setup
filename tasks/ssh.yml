@@ -1,7 +1,7 @@
-- name: check if we have sufficient variables
-  ansible.builtin.fail:
-    msg: "The variable 'ssh_src_dir' is required."
-  when: ssh_src_dir is not defined
+# - name: check if we have sufficient variables
+#   ansible.builtin.fail:
+#     msg: "The variable 'ssh_src_dir' is required."
+#   when: ssh_src_dir is not defined
 
 - name: install required system packages
   when: ansible_os_family == "Debian"
@@ -23,6 +23,7 @@
     group: "{{ ansible_user }}"
     mode: "0600"
     directory_mode: "0700"
+  when: ssh_src_dir is defined and ssh_src_dir | length > 0
   become: true
 
 - name: remove UseKeychain from SSH config
@@ -31,12 +32,15 @@
     path: "/{{ansible_env.HOME}}/.ssh/config"
     state: absent
     regexp: "^UseKeychain"
+  when: ssh_src_dir is defined and ssh_src_dir | length > 0
   become: yes
 
 - name: set correct permissions for SSH keys
   ansible.builtin.file:
     path: "{{ansible_env.HOME}}/.ssh/authorized_keys"
     mode: "0600"
+  when: ssh_src_dir is defined and ssh_src_dir | length > 0
+
 # - name: ensure SSH agent is running and add key
 #   ansible.builtin.shell: |
 #     eval $(ssh-agent -s)

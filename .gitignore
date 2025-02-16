@@ -1,2 +1,4 @@
 .env
 tmp*
+custom/*
+!custom/project_example.yml
