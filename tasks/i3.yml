@@ -2,23 +2,54 @@
 - name: install i3 packages
   when: ansible_os_family == "Debian"
   apt: name={{ item }} state=latest update_cache=yes
-  loop: ["i3", "rofi"]
+  loop: ["xorg", "xinit", "i3", "rofi"]
   become: true
 
 - name: ensure config i3 directory exists
+  when: ansible_os_family == "Debian"
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/i3"
     state: directory
     mode: "0755"
 
 - name: copy i3 configurations
+  when: ansible_os_family == "Debian"
   template: src=../templates/i3_config dest="{{ ansible_env.HOME }}/.config/i3/config"
   when: ansible_os_family == "Debian"
 
+- name: ensure config i3status directory exists
+  when: ansible_os_family == "Debian"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/i3status"
+    state: directory
+    mode: "0755"
+
 - name: copy i3 status configurations
-  template: src=../templates/i3_i3status dest="{{ ansible_env.HOME }}/.config/i3/i3status"
+  when: ansible_os_family == "Debian"
+  template: src=../templates/i3status_config dest="{{ ansible_env.HOME }}/.config/i3status/config"
   when: ansible_os_family == "Debian"
 
 - name: copy rofi configurations
+  when: ansible_os_family == "Debian"
   template: src=../templates/rofi dest="{{ ansible_env.HOME }}/.config/rofi"
   when: ansible_os_family == "Debian"
+
+- name: setup i3 on x
+  when: ansible_os_family == "Debian"
+  ansible.builtin.shell: >
+    echo "exec /usr/bin/i3" > ~/.xinitrc
+
+- name: setup x hi-res 
+  when: ansible_os_family == "Debian" and is_hi_res == "true"
+  template: src=../templates/Xresources_hires dest="{{ ansible_env.HOME }}/.Xresources"
+
+- name: setup x normal
+  when: ansible_os_family == "Debian" and is_hi_res == "false"
+  template: src=../templates/Xresources dest="{{ ansible_env.HOME }}/.Xresources"
+
+- name: ensure config i3 directory exists
+  when: ansible_os_family == "Debian"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/alacritty"
+    state: directory
+    mode: "0755"

@@ -1,0 +1,10 @@
+# Linux related
+- name: install alacritty packages
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["alacritty"]
+  become: true
+
+- name: setup alacritty
+  when: ansible_os_family == "Debian"
+  template: src=../templates/alacritty.toml dest="{{ ansible_env.HOME }}/.config/alacritty/alacritty.toml"

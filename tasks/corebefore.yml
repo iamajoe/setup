@@ -24,6 +24,7 @@
       "virtualenv",
       "python3-setuptools",
       "xclip",
+      "net-tools",
     ]
   become: true
 

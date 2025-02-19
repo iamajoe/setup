@@ -13,7 +13,9 @@
     # - include_tasks: ../tasks/resolution.yml
     - include_tasks: ../tasks/vmware.yml
     - include_tasks: ../tasks/coreafter.yml
+    - include_tasks: ../tasks/font.yml
     - include_tasks: ../tasks/i3.yml
+    - include_tasks: ../tasks/alacritty.yml
 
     # create necessary folders
     - name: set local work folder
