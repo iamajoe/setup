@@ -1,16 +1,31 @@
+live_config_reload = true
+import = [
+  "~/.config/alacritty/catppuccin-mocha.toml",
+  "~/.config/alacritty/catppuccin-mocha-mod.toml"
+]
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
 [window]
 # Make the window match better
 decorations = "transparent"
 padding.x = 10
 padding.y = 10
+dynamic_title = true
 
 [cursor]
 style = "Block"
+# blinking = "On" seems not working
 
 [font]
 size = 10
 normal.family = "NotoSansM Nerd Font"
 # normal.family = "Monaco for Powerline"
+
+[shell]
+program = "/bin/bash"
+args = ["--login"]
 
 [keyboard]
 bindings = [

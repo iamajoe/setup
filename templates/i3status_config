@@ -1,32 +1,34 @@
 general {
-    interval = 5
-    colors = true
-    color_good = "#8C9440"
-    color_bad = "#A54242"
-    color_degraded = "#DE935F"
+  interval = 10
+  colors = true
+  color_good = "#a6e3a1"
+  color_bad = "#f38ba8"
+  color_degraded = "#fab387"
+  separator = "|"
 }
 
-order += "disk /"
 order += "ethernet ens160"
-order += "battery 0"
+order += "disk /"
 order += "load"
+order += "memory"
+order += "battery 0"
 order += "tztime local"
 
 ethernet eth0 {
     # if you use %speed, i3status requires root privileges
-    format_up = "󰈀 %ip"
-    format_down = "󰈀"
+    format_up = " 󰈀 %ip "
+    format_down = " 󰈀 "
 }
 
 ethernet ens160 {
     # if you use %speed, i3status requires root privileges
-    format_up = "󰈀 %ip"
-    format_down = "󰈀"
+    format_up = " 󰈀 %ip "
+    format_down = " 󰈀 "
 }
 
 wireless _first_ {
-    format_up = " (%essid - %quality) %ip"
-    format_down = ""
+    format_up = "  (%essid - %quality) %ip "
+    format_down = "  "
 }
 
 run_watch DHCP {
@@ -38,24 +40,32 @@ run_watch VPN {
 }
 
 tztime local {
-    format = " %Y-%m-%d %H:%M:%S"
+    format = "  %Y-%m-%d %H:%M:%S "
 }
 
 load {
-    format = " %1min"
+    format = "  %1min\% "
+}
+
+memory {
+        format = "  %used "
+        threshold_degraded = "1G"
+        format_degraded = "MEMORY < %available"
 }
 
 disk "/" {
-    format = "\ %avail"
+    format = "\ %avail "
 }
 
 battery 0 {
     format = "%status %percentage %remaining"
-    status_bat = ""
-    status_chr = ""
+    status_bat = ""
+    status_chr = "󱐋"
     status_full = ""
     low_threshold = 30
     threshold_type = percentage
     integer_battery_capacity = true
-    color_good = "#0000FF"
+    color_good = "#a6e3a1"
+    color_bad = "#f38ba8"
+    color_degraded = "#fab387"
 }

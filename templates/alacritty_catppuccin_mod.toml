@@ -1,0 +1,28 @@
+# brighter alternative... "#14141e"
+[colors.primary]
+background = "#0F0F16"
+
+[colors.cursor]
+text = "#0F0F16"
+
+[colors.vi_mode_cursor]
+text = "#0F0F16"
+
+[colors.search.matches]
+foreground = "#0F0F16"
+
+[colors.search.focused_match]
+foreground = "#0F0F16"
+
+[colors.footer_bar]
+foreground = "#0F0F16"
+
+[colors.hints.start]
+foreground = "#0F0F16"
+
+[colors.hints.end]
+foreground = "#0F0F16"
+
+[colors.selection]
+text = "#0F0F16"
+

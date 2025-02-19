@@ -8,3 +8,11 @@
 - name: setup alacritty
   when: ansible_os_family == "Debian"
   template: src=../templates/alacritty.toml dest="{{ ansible_env.HOME }}/.config/alacritty/alacritty.toml"
+
+- name: setup alacritty theme
+  when: ansible_os_family == "Debian"
+  template: src=../templates/alacritty_catppuccin.toml dest="{{ ansible_env.HOME }}/.config/alacritty/catppuccin-mocha.toml"
+
+- name: setup alacritty theme modification
+  when: ansible_os_family == "Debian"
+  template: src=../templates/alacritty_catppuccin_mod.toml dest="{{ ansible_env.HOME }}/.config/alacritty/catppuccin-mocha-mod.toml"

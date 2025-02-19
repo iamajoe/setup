@@ -15,6 +15,7 @@
     - include_tasks: ../tasks/coreafter.yml
     - include_tasks: ../tasks/font.yml
     - include_tasks: ../tasks/i3.yml
+    - include_tasks: ../tasks/rofi.yml
     - include_tasks: ../tasks/alacritty.yml
 
     # create necessary folders
