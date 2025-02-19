@@ -85,7 +85,8 @@ client.background        $base
 #----------------------------------------------------------------------
 
 # setup a higher dpi for hi res screens
-exec --no-startup-id xrandr --dpi 227
+# exec --no-startup-id xrandr --dpi 227
+exec --no-startup-id xrandr --dpi 190
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
@@ -99,6 +100,9 @@ exec --no-startup-id setxkbmap -layout us -variant intl
 
 # Input methods
 # exec --no-startup-id fcitx5 -d
+
+# Enable vmware
+exec vmware-user --no-startup-id
 
 #----------------------------------------------------------------------
 # Keybindings
