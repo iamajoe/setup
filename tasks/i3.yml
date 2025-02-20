@@ -40,10 +40,3 @@
 - name: setup x normal
   when: ansible_os_family == "Debian" and is_hi_res == "false"
   template: src=../templates/Xresources dest="{{ ansible_env.HOME }}/.Xresources"
-
-- name: ensure config i3 directory exists
-  when: ansible_os_family == "Debian"
-  ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/alacritty"
-    state: directory
-    mode: "0755"

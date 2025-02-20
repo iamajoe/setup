@@ -5,6 +5,13 @@
   loop: ["alacritty"]
   become: true
 
+- name: ensure config alacritty directory exists
+  when: ansible_os_family == "Debian"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/alacritty"
+    state: directory
+    mode: "0755"
+
 - name: setup alacritty
   when: ansible_os_family == "Debian"
   template: src=../templates/alacritty.toml dest="{{ ansible_env.HOME }}/.config/alacritty/alacritty.toml"
