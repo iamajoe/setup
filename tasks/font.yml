@@ -1,4 +1,10 @@
 # Linux related
+- name: install required system packages
+  when: ansible_os_family == "Debian"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ["fontconfig"]
+  become: true
+
 - name: download nerd font
   when: ansible_os_family == "Debian"
   ansible.builtin.get_url:

@@ -19,7 +19,7 @@ style = "Block"
 # blinking = "On" seems not working
 
 [font]
-size = 10
+size = 11
 normal.family = "NotoSansM Nerd Font"
 # normal.family = "Monaco for Powerline"
 

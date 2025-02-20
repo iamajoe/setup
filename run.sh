@@ -36,7 +36,7 @@ EXTRA_VARIABLES="${EXTRA_VARIABLES:-""}"
 PLAYBOOKS="${PLAYBOOKS:-""}"
 
 IS_HI_RES="${IS_HI_RES:-false}"
-GRUB_RESOLUTION="${GRUB_RESOLUTION:-1920x1080}"
+ETHERNET_PATH="${ETHERNET_PATH:-""}"
 INVENTORY_PATH="${INVENTORY_PATH:-./inventory/hosts}"
 INVENTORY_TARGET="${INVENTORY_TARGET:-all}"
 
@@ -105,9 +105,9 @@ elif [ "$1" = "deploy" ]; then
     --arg target "$INVENTORY_TARGET" \
     --arg git_user_email "$USER_EMAIL" \
     --arg git_user_fullname "$USER_FULL_NAME" \
-    --arg grub_resolution "$GRUB_RESOLUTION" \
     --arg is_hi_res "$IS_HI_RES" \
-    '{target: $target, git_user_email:$git_user_email, git_user_fullname: $git_user_fullname, grub_resolution: $grub_resolution, is_hi_res: $is_hi_res}')
+    --arg ethernet_path "$ETHERNET_PATH" \
+    '{target: $target, git_user_email:$git_user_email, git_user_fullname: $git_user_fullname, is_hi_res: $is_hi_res, ethernet_path: $ethernet_path}')
   ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook "$TMP_OUTPUT_PLAYBOOK" $ANSIBLE_ARGS -e="$ANSIBLE_VARIABLES" # -vvvv
   # TODO: use for full verbose -> -vvvv
 fi
