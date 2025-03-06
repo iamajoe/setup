@@ -4,10 +4,21 @@
     state: absent
   become: yes
 
+- name: set go download URL based on architecture
+  set_fact:
+    go_url: >-
+      {% if ansible_architecture == 'aarch64' %}
+        https://go.dev/dl/go1.24.1.linux-arm64.tar.gz
+      {% elif ansible_architecture == 'armv6' %}
+        https://go.dev/dl/go1.24.1.linux-armv6l.tar.gz
+      {% else %}
+        https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
+      {% endif %}
+
 - name: download go
   ansible.builtin.get_url:
-    url: "https://go.dev/dl/go1.24.0.linux-arm64.tar.gz"
-    dest: "/tmp/go124.tar.gz"
+    url: "{{ go_url }}"
+    dest: "/tmp/go_release.tar.gz"
     mode: "0644"
 
 - name: ensure /usr/local/go directory exists
@@ -19,7 +30,7 @@
 
 - name: extract and install go
   ansible.builtin.unarchive:
-    src: "/tmp/go124.tar.gz"
+    src: "/tmp/go_release.tar.gz"
     dest: "/usr/local/go"
     remote_src: yes
     extra_opts: [--strip-components=1] # Ensures correct structure

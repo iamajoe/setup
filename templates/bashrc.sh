@@ -2,6 +2,13 @@ eval $(keychain --eval --agents ssh --quiet)
 
 export PATH=$PATH:/usr/local/bin/
 
+TERMINAL_SOURCE=$HOME/.config/terminal
+if [[ $OSTYPE == 'darwin'* ]]; then
+  TERMINAL_SOURCE=$(dirname -- "$0"; )
+  source $TERMINAL_SOURCE/homebrew.sh
+fi
+source $TERMINAL_SOURCE/prompt.sh
+
 ##############
 # ALIAS 
 
