@@ -84,7 +84,7 @@ if [ "$1" = "sshsetup" ]; then
   ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook "./playbooks/sshsetup.yml" $ANSIBLE_ARGS -e="$ANSIBLE_VARIABLES" # -vvvv
 
   echo "Run on the machine before proceeding with deploys:"
-  echo '  eval `keychain --agents ssh --eval id_rsa`; eval $(ssh-agent); ssh-add'
+  echo '  eval $(ssh-agent); ssh-add; eval `keychain --eval --quiet --agents ssh ~/.ssh/id_rsa`'
 elif [ "$1" = "deploy" ]; then
   echo "Deploying $INVENTORY_TARGET to $MACHINE_USERNAME:$MACHINE_IP_ADDR...";
 

@@ -1,4 +1,4 @@
-eval $(keychain --eval --agents ssh --quiet)
+eval `keychain --eval --quiet --agents ssh ~/.ssh/id_rsa`
 
 export PATH=$PATH:/usr/local/bin/
 
