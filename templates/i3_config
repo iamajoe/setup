@@ -1,6 +1,10 @@
 # set $mod Mod1
 set $mod Mod4
 
+# try to prevent gray screen
+# disables screen saver and display power
+exec --no-startup-id xset s off -dpms 
+
 ## quick terminal
 exec --no-startup-id "alacritty"
 
