@@ -21,7 +21,9 @@ style = "Block"
 [font]
 # size = 9.5
 size = 12
-normal.family = "NotoSansM Nerd Font"
+offset.y = 1
+normal.family = "NotoSansM NFM Med"
+# normal.family = "NotoSansM Nerd Font"
 # normal.family = "Monaco for Powerline"
 
 [shell]

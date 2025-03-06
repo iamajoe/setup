@@ -42,3 +42,6 @@
 
 - name: copy bash configurations
   template: src=../templates/bashrc.sh dest="{{ ansible_env.HOME }}/.config/terminal/bashrc.sh"
+
+- name: copy bash prompt
+  template: src=../templates/bash_prompt.sh dest="{{ ansible_env.HOME }}/.config/terminal/prompt.sh"

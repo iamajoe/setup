@@ -4,10 +4,21 @@
     state: absent
   become: yes
 
+- name: set zig download URL based on architecture
+  set_fact:
+    zig_url: >-
+      {% if ansible_architecture == 'aarch64' %}
+        https://ziglang.org/builds/zig-linux-aarch64-0.14.0.tar.xz
+      {% elif ansible_architecture == 'armv7' %}
+        https://ziglang.org/builds/zig-linux-armv7a-0.14.0.tar.xz
+      {% else %}
+        https://ziglang.org/builds/zig-linux-x86_64-0.14.0.tar.xz
+      {% endif %}
+
 - name: download zig
   ansible.builtin.get_url:
-    url: "https://ziglang.org/download/0.13.0/zig-linux-aarch64-0.13.0.tar.xz"
-    dest: "/tmp/zig013.tar.gz"
+    url: "{{ zig_url }}"
+    dest: "/tmp/zig_release.tar.gz"
     mode: "0644"
 
 - name: ensure /usr/local/zig directory exists
@@ -19,7 +30,7 @@
 
 - name: extract and install zig
   ansible.builtin.unarchive:
-    src: "/tmp/zig013.tar.gz"
+    src: "/tmp/zig_release.tar.gz"
     dest: "/usr/local/bin"
     remote_src: yes
     extra_opts: [--strip-components=1] # Ensures correct structure
