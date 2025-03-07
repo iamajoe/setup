@@ -9,7 +9,7 @@
 - name: install required neovim packages
   when: ansible_os_family == "Debian"
   apt: name={{ item }} state=latest update_cache=yes
-  loop: ["fuse", "libfuse2", "liblua5.1-0-dev", "lua5.1"]
+  loop: ["fuse", "libfuse2", "liblua5.1-0-dev", "lua5.1", "luarocks"]
   become: true
 
 - name: install neovim
