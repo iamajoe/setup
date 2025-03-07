@@ -16,6 +16,7 @@
     # - include_tasks: ../tasks/hyprland.yml
     - include_tasks: ../tasks/alacritty.yml
     # - include_tasks: ../tasks/vmware.yml
+    - include_tasks: ../tasks/browser.yml
 
     # create necessary folders
     - name: set local work folder
