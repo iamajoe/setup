@@ -1,0 +1,10 @@
+- name: install rust
+  ansible.builtin.shell: >
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  become: yes
+
+- name: install rust globals
+  ansible.builtin.shell: >
+    rustup component add rust-analyzer
+    rustup component add rustfmt
+
