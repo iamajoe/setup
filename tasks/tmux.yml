@@ -28,3 +28,6 @@
 
 - name: copy tmux catppucin theme
   template: src=../templates/tmux_catppucin.theme dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/catppucin.theme"
+
+- name: install tmux plugin manager
+  shell: git clone --depth 1 https://github.com/tmux-plugins/tpm {{ ansible_env.HOME }}/.tmux/plugins/tpm
