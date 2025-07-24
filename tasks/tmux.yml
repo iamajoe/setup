@@ -21,13 +21,7 @@
     mode: "0770"
 
 - name: copy tmux configuration
-  template: src=../templates/tmux_main.conf dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/main.conf"
-
-# - name: copy tmux dracula theme
-#   template: src=../templates/tmux_dracula.theme dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/dracula.theme"
-
-- name: copy tmux catppucin theme
-  template: src=../templates/tmux_catppucin.theme dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/catppucin.theme"
+  template: src=../templates/tmux/ dest="{{ ansible_env.HOME  }}/.config/terminal/tmux/"
 
 - name: install tmux plugin manager
   shell: git clone --depth 1 https://github.com/tmux-plugins/tpm {{ ansible_env.HOME }}/.tmux/plugins/tpm
