@@ -32,6 +32,8 @@ set-option -g status-fg "#f8f8f2"  # Foreground
 set-option -g display-panes-active-colour blue
 set-option -g display-panes-colour brightred
 
+set -g status-justify centre
+
 # Selected window
 set-option -g window-status-current-format "#[bg=#50fa7b,fg=#44475a] #I:#W "
 # Inactive window
