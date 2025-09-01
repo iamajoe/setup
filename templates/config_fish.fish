@@ -8,10 +8,10 @@ end
 
 function fish_prompt
   set -g last_status $status
-  set -l path_full (_col brcyan)(prompt_pwd_full)(_col_res)
+  set -l path_full (_col "#74c7ec")(prompt_pwd_full)(_col_res)
 
   if test $last_status = 0
-    set prompt (_col green b)" >"(_col_res)' '
+    set prompt (_col "#fab387" b)" >"(_col_res)' '
   else
     set prompt (_col brred b)" >"(_col_res)' '
   end
@@ -22,7 +22,7 @@ function fish_prompt
 end
 
 function fish_right_prompt
-  if test $last_status -gt 0                                         #set error code in red
+  if test $last_status -gt 0
     set errorp (_col brred)"$last_status⏎"(_col_res)" "
   end
 end
@@ -58,7 +58,7 @@ function prompt_pwd_full
 end
 
 function _prompt_git -a current_dir -d 'Display the actual git state'
-  echo -n ' ('
+  echo -n ' '
 
   set -l dirty (command git diff --no-ext-diff --quiet --exit-code; or echo -n '')
   set -l flag_fg (_col brgreen)
@@ -69,32 +69,32 @@ function _prompt_git -a current_dir -d 'Display the actual git state'
   end
   echo -n -s $flag_fg(_git_branch)(_git_status)(_col_res)
 
-  echo -n ')'
+  echo -n ''
 end
 
 function _git_status -d 'Check git status'
   set -l git_status (command git status --porcelain 2> /dev/null | cut -c 1-2)
   set -l ahead (_git_ahead); echo -n $ahead                                    #show # of commits ahead/behind
   if [ (echo -sn $git_status\n | egrep -c "[ACDMT][ MT]|[ACMT]D") -gt 0 ]      # staged
-    echo -n (_col green b)' +'
+    echo -n (_col green b)'+'
   end
   if [ (echo -sn $git_status\n | egrep -c "[ ACMRT]D") -gt 0 ]                  # deleted
-      echo -n (_col red b)' -'
+      echo -n (_col red b)'-'
   end
   if [ (echo -sn $git_status\n | egrep -c ".[MT]") -gt 0 ]                      # modified
-      echo -n (_col $ORANGE b)' ~'
+      echo -n (_col yellow b)'*'
   end
   if [ (echo -sn $git_status\n | egrep -c "R.") -gt 0 ]                         # renamed
-      echo -n (_col purple b)' >'
+      echo -n (_col purple b)'>'
   end
   if [ (echo -sn $git_status\n | egrep -c "AA|DD|U.|.U") -gt 0 ]                # unmerged
-      echo -n (_col brred b)' !'
+      echo -n (_col brred b)'!'
   end
   if [ (echo -sn $git_status\n | egrep -c "\?\?") -gt 0 ]                       # untracked
-      echo -n (_col brcyan b)' ?'
+      echo -n (_col brcyan b)'?'
   end
   if test (command git rev-parse --verify --quiet refs/stash >/dev/null)        # stashed
-      echo -n (_col brred b)' $'
+      echo -n (_col brred b)'$'
   end
 
   echo ''
