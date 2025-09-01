@@ -98,18 +98,20 @@ style = "Block"
 # blinking = "On" seems not working
 
 [font]
-# size = 9.5
-size = 14.5
+size = 9.5 # linux
+# size = 15 # mac
 offset.x = 1
 offset.y = 2
 normal.family = "NotoSansM Nerd Font"
-normal.style = "Light"
+normal.style = "Regular" # linux
+# normal.style = "Light" # mac
 # normal.family = "Monaco for Powerline"
 bold.family = "NotoSansM Nerd Font"
 bold.style = "SemiBold"
 
 [terminal.shell]
-program = "/bin/zsh"
+program = "/usr/bin/fish"
+# program = "/bin/zsh"
 # program = "/bin/bash"
 args = ["--login"]
 
