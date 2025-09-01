@@ -4,6 +4,7 @@
     - include_tasks: ../tasks/core.yml
     - include_tasks: ../tasks/git.yml
     - include_tasks: ../tasks/terminal.yml
+    - include_tasks: ../tasks/fish.yml
     - include_tasks: ../tasks/tmux.yml
     - include_tasks: ../tasks/neovim.yml
     - include_tasks: ../tasks/docker.yml

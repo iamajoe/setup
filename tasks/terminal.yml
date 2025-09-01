@@ -31,17 +31,8 @@
 - name: copy inputrc configurations
   template: src=../templates/inputrc dest="{{ ansible_env.HOME }}/.inputrc"
 
-- name: copy profile configurations
-  template: src=../templates/profile.sh dest="{{ ansible_env.HOME }}/.profile"
-
 - name: ensure terminal directory exists
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/terminal"
     state: directory
     mode: "0770"
-
-- name: copy bash configurations
-  template: src=../templates/bashrc.sh dest="{{ ansible_env.HOME }}/.config/terminal/bashrc.sh"
-
-- name: copy bash prompt
-  template: src=../templates/bash_prompt.sh dest="{{ ansible_env.HOME }}/.config/terminal/prompt.sh"

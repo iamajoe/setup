@@ -15,16 +15,16 @@
 - name: install neovim
   when: ansible_os_family == "Debian"
   ansible.builtin.shell: >
-    rm -rf {{ ansible_env.HOME }}/Apps/nvim.appimage*;
-    wget -P {{ ansible_env.HOME }}/Apps/ https://github.com/neovim/neovim/releases/download/v0.10.4/nvim-linux-arm64.appimage;
-    mv {{ ansible_env.HOME }}/Apps/nvim-linux-arm64.appimage {{ ansible_env.HOME }}/Apps/nvim.appimage;
-    chmod u+x {{ ansible_env.HOME }}/Apps/nvim.appimage
+    rm -rf {{ ansible_env.HOME }}/bin/nvim.appimage*;
+    wget -P {{ ansible_env.HOME }}/bin/ https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage;
+    chmod u+x {{ ansible_env.HOME }}/bin/nvim-linux-x86_64.appimage
 
 # MAC related
 - name: install neovim
   when: ansible_os_family == "Darwin"
   become: true
-  shell: brew install luajit neovim
+  shell: brew install luajit
+  # TODO: need to install by get
 
 - name: copy neovim configurations
   git:

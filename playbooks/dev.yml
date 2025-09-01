@@ -4,7 +4,8 @@
     - include_tasks: ../tasks/homebrew.yml
     - include_tasks: ../tasks/basic.yml
     - include_tasks: ../tasks/dev.yml
-    - include_tasks: ../tasks/zsh.yml
+    - include_tasks: ../tasks/alacritty.yml
+    - include_tasks: ../tasks/fish.yml
     - include_tasks: ../tasks/docker.yml
     - include_tasks: ../tasks/xfce.yml
     - include_tasks: ../tasks/audio.yml
