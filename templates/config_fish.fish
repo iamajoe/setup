@@ -7,8 +7,11 @@ end
 # ---------------------------
 
 function fish_prompt
+  # TODO: missing hour in gray
+  # TODO: maybe any dirty on git should just be a *
+
   set -g last_status $status
-  set -l path_full (_col "#74c7ec")(prompt_pwd_full)(_col_res)
+  set -l path_full (_col "#74c7ec")(prompt_pwd2)(_col_res)
 
   if test $last_status = 0
     set prompt (_col "#fab387" b)" >"(_col_res)' '
