@@ -77,7 +77,17 @@ end
 
 function _git_status -d 'Check git status'
   set -l git_status (command git status --porcelain 2> /dev/null | cut -c 1-2)
-  set -l ahead (_git_ahead); echo -n $ahead                                    #show # of commits ahead/behind
+  set -l ahead (command git rev-list --count --left-only @{u}...HEAD ^/dev/null)
+  set -l behind (command git rev-list --count --right-only @{u}...HEAD ^/dev/null)
+
+  if test $ahead -gt 0
+      echo -n (_col brblue b)"↑$ahead"
+  end
+
+  if test $behind -gt 0
+      echo -n (_col brmagenta b)"↓$behind"
+  end
+
   if [ (echo -sn $git_status\n | egrep -c "[ACDMT][ MT]|[ACMT]D") -gt 0 ]      # staged
     echo -n (_col green b)'+'
   end
@@ -118,10 +128,6 @@ end
 
 function _is_git_folder     -d "Check if current folder is a git folder"
   git status 1>/dev/null 2>/dev/null
-end
-
-function _git_ahead -d         'Print the ahead/behind state for the current branch'
-  command git rev-list --left-right '@{upstream}...HEAD' 2> /dev/null | awk '/>/ {a += 1} /</ {b += 1} {if (a > 0 && b > 0) nextfile} END {if (a > 0 && b > 0) print "⇕"; else if (a > 0) print ""; else if (b > 0) print ""}' #↑↓⇕⬍↕
 end
 
 # ---------------------------
