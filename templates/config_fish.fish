@@ -180,6 +180,17 @@ if test (uname) != Darwin
 end
 
 # ---------------------------
+# Node
+# ---------------------------
+if test -x $HOME/bin/node-v23.11.1-linux-x64/bin
+    if type -q fish_add_path
+        fish_add_path $HOME/bin/node-v23.11.1-linux-x64/bin 
+    else
+        set -gx PATH $HOME/bin/node-v23.11.1-linux-x64/bin $PATH
+    end
+end
+
+# ---------------------------
 # Go
 # ---------------------------
 # System Go (common Linux path)
@@ -256,8 +267,8 @@ if test -f "$HOME/bin/nvim-macos-arm64/bin/nvim"
     alias nvim="$HOME/bin/nvim-macos-arm64/bin/nvim"
 end
 
-if test -f "$HOME/bin/nvim-macos-x86_64.appimage"
-    alias nvim="$HOME/bin/nvim-macos-x86_64.appimage"
+if test -f "$HOME/bin/nvim-linux-x86_64.appimage"
+    alias nvim="$HOME/bin/nvim-linux-x86_64.appimage"
 end
 
 alias vi='nvim'
