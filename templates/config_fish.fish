@@ -6,6 +6,15 @@ end
 # Prompt
 # ---------------------------
 
+set -U fish_color_command      cdd6f4 # 89b4fa
+set -U fish_color_param        94e2d5
+set -U fish_color_quote        a6e3a1
+set -U fish_color_error        f38ba8
+set -U fish_color_comment      6c7086
+set -U fish_color_operator     f9e2af
+set -U fish_color_escape       cba6f7
+set -U fish_color_autosuggestion 585b70
+
 function fish_prompt
   # TODO: missing hour in gray
   # TODO: maybe any dirty on git should just be a *
@@ -21,7 +30,7 @@ function fish_prompt
 
   echo -n -s $path_full
   _is_git_folder; and _prompt_git
-  echo -n -s $prompt
+  echo -n -s $prompt(_col white)
 end
 
 function fish_right_prompt
@@ -247,8 +256,8 @@ if test -f "$HOME/bin/nvim-macos-arm64/bin/nvim"
     alias nvim="$HOME/bin/nvim-macos-arm64/bin/nvim"
 end
 
-if test -f "$HOME/bin/nvim-macos-x86_64/bin/nvim"
-    alias nvim="$HOME/bin/nvim-macos-x86_64/bin/nvim"
+if test -f "$HOME/bin/nvim-macos-x86_64.appimage"
+    alias nvim="$HOME/bin/nvim-macos-x86_64.appimage"
 end
 
 alias vi='nvim'
