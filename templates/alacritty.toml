@@ -10,7 +10,9 @@ foreground = "#cdd6f4"
 dim_foreground = "#7f849c"
 bright_foreground = "#cdd6f4"
 # background = "#0F0F16"
-background = "#131317"
+# background = "#131317"
+# background = "#141513"
+background = "#121312"
 
 [colors.cursor]
 # text = "#1e1e2e"
