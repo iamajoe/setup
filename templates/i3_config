@@ -1,5 +1,7 @@
 # set $mod Mod1
-set $mod Mod4
+# Mod1 = alt key
+# Mod4 = super key
+set $mod Mod4 
 
 ## quick terminal
 exec --no-startup-id "alacritty"
@@ -95,9 +97,9 @@ exec --no-startup-id prlsga
 exec --no-startup-id prlshprof
 
 # setup a higher dpi for hi res screens
-# exec --no-startup-id xrandr --output Virtual-1 --mode 2560x1600 --dpi 227
-# exec --no-startup-id xrandr --dpi 190
-# exec --no-startup-id xrandr --dpi 96
+# adjust parallels on mac resolution
+exec --no-startup-id xrandr --output Virtual-1 --mode 2560x1600 --dpi 96
+exec --no-startup-id xrandr --output Virtual-1 --mode 4096x2160 --dpi 192
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
