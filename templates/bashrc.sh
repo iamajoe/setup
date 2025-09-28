@@ -29,6 +29,9 @@ fi
 if [ -f "$HOME/Apps/nvim.appimage" ]; then
     alias nvim="$HOME/Apps/nvim.appimage"
 fi
+if [ -f "$HOME/Apps/nvim-linux-arm64/bin/nvim" ]; then
+    alias nvim="$HOME/Apps/nvim-linux-arm64/bin/nvim"
+fi
 alias vi="nvim"
 alias vim="nvim"
 export EDITOR=$(which nvim) # change the default editor
