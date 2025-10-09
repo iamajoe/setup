@@ -252,9 +252,10 @@ alias tmuxkill='tmux kill-session; pkill -f tmux'
 # tmux helpers
 # ---------------------------
 if set -q TMUX
-    alias clear='clear; tmux clear-history'
+    alias cls='tmux clear-history; clear'
     alias listsessions='tmux list-sessions -F "#S" | awk \'BEGIN {ORS=" "} {print $1, NR, "\"switch-client -t", $1 "\""}\' | xargs tmux display-menu -T "Switch session"'
 end
+
 
 # ---------------------------
 # Neovim
@@ -277,6 +278,13 @@ alias neovim='nvim'
 
 # Default editor (Fish way)
 set -gx EDITOR (which nvim)
+
+# ---------------------------
+# Cursor
+# ---------------------------
+if test -f "$HOME/bin/Cursor-1.7.40-x86_64.AppImage"
+    alias cursor="$HOME/bin/Cursor-1.7.40-x86_64.AppImage"
+end
 
 # ---------------------------
 # FileZilla
