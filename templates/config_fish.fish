@@ -280,10 +280,14 @@ alias neovim='nvim'
 set -gx EDITOR (which nvim)
 
 # ---------------------------
-# Cursor
+# AI
 # ---------------------------
 if test -f "$HOME/bin/Cursor-1.7.40-x86_64.AppImage"
     alias cursor="$HOME/bin/Cursor-1.7.40-x86_64.AppImage"
+end
+
+if test -f "$HOME/bin/LM-Studio-0.3.30-1-x64.AppImage"
+    alias lmstudio="$HOME/bin/LM-Studio-0.3.30-1-x64.AppImage"
 end
 
 # ---------------------------
