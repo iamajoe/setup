@@ -1,4 +1,6 @@
-.env
 tmp*
-custom/*
-!custom/project_example.yml
+*_old*
+hardware-configuration.nix
+
+.env*.json
+!.env.json.dist

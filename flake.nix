@@ -1,0 +1,88 @@
+{
+  description = "iamajoe_dev";
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-25.05";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    userenv = {
+      url = "path:./.env.nix";
+      flake = false;
+    };
+  };
+
+  outputs = { self, nixpkgs, home-manager, userenv, ... }@inputs:
+  let
+    overlays = [
+      inputs.neovim-nightly-overlay.overlays.default
+      inputs.rust-overlay.overlays.default
+    ];
+    buildEnv =
+      let
+        raw = builtins.readFile userenv;
+        clean = builtins.replaceStrings
+          [ "\u00A0" "\u202F" "\u2009" "\u00AD" "\uFEFF" "\r" ]  # NBSP, NNBSP, thin space, soft hyphen, BOM, CR
+          [ " "      " "      " "      ""       ""      "" ]
+          raw;
+      in builtins.fromJSON clean;
+  in {
+    nixosConfigurations = {
+      nixos-joe-x86_64 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [ 
+          { nixpkgs.overlays = overlays; }
+          ./configuration.nix
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              extraSpecialArgs = { 
+                inherit inputs;
+                buildEnv = buildEnv // {
+                  system = "x86_64-linux";
+                  nixosConfig = "nixos-joe-x86_64";
+                };
+              };
+              users.${buildEnv.username} = import ./home.nix;
+            };
+          }
+        ];
+      };
+
+      nixos-joe-aarch64 = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+
+        modules = [ 
+          { nixpkgs.overlays = overlays; }
+          ./configuration.nix
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              extraSpecialArgs = { 
+                inherit inputs;
+                buildEnv = buildEnv // {
+                  system = "aarch64-linux";
+                  nixosConfig = "nixos-joe-aarch64-linux";
+                };
+              };
+              users.${buildEnv.username} = import ./home.nix;
+            };
+          }
+        ];
+      };
+    };
+  };
+}
+

@@ -1,6 +1,0 @@
-# Linux related
-- name: install browser
-  when: ansible_os_family == "Debian"
-  apt: name={{ item }} state=latest update_cache=yes
-  loop: ["chromium-browser"]
-  become: true

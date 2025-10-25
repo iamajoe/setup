@@ -1,5 +1,0 @@
-- name: sshsetup
-  hosts: "{{target}}"
-  tasks:
-    - include_tasks: ../tasks/core.yml
-    - include_tasks: ../tasks/ssh.yml

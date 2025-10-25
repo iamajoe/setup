@@ -1,63 +1,30 @@
-# Setup
+# Setup (nixos)
 
-Ansible machine setup.
+Nixos setup machine
 
 ## Requirements
 
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- [jq](https://jqlang.org/download/)
-
-## Configuration
-
-- `cp .env.dist .env`
-- Change `.env` vars
-
-### Custom projects
-
-You can run a custom project by creating a `custom/project_name.yml` and add it to `PLAYBOOKS` environment variable inside the `.env` file.
-You can follow [custom/project_example.yml](./custom/project_example.yml) as an example.
+- [NixOs](https://nixos.org/download/#nix-install-linux)
 
 ## Run
+In case you want to run under ssh, do this first:
+1. `sudo nano /etc/nixos/configuration.nix`
+    - Uncomment `services.openssh.enable = true;`
+2. `ifconfig` (to know the ip to ssh to)
 
-### With .env file
-
-```sh
-sh ./run.sh sshsetup <ssh folder>
-sh ./run.sh deploy
-
-# or
-
-ENV_FILE=.env sh ./run.sh deploy
-```
+### Steps
+1. `sudo nano /etc/nixos/configuration.nix`
+    - Add packages: `git, wget, curl, vim`
+2. `git clone --branch nixos --depth 1 https://github.com/iamajoe/setup.git $HOME/nixos-config`
+3. `cd $HOME/nixos-config`
+4. `cp /etc/nixos/hardware-configuration.nix $HOME/nixos-config/hardware-configuration.nix`
+5. `cp .env.json.dist .env.json`
+6. `nano .env.json` (modify acccordingly)
+7. build
+    - For x86: `sudo nixos-rebuild switch --flake /home/iamajoe/nixos-config/#nixos-joe-x86_64`
+    - For arm64: `sudo nixos-rebuild switch --flake /home/iamajoe/nixos-config/#nixos-joe-aarch64`
+8. `sudo reboot`
+9. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
 
 ### Parallels
-
-1. Start your virtual machine
-2. In the Mac Top menu, click on Actions > Reinstall Parallels Tools.
-
-```sh
-sudo mkdir -p /media/cdrom0; \
-sudo apt-get install -y dkms libelf-dev linux-headers-$(uname -r) build-essential; \
-sudo mount -o exec /dev/sr0 /media/cdrom0; \
-cd /media/cdrom0; \
-sudo ./install;
-```
-
-#### If Reinstall Parallels didn't get the cd in
-
-- Follow this [guide](https://kb.parallels.com/129740) to mount the CD with the right iso.
-- Run install code
-
-## TODO
-
-- [ ] [Setup rofi](https://github.com/adi1090x/rofi)
-- [ ] Chromium task and install on devvm
-- [ ] Firefox task and install on devvm
-
-## References
-
-- [i3](https://github.com/i3/i3)
-- [Mitchell nixos-config](https://github.com/mitchellh/nixos-config)
-- [i3 ansible example](https://github.com/Mokkujin/i3-config-ansible)
-- [i3 ansible example b](https://github.com/hypebeast/ansible-i3)
-- [i3 config mouseless post](https://thevaluable.dev/i3-config-mouseless/)
+TODO: still need to actually build this

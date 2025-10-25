@@ -1,3 +1,0 @@
-- name: debug variables
-  ansible.builtin.debug:
-    msg: "target: {{target}}\nssh source dir: {{ssh_src_dir}}"
