@@ -11,15 +11,15 @@
       flake = false;
     };
 
+    userenv = {
+      url = "path:/etc/nixos/env.json";
+      flake = false;
+    };
+
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    userenv = {
-      url = "path:./.env.nix";
-      flake = false;
     };
   };
 
@@ -31,7 +31,7 @@
     ];
     buildEnv =
       let
-        raw = builtins.readFile userenv;
+        raw = builtins.readFile "${userenv}";
         clean = builtins.replaceStrings
           [ "\u00A0" "\u202F" "\u2009" "\u00AD" "\uFEFF" "\r" ]  # NBSP, NNBSP, thin space, soft hyphen, BOM, CR
           [ " "      " "      " "      ""       ""      "" ]
@@ -44,7 +44,7 @@
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
-          hardware
+          "${hardware}"
           ./configuration.nix
           home-manager.nixosModules.home-manager {
             home-manager = {
@@ -69,7 +69,7 @@
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
-          hardware
+          "${hardware}"
           ./configuration.nix
           home-manager.nixosModules.home-manager {
             home-manager = {

@@ -34,8 +34,8 @@
     };
   };
   services.displayManager.ly.enable = true;
-  services.displayManager.ly.autoLogin.enable = true;
-  services.displayManager.ly.autoLogin.user = "iamajoe";
+  # services.displayManager.ly.autoLogin.enable = true;
+  # services.displayManager.ly.autoLogin.user = "iamajoe";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.iamajoe = {
@@ -64,7 +64,7 @@
 
   # automatic cleanup
   nix.gc.automatic = true;
-  nix.gc.date = "daily";
+  nix.gc.dates = "daily";
   nix.gc.options = "--delete-older-than 7d";
   nix.settings.auto-optimise-store = true;
 

@@ -282,14 +282,15 @@
     "userenv": {
       "flake": false,
       "locked": {
-        "path": "./.env.nix",
+        "lastModified": 1761465998,
+        "narHash": "sha256-qI+PBDEI96TnILr2iptkI4NvwyAQ3Q6Bf6aV6kAy4PA=",
+        "path": "/etc/nixos/env.json",
         "type": "path"
       },
       "original": {
-        "path": "./.env.nix",
+        "path": "/etc/nixos/env.json",
         "type": "path"
-      },
-      "parent": []
+      }
     }
   },
   "root": "root",
