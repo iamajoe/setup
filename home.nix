@@ -19,19 +19,19 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     extraConfig = ''
       Host github.com
         User git
-        IdentityFile /home/${buildEnv.username}/.ssh/id_ed25519
+        IdentityFile /home/${buildEnv.username}/.ssh/id_rsa
         IdentitiesOnly yes
     '';
     knownHosts = {
-      "github.com".publicKey = "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...";
+      "github.com".publicKey = "github.com ssh-rsa AAAAC3NzaC1lZDI1NTE5AAAA...";
     };
   };
-  home.file.".ssh/id_ed25519".source = /home/${buildEnv.username}/.ssh/id_ed25519;  # or path to your private key
-  home.file.".ssh/id_ed25519.pub".source = /home/${buildEnv.username}/.ssh/id_ed25519.pub;
+  home.file.".ssh/id_rsa".source = /home/${buildEnv.username}/.ssh/id_rsa;
+  home.file.".ssh/id_rsa.pub".source = /home/${buildEnv.username}/.ssh/id_rsa.pub;
   home.file.".ssh/config".text = ''
     Host github.com
       User git
-      IdentityFile ~/.ssh/id_ed25519
+      IdentityFile ~/.ssh/id_rsa
       IdentitiesOnly yes
   '';
   services.ssh-agent.enable = true;
