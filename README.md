@@ -17,15 +17,14 @@ In case you want to run under ssh, do this first:
     - Add packages: `git, wget, curl, vim`
 2. `git clone --branch nixos --depth 1 https://github.com/iamajoe/setup.git $HOME/nixos_config`
 3. `cd $HOME/nixos_config`
-4. `cp /etc/nixos/hardware-configuration.nix $HOME/nixos_config/hardware-configuration.nix`
-5. `cp .env.json.dist .env.json`
-6. `nano .env.json` (modify acccordingly)
-7. build
+4. `cp .env.json.dist .env.json`
+5. `nano .env.json` (modify acccordingly)
+6. build
     - For x86: `sudo nixos-rebuild switch --flake /home/iamajoe/nixos_config/#nixos-joe-x86_64`
     - For arm64: `sudo nixos-rebuild switch --flake /home/iamajoe/nixos_config/#nixos-joe-aarch64`
-8. `sudo reboot`
-9. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
-10. for nix garbage collection: `nixclean`
+7. `sudo reboot`
+8. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
+9. for nix garbage collection: `nixclean`
 
 ### Parallels
 TODO: still need to actually build this

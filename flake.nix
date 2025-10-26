@@ -6,6 +6,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hardware = {
+      url = "path:/etc/nixos/hardware-configuration.nix";
+      flake = false;
+    };
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     rust-overlay = {
@@ -19,7 +23,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, userenv, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, hardware, userenv, ... }@inputs:
   let
     overlays = [
       inputs.neovim-nightly-overlay.overlays.default
@@ -40,6 +44,7 @@
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
+          hardware
           ./configuration.nix
           home-manager.nixosModules.home-manager {
             home-manager = {
@@ -64,6 +69,7 @@
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
+          hardware
           ./configuration.nix
           home-manager.nixosModules.home-manager {
             home-manager = {

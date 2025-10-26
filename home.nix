@@ -19,19 +19,32 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
       hmrebuild = ''
         home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
       '';
-      nixclean = "nix-collect-garbage -d --delete-older-than 10d";
+      nixclean = "nix-collect-garbage -d --delete-older-than 5d";
 
       ll = "ls -la";
     };
   };
 
   programs.firefox.enable = true;
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+
+    userName  = buildEnv.userFullname;
+    userEmail = buildEnv.userEmail;
+
+    extraConfig = {
+      init.defaultBranch = "main";
+      core.editor        = "nvim";
+      color.ui           = "auto";
+      pull.rebase        = false;
+      pager.branch       = false;
+    };
+  };
 
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-      source "$HOME/.config/fish/config_dev.fish"
+      source "/home/${buildEnv.username}/.config/fish/config_dev.fish"
     '';
 
     shellAliases = {
@@ -41,7 +54,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
       hmrebuild = ''
         home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
       '';
-      nixclean = "nix-collect-garbage -d --delete-older-than 10d";
+      nixclean = "nix-collect-garbage -d --delete-older-than 5d";
 
       ll = "ls -la";
     };
@@ -49,13 +62,13 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   programs.tmux = {
     enable = true;
     extraConfig = ''
-      source-file ~/.config/tmux/main.conf
+      source-file /home/${buildEnv.username}/.config/tmux/main.conf
     '';
   };
   programs.alacritty = {
     enable = true;
     settings = {
-      import = [ "$HOME/.config/alacritty/alacritty_dev.yml" ];
+      import = [ "/home/${buildEnv.username}/.config/alacritty/alacritty_dev.yml" ];
     };
   };
 
@@ -72,6 +85,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     go
     nodejs
     docker
+    lazygit
 
     # TODO: need to select one. generally, i use noto
     nerd-fonts.noto
@@ -139,18 +153,5 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/main.conf \
       -o "$HOME/.config/tmux/main.conf"
-  '';
-
-  #
-  # ─── Git Config ──────────────────────────────────────────────────────────────────
-  #
-  home.activation.getGitConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.curl}/bin/curl -fsSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/gitconfig.yml \
-    | ${pkgs.gnused}/bin/sed \
-        -e "s|{{git_user_fullname}}|${buildEnv.userFullname}|g" \
-        -e "s|{{git_user_email}}|${buildEnv.userEmail}|g" \
-        -e "s|/home/{{ansible_user}}|$HOME|g" \
-        > "$HOME/.gitconfig"
   '';
 }
