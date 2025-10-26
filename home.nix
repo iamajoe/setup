@@ -10,6 +10,34 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   home.homeDirectory = "/home/${buildEnv.username}";
   home.stateVersion = "25.05";
 
+  #
+  # ─── SSH ────────────────────────────────────────────────────────────────
+  #
+  programs.ssh = {
+    enable = true;
+
+    extraConfig = ''
+      Host github.com
+        User git
+        IdentityFile /home/${buildEnv.username}/.ssh/id_ed25519
+        IdentitiesOnly yes
+    '';
+    knownHosts = {
+      "github.com".publicKey = "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...";
+    };
+  };
+  home.file.".ssh/id_ed25519".source = /home/${buildEnv.username}/.ssh/id_ed25519;  # or path to your private key
+  home.file.".ssh/id_ed25519.pub".source = /home/${buildEnv.username}/.ssh/id_ed25519.pub;
+  home.file.".ssh/config".text = ''
+    Host github.com
+      User git
+      IdentityFile ~/.ssh/id_ed25519
+      IdentitiesOnly yes
+  '';
+
+  #
+  # ─── Shell ────────────────────────────────────────────────────────────────
+  #
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -22,22 +50,6 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
       nixclean = "nix-collect-garbage -d --delete-older-than 5d";
 
       ll = "ls -la";
-    };
-  };
-
-  programs.firefox.enable = true;
-  programs.git = {
-    enable = true;
-
-    userName  = buildEnv.userFullname;
-    userEmail = buildEnv.userEmail;
-
-    extraConfig = {
-      init.defaultBranch = "main";
-      core.editor        = "nvim";
-      color.ui           = "auto";
-      pull.rebase        = false;
-      pager.branch       = false;
     };
   };
 
@@ -59,18 +71,83 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
       ll = "ls -la";
     };
   };
+  home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
+      -o "$HOME/.config/fish/config_dev.fish"
+  '';
+
+  #
+  # ─── Terminal software ────────────────────────────────────────────────────────────
+  #
   programs.tmux = {
     enable = true;
     extraConfig = ''
       source-file /home/${buildEnv.username}/.config/tmux/main.conf
     '';
   };
+  home.activation.getTmuxConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/catppucin.theme \
+      -o "$HOME/.config/tmux/catppuccin.theme"
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/main.conf \
+      -o "$HOME/.config/tmux/main.conf"
+  '';
+
+  programs.git = {
+    enable = true;
+
+    userName  = buildEnv.userFullname;
+    userEmail = buildEnv.userEmail;
+
+    extraConfig = {
+      init.defaultBranch = "main";
+      core.editor        = "nvim";
+      color.ui           = "auto";
+      pull.rebase        = false;
+      pager.branch       = false;
+    };
+  };
+
+  # Neovim
+  home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    set -eux
+
+    GIT_BIN=${pkgs.git}/bin/git
+    NVIM_DIR="$HOME/.config/nvim"
+
+    if [ -d "$NVIM_DIR/.git" ]; then
+      echo "Updating Neovim config..."
+      cd "$NVIM_DIR"
+      "$GIT_BIN" fetch origin barebones
+      "$GIT_BIN" reset --hard origin/barebones
+    else
+      echo "Cloning Neovim config..."
+      "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR"
+    fi
+  '';
+
+  #
+  # ─── GUI ────────────────────────────────────────────────────────────────
+  #
+  programs.firefox.enable = true;
+
   programs.alacritty = {
     enable = true;
     settings = {
       import = [ "/home/${buildEnv.username}/.config/alacritty/alacritty_dev.yml" ];
     };
   };
+  home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
+      -o "$HOME/.config/alacritty/alacritty_dev.toml"
+  '';
+
+  #
+  # ─── Dependencies ────────────────────────────────────────────────────────────────
+  #
 
   # $ nix search wget
   home.packages = with pkgs; [
@@ -104,54 +181,4 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   #   echo "Cleaning pre-existing files before linking..."
   #   rm -f "$HOME/.gitconfig"
   # '';
-
-  #
-  # ─── Neovim Config ────────────────────────────────────────────────────────────────
-  #
-  home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    set -eux
-
-    GIT_BIN=${pkgs.git}/bin/git
-    NVIM_DIR="$HOME/.config/nvim"
-
-    if [ -d "$NVIM_DIR/.git" ]; then
-      echo "Updating Neovim config..."
-      cd "$NVIM_DIR"
-      "$GIT_BIN" fetch origin barebones
-      "$GIT_BIN" reset --hard origin/barebones
-    else
-      echo "Cloning Neovim config..."
-      "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR"
-    fi
-  '';
-
-  #
-  # ─── Alacritty Config ─────────────────────────────────────────────────────────────
-  #
-  home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.curl}/bin/curl -fsSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
-      -o "$HOME/.config/alacritty/alacritty_dev.toml"
-  '';
-
-  #
-  # ─── Fish Config ─────────────────────────────────────────────────────────────────
-  #
-  home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.curl}/bin/curl -fsSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
-      -o "$HOME/.config/fish/config_dev.fish"
-  '';
-
-  #
-  # ─── Tmux Config ─────────────────────────────────────────────────────────────────
-  #
-  home.activation.getTmuxConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.curl}/bin/curl -fsSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/catppucin.theme \
-      -o "$HOME/.config/tmux/catppuccin.theme"
-    ${pkgs.curl}/bin/curl -fsSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/main.conf \
-      -o "$HOME/.config/tmux/main.conf"
-  '';
 }
