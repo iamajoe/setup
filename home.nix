@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, buildEnv, lib, ... }:
+{ config, pkgs, inputs, usersecrets, buildEnv, lib, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 assert buildEnv.userFullname != "" && buildEnv.userFullname != null;
@@ -16,24 +16,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   programs.ssh = {
     enable = true;
 
-    extraConfig = ''
-      Host github.com
-        User git
-        IdentityFile /home/${buildEnv.username}/.ssh/id_rsa
-        IdentitiesOnly yes
-    '';
-    knownHosts = {
-      "github.com".publicKey = "github.com ssh-rsa AAAAC3NzaC1lZDI1NTE5AAAA...";
+    matchBlocks."github.com" = {
+      hostname = "github.com";
+      user = "git";
+      identityFile = "/home/${buildEnv.username}/.ssh/id_rsa";
+      identitiesOnly = true;
     };
   };
-  home.file.".ssh/id_rsa".source = /etc/nixos/secrets/.ssh/id_rsa;
-  home.file.".ssh/id_rsa.pub".source = /etc/nixos/secrets/.ssh/id_rsa.pub;
-  home.file.".ssh/config".text = ''
-    Host github.com
-      User git
-      IdentityFile ~/.ssh/id_rsa
-      IdentitiesOnly yes
-  '';
+  home.file.".ssh/id_rsa".source = "${usersecrets}/id_rsa";
+  home.file.".ssh/id_rsa.pub".source = "${usersecrets}/id_rsa.pub";
   services.ssh-agent.enable = true;
 
   #
@@ -176,10 +167,4 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   ];
 
   fonts.fontconfig.enable = true;
-
-  # NOTE: we don't want these files versioned and no need for them to be backed up
-  # home.activation.cleanupExistingFiles = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-  #   echo "Cleaning pre-existing files before linking..."
-  #   rm -f "$HOME/.gitconfig"
-  # '';
 }

@@ -235,7 +235,8 @@
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay",
-        "userenv": "userenv"
+        "userenv": "userenv",
+        "usersecrets": "usersecrets"
       }
     },
     "rust-overlay": {
@@ -289,6 +290,19 @@
       },
       "original": {
         "path": "/etc/nixos/env.json",
+        "type": "path"
+      }
+    },
+    "usersecrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761468445,
+        "narHash": "sha256-Na859sSNasYlD4v7GRs/m19jP0kn6+pfg6nPA8cyWt0=",
+        "path": "/etc/nixos/secrets",
+        "type": "path"
+      },
+      "original": {
+        "path": "/etc/nixos/secrets",
         "type": "path"
       }
     }

@@ -1,10 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, buildEnv, ... }:
+
+assert buildEnv.username != "" && buildEnv.username != null;
 
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos-joe";
+  networking.hostName = "nixos-${buildEnv.username}";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;
 
@@ -34,17 +36,15 @@
     };
   };
   services.displayManager.ly.enable = true;
-  # services.displayManager.ly.autoLogin.enable = true;
-  # services.displayManager.ly.autoLogin.user = "iamajoe";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.iamajoe = {
+  users.users.${buildEnv.username} = {
     isNormalUser = true;
-    description = "iamajoe";
+    description = buildEnv.username;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
-  services.getty.autologinUser = "iamajoe";
+  services.getty.autologinUser = buildEnv.username;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

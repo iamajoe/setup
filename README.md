@@ -19,10 +19,10 @@ In case you want to run under ssh, do this first:
 3. copy ssh key manually to: `/etc/nixos/secrets/id_rsa` and `/etc/nixos/secrets/id_rsa.pub`
 4. `git clone --branch nixos --depth 1 https://github.com/iamajoe/setup.git $HOME/nixos_config`
 6. `sudo cp $HOME/nixos_config/.env.json.dist /etc/nixos/env.json`
-7. `sudo nano /etc/nixos/env.json` (modify acccordingly)
+7. `sudo nano /etc/nixos/env.json` (modify acccordingly to your data)
 8. build
-    - For x86: `sudo nixos-rebuild switch --flake /home/iamajoe/nixos_config/#nixos-joe-x86_64`
-    - For arm64: `sudo nixos-rebuild switch --flake /home/iamajoe/nixos_config/#nixos-joe-aarch64`
+    - For x86: `sudo nixos-rebuild switch --flake $HOME/nixos_config/#nixos-conf-x86_64`
+    - For arm64: `sudo nixos-rebuild switch --flake $HOME/nixos_config/#nixos-conf-aarch64`
 9. `sudo reboot`
 10. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
 11. for nix garbage collection: `nixclean`

@@ -1,5 +1,5 @@
 {
-  description = "iamajoe_dev";
+  description = "dev_machine";
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.05";
     home-manager = {
@@ -15,6 +15,10 @@
       url = "path:/etc/nixos/env.json";
       flake = false;
     };
+    usersecrets = {
+      url = "path:/etc/nixos/secrets";
+      flake = false;
+    };
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     rust-overlay = {
@@ -23,7 +27,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, hardware, userenv, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, hardware, userenv, usersecrets, ... }@inputs:
   let
     overlays = [
       inputs.neovim-nightly-overlay.overlays.default
@@ -39,8 +43,9 @@
       in builtins.fromJSON clean;
   in {
     nixosConfigurations = {
-      nixos-joe-x86_64 = nixpkgs.lib.nixosSystem {
+      nixos-conf-x86_64 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit buildEnv; };
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
@@ -52,10 +57,10 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = { 
-                inherit inputs;
+                inherit inputs usersecrets;
                 buildEnv = buildEnv // {
                   system = "x86_64-linux";
-                  nixosConfig = "nixos-joe-x86_64";
+                  nixosConfig = "nixos-conf-x86_64";
                 };
               };
               users.${buildEnv.username} = import ./home.nix;
@@ -64,8 +69,9 @@
         ];
       };
 
-      nixos-joe-aarch64 = nixpkgs.lib.nixosSystem {
+      nixos-conf-aarch64 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        specialArgs = { inherit buildEnv; };
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
@@ -77,10 +83,10 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = { 
-                inherit inputs;
+                inherit inputs usersecrets;
                 buildEnv = buildEnv // {
                   system = "aarch64-linux";
-                  nixosConfig = "nixos-joe-aarch64-linux";
+                  nixosConfig = "nixos-conf-aarch64-linux";
                 };
               };
               users.${buildEnv.username} = import ./home.nix;
