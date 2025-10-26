@@ -26,8 +26,8 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
       "github.com".publicKey = "github.com ssh-rsa AAAAC3NzaC1lZDI1NTE5AAAA...";
     };
   };
-  home.file.".ssh/id_rsa".source = /home/${buildEnv.username}/.ssh/id_rsa;
-  home.file.".ssh/id_rsa.pub".source = /home/${buildEnv.username}/.ssh/id_rsa.pub;
+  home.file.".ssh/id_rsa".source = /etc/nixos/secrets/.ssh/id_rsa;
+  home.file.".ssh/id_rsa.pub".source = /etc/nixos/secrets/.ssh/id_rsa.pub;
   home.file.".ssh/config".text = ''
     Host github.com
       User git
