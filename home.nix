@@ -14,27 +14,58 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     enable = true;
     shellAliases = {
       nixrebuild = ''
-        sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos-config/#${buildEnv.nixosConfig}"
+        sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
       '';
-
       hmrebuild = ''
-        home-manager switch --flake "/home/${buildEnv.username}/nixos-config/#${buildEnv.nixosConfig}"
+        home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
       '';
+      nixclean = "nix-collect-garbage -d --delete-older-than 10d";
+
+      ll = "ls -la";
     };
   };
 
   programs.firefox.enable = true;
   programs.git.enable = true;
 
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      source "$HOME/.config/fish/config_dev.fish"
+    '';
+
+    shellAliases = {
+      nixrebuild = ''
+        sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
+      '';
+      hmrebuild = ''
+        home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
+      '';
+      nixclean = "nix-collect-garbage -d --delete-older-than 10d";
+
+      ll = "ls -la";
+    };
+  };
+  programs.tmux = {
+    enable = true;
+    extraConfig = ''
+      source-file ~/.config/tmux/main.conf
+    '';
+  };
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      import = [ "$HOME/.config/alacritty/alacritty_dev.yml" ];
+    };
+  };
+
   # $ nix search wget
   home.packages = with pkgs; [
     neovim
     ripgrep
     nixpkgs-fmt
-    alacritty
     bat
     tmux
-    fish
 
     gcc
     rust-bin.stable.latest.default
@@ -55,18 +86,14 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   fonts.fontconfig.enable = true;
 
   # NOTE: we don't want these files versioned and no need for them to be backed up
-  home.activation.cleanupExistingFiles = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-    echo "Cleaning pre-existing files before linking..."
-    rm -f "$HOME/.gitconfig"
-    rm -f "$HOME/.config/fish/config.fish"
-    rm -f "$HOME/.config/alacritty/alacritty.toml"
-    rm -f "$HOME/.tmux.conf"
-  '';
+  # home.activation.cleanupExistingFiles = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+  #   echo "Cleaning pre-existing files before linking..."
+  #   rm -f "$HOME/.gitconfig"
+  # '';
 
   #
   # ─── Neovim Config ────────────────────────────────────────────────────────────────
   #
-  # home.file.".config/nvim".source = inputs.nvim-config.outPath;
   home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
     set -eux
 
@@ -87,37 +114,25 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   #
   # ─── Alacritty Config ─────────────────────────────────────────────────────────────
   #
-  # home.file.".config/alacritty/alacritty.toml".source = ./config/alacritty.toml;
   home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/alacritty"
-  
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
-      -o "$HOME/.config/alacritty/alacritty.toml"
+      -o "$HOME/.config/alacritty/alacritty_dev.toml"
   '';
 
   #
   # ─── Fish Config ─────────────────────────────────────────────────────────────────
   #
-  # home.file.".config/fish/config.fish".source = ./config/config.fish;
   home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/fish"
-
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
-      -o "$HOME/.config/fish/config.fish"
+      -o "$HOME/.config/fish/config_dev.fish"
   '';
 
   #
   # ─── Tmux Config ─────────────────────────────────────────────────────────────────
   #
-  # home.file.".config/tmux".source = ./config/tmux.conf
-  home.file.".tmux.conf".text = ''
-    run-shell "tmux source-file ~/.config/tmux/main.conf"
-  '';
   home.activation.getTmuxConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/tmux"
-  
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/catppucin.theme \
       -o "$HOME/.config/tmux/catppuccin.theme"

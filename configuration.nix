@@ -38,6 +38,8 @@
     };
   };
   services.displayManager.ly.enable = true;
+  services.displayManager.ly.autoLogin.enable = true;
+  services.displayManager.ly.autoLogin.user = "iamajoe";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.iamajoe = {
@@ -59,6 +61,16 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # auto upgrade packages
+  system.autoUpgrade.enable = false;
+  system.autoUpgrade.dates = "weekly";
+
+  # automatic cleanup
+  nix.gc.automatic = true;
+  nix.gc.date = "daily";
+  nix.gc.options = "--delete-older-than 7d";
+  nix.settings.auto-optimise-store = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
