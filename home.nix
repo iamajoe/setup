@@ -34,6 +34,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
       IdentityFile ~/.ssh/id_ed25519
       IdentitiesOnly yes
   '';
+  services.ssh-agent.enable = true;
 
   #
   # ─── Shell ────────────────────────────────────────────────────────────────
