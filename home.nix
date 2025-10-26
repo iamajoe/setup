@@ -93,6 +93,17 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     userName  = buildEnv.userFullname;
     userEmail = buildEnv.userEmail;
 
+    # config = {
+    #   name  = buildEnv.userFullname;
+    #   email = buildEnv.userEmail;
+    #   init.defaultBranch = "main";
+    #   core.editor        = "nvim";
+    #   color.ui           = "auto";
+    #   pull.rebase        = false;
+    #   pager.branch       = false;
+    # };
+
+    # TODO: is this working?!
     extraConfig = {
       init.defaultBranch = "main";
       core.editor        = "nvim";
@@ -123,6 +134,9 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   #
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
+  # TODO: niri not working
+  # programs.niri.enable = true;
+
   programs.firefox.enable = true;
 
   programs.alacritty = {
@@ -153,8 +167,25 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     rust-bin.stable.latest.default
     go
     nodejs
+    zig
+    zola
     docker
     lazygit
+
+    ####################
+    # GUI RELATED
+
+    xwayland-satellite
+
+    # TODO: need to config
+    #       use as ref: https://github.com/tonybanters/rofi
+    rofi # rofi-wayland?
+
+    # TODO: need to config
+    #       use as ref: https://github.com/tonybanters/waybar 
+    waybar
+
+    obsidian
 
     # TODO: need to select one. generally, i use noto
     nerd-fonts.noto

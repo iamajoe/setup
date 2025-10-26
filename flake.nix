@@ -2,6 +2,7 @@
   description = "dev_machine";
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.05";
+    # nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,9 +26,25 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # hyprland
+    hyprland = {
+      url = "github:hyprwm/hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    # niri wm
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, hardware, userenv, usersecrets, ... }@inputs:
+  outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
     overlays = [
       inputs.neovim-nightly-overlay.overlays.default
