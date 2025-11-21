@@ -134,8 +134,6 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   #
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
-  # TODO: niri not working
-  # programs.niri.enable = true;
 
   programs.firefox.enable = true;
 
@@ -158,10 +156,12 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   # $ nix search wget
   home.packages = with pkgs; [
     neovim
-    ripgrep
+    ripgrep # Improved Grep
     nixpkgs-fmt
     bat
     tmux
+    htop # Simple Terminal Based System Monitor
+    pkg-config # Wrapper Script For Allowing Packages To Get Info On Others
 
     gcc
     rust-bin.stable.latest.default
@@ -169,23 +169,39 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     nodejs
     zig
     zola
+    jdk # Java Development Kit
     docker
     lazygit
+
+    brightnessctl # For Screen Brightness Control
 
     ####################
     # GUI RELATED
 
+    niri
     xwayland-satellite
+    wl-clipboard          # wayland easy clipboard copy and paste
+    udiskie               # auto disk mounter
+    thunar
 
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/rofi
-    rofi # rofi-wayland?
+    rofi # rofi-wayland? or fuzzel?
 
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/waybar 
     waybar
 
     obsidian
+    gimp # Great Photo Editor
+    hyprpicker # Color Picker
+    libnotify # For Notifications
+    pavucontrol # For Editing Audio Levels & Devices
+    zoom-us # Video Meetings
+    google-chrome # Browser
+
+    unrar # Tool For Handling .rar Files
+    unzip # Tool For Handling .zip Files
 
     # TODO: need to select one. generally, i use noto
     nerd-fonts.noto
