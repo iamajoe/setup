@@ -18,6 +18,7 @@
       "jq",
       "ripgrep",
       "tree",
+      "yazi",
       # TODO: should add these
       # pkgs.watch
       # pkgs.chromium
