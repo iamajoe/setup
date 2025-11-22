@@ -13,12 +13,16 @@
       "bat",
       "xclip",
       "fd-find",
+      "poppler-utils",
       "fzf",
       "htop",
       "jq",
       "ripgrep",
       "tree",
-      "yazi",
+      "yazi", # TODO: should install with --HEAD
+      "zoxide", # TODO: should be installed with rust
+      "rg",
+      "7zip",
       # TODO: should add these
       # pkgs.watch
       # pkgs.chromium
