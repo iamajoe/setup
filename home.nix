@@ -51,35 +51,23 @@ in
         home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
       '';
       nixclean = "nix-collect-garbage -d --delete-older-than 5d";
-
-      ll = "ls -la";
+      nixupdate = "cd ~/nixos_config && nix flake update && cd -";
+      
+      # Better defaults (eza is enabled via programs.eza)
+      ls = "eza";
+      ll = "eza -la";
+      lt = "eza --tree";
+      cat = "bat";
+      find = "fd";
+      
+      # Git shortcuts
+      gs = "git status";
+      gd = "git diff";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline --graph --decorate";
     };
   };
-
-  # programs.fish = {
-  #   enable = false;
-  #   interactiveShellInit = ''
-  #     source "/home/${buildEnv.username}/.config/fish/config_dev.fish"
-  #   '';
-  #
-  #   shellAliases = {
-  #     nixrebuild = ''
-  #       sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
-  #     '';
-  #     hmrebuild = ''
-  #       home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
-  #     '';
-  #     nixclean = "nix-collect-garbage -d --delete-older-than 5d";
-  #
-  #     ll = "ls -la";
-  #   };
-  # };
-  # home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #   mkdir -p "$HOME/.config/fish"
-  #   ${pkgs.curl}/bin/curl -sSL \
-  #     https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
-  #     -o "$HOME/.config/fish/config_dev.fish"
-  # '';
 
   #
   # ─── Terminal software ────────────────────────────────────────────────────────────
@@ -113,6 +101,9 @@ in
       pager.branch = false;
     };
   };
+  
+  # Better git diffs
+  programs.git.delta.enable = true;
 
   # Neovim
   home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
@@ -131,6 +122,15 @@ in
       "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR"
     fi
   '';
+
+  programs.fzf.enable = true; # Fuzzy finder (Ctrl+R for history)
+  programs.bat.enable = true; # Better cat with syntax highlighting
+  programs.eza = {
+    enable = true;
+    icons = "auto";
+    git = true;
+  };
+  programs.zoxide.enable = true; # Smart cd - use 'z <partial-name>' to jump
 
   #
   # ─── GUI ────────────────────────────────────────────────────────────────
@@ -188,9 +188,11 @@ in
     nixpkgs-fmt
 
     ripgrep # improved Grep
-    bat
+    fd      # Better find
+    sd      # Better sed
     tmux
     htop # terminal based system monitor
+    btop    # Beautiful system monitor
     pkg-config # wrapper script for allowing packages to get info on others
 
     gcc
@@ -204,6 +206,10 @@ in
     jdk # java development kit
     docker
     lazygit
+    
+    # JSON/YAML/data tools
+    jq      # JSON processor
+    yq-go   # YAML processor
 
     brightnessctl # screen brightness control
 
@@ -220,10 +226,6 @@ in
     rofi # application launcher
     xclip           # clipboard utilities
     xdotool         # X11 automation for better VM integration
-
-    # TODO: need to config
-    #       use as ref: https://github.com/tonybanters/waybar 
-    # waybar
 
     # Miscellaneous
     obsidian

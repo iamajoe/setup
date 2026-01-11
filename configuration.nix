@@ -182,9 +182,11 @@ in
   system.autoUpgrade.dates = "weekly";
 
   # automatic cleanup
-  nix.gc.automatic = true;
-  nix.gc.dates = "daily";
-  nix.gc.options = "--delete-older-than 7d";
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
   nix.settings.auto-optimise-store = true;
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -196,6 +198,9 @@ in
   # };
 
   services.openssh.enable = true;
+  
+  # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
+  services.fstrim.enable = true; # Automatic SSD TRIM (weekly)
 
   # ─── BLUETOOTH ───────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
