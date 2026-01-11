@@ -134,8 +134,6 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   #
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
-  # TODO: niri not working
-  # programs.niri.enable = true;
 
   programs.firefox.enable = true;
 
@@ -172,18 +170,19 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     docker
     lazygit
 
+    # TODO: still need to add these
+    # syncthing
+
     ####################
     # GUI RELATED
 
-    xwayland-satellite
-
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/rofi
-    rofi # rofi-wayland?
+    # rofi # rofi-wayland?
 
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/waybar 
-    waybar
+    # waybar
 
     obsidian
 

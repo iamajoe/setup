@@ -26,22 +26,6 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # hyprland
-    hyprland = {
-      url = "github:hyprwm/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    # niri wm
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
@@ -103,7 +87,7 @@
                 inherit inputs usersecrets;
                 buildEnv = buildEnv // {
                   system = "aarch64-linux";
-                  nixosConfig = "nixos-conf-aarch64-linux";
+                  nixosConfig = "nixos-conf-aarch64";
                 };
               };
               users.${buildEnv.username} = import ./home.nix;
