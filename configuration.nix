@@ -49,7 +49,7 @@ in
 
     windowManager.qtile = {
       enable = true;
-      package = qtile-flake.packages.${pkgs.system}.default;
+      package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
 
     # Parallels-specific X11 configuration for proper resolution

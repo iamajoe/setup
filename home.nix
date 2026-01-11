@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, usersecrets, buildEnv, lib, ... }:
+{ config, pkgs, pkgs-master, inputs, usersecrets, buildEnv, lib, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 assert buildEnv.userFullname != "" && buildEnv.userFullname != null;
@@ -183,11 +183,10 @@ in
   #
 
   # $ nix search wget
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     home-manager # cli tool for home manager
     nixpkgs-fmt
 
-    neovim-unwrapped
     ripgrep # improved Grep
     bat
     tmux
@@ -243,7 +242,9 @@ in
     nerd-fonts.commit-mono
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
-  ] 
+  ]) 
+  # Neovim from master (for 0.12.0+)
+  ++ [ pkgs-master.neovim-unwrapped ]
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ lib.optionals isX86_64 [
     # GPU & Graphics tools (x86_64-specific)
