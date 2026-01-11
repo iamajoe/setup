@@ -151,8 +151,11 @@ in
       import = [ "/home/${buildEnv.username}/.config/alacritty/alacritty_dev.yml" ];
     };
   };
+  home.file.".config/alacritty/alacritty.toml".force = true;
   home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/alacritty"
+    rm -f $HOME/.config/alacritty/*.backup
+    rm -f $HOME/.config/alacritty/*_dev.toml
     ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
