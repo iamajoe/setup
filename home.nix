@@ -70,7 +70,7 @@ in
   };
   home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/fish"
-    ${pkgs.curl}/bin/curl -fsSL \
+    ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
       -o "$HOME/.config/fish/config_dev.fish"
   '';
@@ -86,10 +86,10 @@ in
   };
   home.activation.getTmuxConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/tmux"
-    ${pkgs.curl}/bin/curl -fsSL \
+    ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/catppucin.theme \
       -o "$HOME/.config/tmux/catppuccin.theme"
-    ${pkgs.curl}/bin/curl -fsSL \
+    ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/main.conf \
       -o "$HOME/.config/tmux/main.conf"
   '';
@@ -144,14 +144,10 @@ in
 
   home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/qtile"
-    ${pkgs.curl}/bin/curl -fsSL \
+    ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile.py \
       -o "$HOME/.config/qtile/config.py"
   '';
-  # xdg.configFile."qtile" = {
-  #   source = "/home/${buildEnv.username}/.config/qtile";
-  #   recursive = true;
-  # };
 
   programs.firefox.enable = true;
 
@@ -163,14 +159,15 @@ in
   };
   home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/alacritty"
-    ${pkgs.curl}/bin/curl -fsSL \
+    ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
   '';
 
   home.activation.getRofiConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/rofi"
-    ${pkgs.curl}/bin/curl -fsSL \
+    rm -f $HOME/.config/rofi/*
+    ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/rofi \
       -o "$HOME/.config/rofi/config.rasi"
   '';
