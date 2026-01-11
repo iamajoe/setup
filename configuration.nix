@@ -4,8 +4,8 @@ assert buildEnv.username != "" && buildEnv.username != null;
 
 let
   # Detect architecture
-  isX86_64 = pkgs.system == "x86_64-linux";
-  isAarch64 = pkgs.system == "aarch64-linux";
+  isX86_64 = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
+  isAarch64 = pkgs.stdenv.hostPlatform.system == "aarch64-linux";
   isParallels = builtins.pathExists /dev/prl_fs;
 in
 {
