@@ -35,12 +35,12 @@ in
     enable = true;
     autoRepeatDelay = 200;
     autoRepeatInterval = 35;
-    
+
     # GPU drivers
     videoDrivers = 
       if isParallels then [ "modesetting" ]
       else lib.optionals isX86_64 [ "nvidia" "amdgpu" "intel" ];
-    
+
     # Configure keymap in X11
     xkb = {
       layout = "us";
@@ -51,7 +51,7 @@ in
       enable = true;
       package = qtile-flake.packages.${pkgs.system}.default;
     };
-    
+
     # Parallels-specific X11 configuration for proper resolution
     resolutions = lib.mkIf isParallels [
       { x = 1920; y = 1080; }
@@ -243,8 +243,17 @@ in
   # ─── Syncthing ────────────────────────────────────────────────────────────────
   services.syncthing = {
     enable = true;
+    user = buildEnv.username;
+    dataDir = "/home/${buildEnv.username}/.local/share/syncthing";
+    configDir = "/home/${buildEnv.username}/.config/syncthing";
     openDefaultPorts = true;
-    extraFlags = ["--no-default-folder"];
+    overrideDevices = true;
+    overrideFolders = true;
+    settings = {
+      gui = {
+        user = buildEnv.username;
+      };
+    };
   };
 
   # ─── Gaming ────────────────────────────────────────────────────────────────
