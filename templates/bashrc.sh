@@ -9,6 +9,21 @@ if [[ $OSTYPE == 'darwin'* ]]; then
 fi
 source $TERMINAL_SOURCE/prompt.sh
 
+#####################################
+# FZF
+
+# fzf key bindings and completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# installed via homebrew
+if [[ $OSTYPE == 'darwin'* ]]; then
+  source "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh"
+  source "$(brew --prefix)/opt/fzf/shell/completion.zsh" 2>/dev/null
+fi
+if [[ $OSTYPE != 'darwin'* ]]; then
+  # TODO: what about linux??
+fi
+
 ##############
 # ALIAS 
 
@@ -63,15 +78,15 @@ fi
 #####################################
 # Node
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # For compilers to find node@23
-if [[ $OSTYPE == 'darwin'* ]]; then
-  export LDFLAGS="-L/opt/homebrew/opt/node@23/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/node@23/include"
-fi
+# if [[ $OSTYPE == 'darwin'* ]]; then
+#   export LDFLAGS="-L/opt/homebrew/opt/node@23/lib"
+#   export CPPFLAGS="-I/opt/homebrew/opt/node@23/include"
+# fi
 
 #####################################
 # Go
