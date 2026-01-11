@@ -204,6 +204,11 @@ in
 
   services.openssh.enable = true;
   
+  # ─── FIREWALL ──────────────────────────────────────────────
+  networking.firewall.allowedTCPPorts = [ 
+    8384 # syncthing web gui
+  ];
+  
   # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
   services.fstrim.enable = true; # Automatic SSD TRIM (weekly)
 
