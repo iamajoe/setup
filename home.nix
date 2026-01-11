@@ -87,13 +87,12 @@ in
         "colorize"
         "aws"
         "tmux"
-        "fast-syntax-highlighting"
       ];
       theme = "robbyrussell";  # or "agnoster", "powerlevel10k/powerlevel10k", etc.
     };
     
     # Fix keyboard bindings for Home, End, Alt+Left/Right
-    initExtra = ''
+    initContent = ''
       # Fix Home/End keys
       bindkey "^[[H" beginning-of-line
       bindkey "^[[F" end-of-line
