@@ -102,8 +102,11 @@ in
     };
   };
   
-  # Better git diffs
-  programs.git.delta.enable = true;
+  # Better git diffs with delta
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
 
   # Neovim
   home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
