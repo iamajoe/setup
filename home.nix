@@ -75,6 +75,47 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     
+    # Enable oh-my-zsh
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ 
+        "git" 
+        "sudo" 
+        "docker" 
+        "kubectl" 
+        "terraform"
+        "colorize"
+        "aws"
+        "tmux"
+        "fast-syntax-highlighting"
+      ];
+      theme = "robbyrussell";  # or "agnoster", "powerlevel10k/powerlevel10k", etc.
+    };
+    
+    # Fix keyboard bindings for Home, End, Alt+Left/Right
+    initExtra = ''
+      # Fix Home/End keys
+      bindkey "^[[H" beginning-of-line
+      bindkey "^[[F" end-of-line
+      bindkey "^[OH" beginning-of-line
+      bindkey "^[OF" end-of-line
+      
+      # Fix Delete key
+      bindkey "^[[3~" delete-char
+      
+      # Alt+Left/Right for word jumping
+      bindkey "^[[1;3C" forward-word
+      bindkey "^[[1;3D" backward-word
+      
+      # Alternative bindings that might work better in some terminals
+      bindkey "^[^[[C" forward-word
+      bindkey "^[^[[D" backward-word
+      
+      # Ctrl+Left/Right for word jumping (alternative)
+      bindkey "^[[1;5C" forward-word
+      bindkey "^[[1;5D" backward-word
+    '';
+    
     shellAliases = {
       nixrebuild = ''
         sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
