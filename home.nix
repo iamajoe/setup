@@ -46,7 +46,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   };
 
   programs.fish = {
-    enable = true;
+    enable = false;
     interactiveShellInit = ''
       source "/home/${buildEnv.username}/.config/fish/config_dev.fish"
     '';
@@ -135,6 +135,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
 
+  xsession.enable = true;
+  xsession.windowManager.qtile.enable = true;
+  xsession.windowManager.qtile.configFile = "/home/${buildEnv.username}/.config/qtile/config.py";
+  home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile/config.py \
+      -o "$HOME/.config/qtile/config.py"
+  '';
+
   programs.firefox.enable = true;
 
   programs.alacritty = {
@@ -168,6 +177,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     gcc
     rust-bin.stable.latest.default
     go
+    python3
     nodejs
     zig
     zola
@@ -191,6 +201,9 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
     glxinfo         # OpenGL info
 
+    # DE / WM
+    qtile
+
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/rofi
     # rofi # rofi-wayland?
@@ -199,6 +212,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     #       use as ref: https://github.com/tonybanters/waybar 
     # waybar
 
+    # Miscellaneous
     obsidian
     gimp # photo editor
     hyprpicker # color picker
