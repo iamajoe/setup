@@ -49,6 +49,10 @@ assert buildEnv.username != "" && buildEnv.username != null;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
+
+  # NOTE: required for zoom for example under aarch64
+  nixpkgs.config.allowUnsupportedSystem = true;
+
   environment.systemPackages = with pkgs; [
     vim
     git

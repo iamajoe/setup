@@ -3,8 +3,8 @@
   inputs = {
     # nixpkgs.url = "nixpkgs/nixos-25.05";
     # nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    # Pinned to avoid tree-sitter breaking changes in early Jan 2026
+    nixpkgs.url = "github:nixos/nixpkgs/c8aa8cc00a5cb57fada0851a038d35c08a36a2bb";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
