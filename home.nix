@@ -168,6 +168,16 @@ in
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
   '';
 
+  programs.rofi = {
+    enable = true;
+  };
+  home.activation.getRofiConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/rofi"
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/rofi \
+      -o "$HOME/.config/rofi/config.rasi"
+  '';
+
   #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   #
@@ -209,9 +219,7 @@ in
     blueman         # bluetooth manager GUI
     gparted         # GUI partition editor
 
-    # TODO: need to config
-    #       use as ref: https://github.com/tonybanters/rofi
-    # rofi # rofi-wayland?
+    rofi # application launcher
 
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/waybar 
