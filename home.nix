@@ -182,6 +182,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     ####################
     # GUI RELATED
 
+    # System GUI tools
+    blueman         # bluetooth manager GUI
+    gparted         # GUI partition editor
+    
+    # GPU & Graphics tools
+    nvtopPackages.full # GPU monitoring for NVIDIA/AMD/Intel
+    vulkan-tools    # vulkaninfo, vkcube (GPU testing)
+    glxinfo         # OpenGL info
+
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/rofi
     # rofi # rofi-wayland?
