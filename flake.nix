@@ -2,8 +2,11 @@
   description = "dev_machine";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
+
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -29,7 +32,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-master, hardware, home-manager, userenv, usersecrets, ... }@inputs:
+  outputs = { self, nixpkgs, neovim-nightly, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
     overlays = [ ];
     buildEnv =
@@ -47,10 +50,6 @@
         specialArgs = { 
           inherit buildEnv; 
           qtile-flake = inputs.qtile-flake;
-          pkgs-master = import nixpkgs-master {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
         };
 
         modules = [ 
@@ -64,10 +63,7 @@
               backupFileExtension = "backup";
               extraSpecialArgs = { 
                 inherit inputs usersecrets;
-                pkgs-master = import nixpkgs-master {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
-                };
+                neovim-pkg = neovim-nightly.packages.x86_64-linux.default;
                 buildEnv = buildEnv // {
                   system = "x86_64-linux";
                   nixosConfig = "nixos-conf-x86_64";
@@ -84,10 +80,6 @@
         specialArgs = { 
           inherit buildEnv; 
           qtile-flake = inputs.qtile-flake;
-          pkgs-master = import nixpkgs-master {
-            system = "aarch64-linux";
-            config.allowUnfree = true;
-          };
         };
 
         modules = [ 
@@ -101,10 +93,7 @@
               backupFileExtension = "backup";
               extraSpecialArgs = { 
                 inherit inputs usersecrets;
-                pkgs-master = import nixpkgs-master {
-                  system = "aarch64-linux";
-                  config.allowUnfree = true;
-                };
+                neovim-pkg = neovim-nightly.packages.aarch64-linux.default;
                 buildEnv = buildEnv // {
                   system = "aarch64-linux";
                   nixosConfig = "nixos-conf-aarch64";

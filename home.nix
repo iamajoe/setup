@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-master, inputs, usersecrets, buildEnv, lib, ... }:
+{ config, pkgs, neovim-pkg, inputs, usersecrets, buildEnv, lib, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 assert buildEnv.userFullname != "" && buildEnv.userFullname != null;
@@ -243,10 +243,10 @@ in
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
   ]) 
-  # Neovim from master (for 0.12.0+)
-  ++ [ pkgs-master.neovim-unwrapped ]
+  # Neovim nightly (0.12.0+)
+  ++ [ neovim-pkg ]
   # x86_64-only packages (GPU tools and packages not available on aarch64)
-  ++ lib.optionals isX86_64 [
+  ++ (with pkgs; lib.optionals isX86_64 [
     # GPU & Graphics tools (x86_64-specific)
     nvtopPackages.full # GPU monitoring for NVIDIA/AMD/Intel
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
@@ -255,7 +255,7 @@ in
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
     google-chrome # browser (may not be available on aarch64)
-  ];
+  ]);
 
   fonts.fontconfig.enable = true;
 }
