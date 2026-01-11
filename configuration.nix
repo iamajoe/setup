@@ -247,13 +247,6 @@ in
     dataDir = "/home/${buildEnv.username}/.local/share/syncthing";
     configDir = "/home/${buildEnv.username}/.config/syncthing";
     openDefaultPorts = true;
-    overrideDevices = true;
-    overrideFolders = true;
-    settings = {
-      gui = {
-        user = buildEnv.username;
-      };
-    };
   };
 
   # ─── Gaming ────────────────────────────────────────────────────────────────
