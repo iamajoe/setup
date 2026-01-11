@@ -135,15 +135,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
 
-  # xsession.enable = true;
-  # TODO: qtile not working on nixos-25.05, needs investigation
-  # xsession.windowManager.qtile.enable = true;
-  # xsession.windowManager.qtile.configFile = "/home/${buildEnv.username}/.config/qtile/config.py";
-  # home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #   ${pkgs.curl}/bin/curl -fsSL \
-  #     https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile/config.py \
-  #     -o "$HOME/.config/qtile/config.py"
-  # '';
+  home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.curl}/bin/curl -fsSL \
+      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile.py \
+      -o "$HOME/.config/qtile/config.py"
+  '';
+  # xdg.configFile."qtile" = {
+  #   source = "/home/${buildEnv.username}/.config/qtile";
+  #   recursive = true;
+  # };
 
   programs.firefox.enable = true;
 

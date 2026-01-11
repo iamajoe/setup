@@ -29,6 +29,7 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
+  # ─── DE / WM ──────────────────────────────────────
   services.xserver = {
     enable = true;
     autoRepeatDelay = 200;
@@ -37,11 +38,14 @@ in
     # GPU drivers - x86_64 only (aarch64 is for debugging on Mac)
     videoDrivers = lib.optionals isX86_64 [ "nvidia" "amdgpu" "intel" ];
     
-    # windowManager.qtile.enable = true;
     # Configure keymap in X11
     xkb = {
       layout = "us";
       variant = "";
+    };
+
+    windowManager.qtile = {
+      enable = true;
     };
   };
   services.displayManager.ly.enable = true;
