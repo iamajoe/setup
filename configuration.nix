@@ -48,7 +48,14 @@ in
       enable = true;
     };
   };
-  services.displayManager.ly.enable = true;
+  
+  services.displayManager = {
+    ly.enable = true;
+    defaultSession = "none+qtile";
+  };
+  
+  # Ensure qtile session file is created
+  services.xserver.displayManager.sessionPackages = [ pkgs.qtile ];
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support - only for x86_64 production systems
