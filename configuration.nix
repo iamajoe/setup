@@ -75,10 +75,10 @@ in
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support - only for x86_64 production systems
-  hardware.graphics = lib.mkIf isX86_64 {
+  hardware.graphics = {
     enable = true;
-    enable32Bit = true; # 32-bit app support
-    extraPackages = with pkgs; [
+    enable32Bit = lib.mkIf isX86_64 true; # 32-bit app support (x86_64 only)
+    extraPackages = lib.mkIf isX86_64 (with pkgs; [
       # Intel
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
@@ -87,7 +87,7 @@ in
       # Note: ROCm packages commented out due to build issues
       # rocmPackages.clr.icd # AMD OpenCL
       # amdvlk # AMD Vulkan
-    ];
+    ]);
   };
 
   # NVIDIA-specific configuration (x86_64 only)
