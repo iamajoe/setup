@@ -211,17 +211,6 @@ in
     openFirewall = true; # for network printer discovery
   };
 
-  # ─── Syncthing ────────────────────────────────────────────────────────────────
-  services.syncthing = {
-    enable = true;
-    openDefaultPorts = true;
-    # settings.gui = {
-      # user = buildEnv.username;
-      # password = "mypassword";
-    # };
-    extraFlags = ["--no-default-folder"];
-  };
-
   # ─── VIRTUALIZATION (optional, but useful) ──────────────────────────
   virtualisation.docker.enable = true;
   # virtualisation.libvirtd.enable = true; # for VMs (QEMU/KVM)
