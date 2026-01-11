@@ -151,7 +151,6 @@ in
       import = [ "/home/${buildEnv.username}/.config/alacritty/alacritty_dev.yml" ];
     };
   };
-  home.file.".config/alacritty/alacritty.toml".force = true;
   home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/alacritty"
     rm -f $HOME/.config/alacritty/*.backup
