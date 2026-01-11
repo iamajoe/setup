@@ -190,10 +190,10 @@ in
   services.syncthing = {
     enable = true;
     openDefaultPorts = true;
-    settings.gui = {
+    # settings.gui = {
       # user = buildEnv.username;
       # password = "mypassword";
-    };
+    # };
     extraFlags = ["--no-default-folder"];
   };
 
@@ -250,6 +250,7 @@ in
     hyprpicker # color picker
     libnotify # notifications
     pavucontrol # editing audio levels & devices
+    sublime-merge # git helper interface
 
     # Fonts
     # TODO: need to select one. generally, i use noto
