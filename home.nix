@@ -194,7 +194,7 @@ in
       # user = buildEnv.username;
       # password = "mypassword";
     # };
-    extraFlags = ["--no-default-folder"];
+    # extraFlags = ["--no-default-folder"];
   };
 
   #
