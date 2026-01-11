@@ -249,7 +249,7 @@ in
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
     google-chrome # browser (may not be available on aarch64)
-  ]
+  ];
 
   fonts.fontconfig.enable = true;
 }
