@@ -6,6 +6,7 @@ let
   # Detect architecture
   isX86_64 = pkgs.system == "x86_64-linux";
   isAarch64 = pkgs.system == "aarch64-linux";
+  isParallels = builtins.pathExists /dev/prl_fs;
 in
 {
   boot.loader.systemd-boot.enable = true;
@@ -35,8 +36,10 @@ in
     autoRepeatDelay = 200;
     autoRepeatInterval = 35;
     
-    # GPU drivers - x86_64 only (aarch64 is for debugging on Mac)
-    videoDrivers = lib.optionals isX86_64 [ "nvidia" "amdgpu" "intel" ];
+    # GPU drivers
+    videoDrivers = 
+      if isParallels then [ "modesetting" ]
+      else lib.optionals isX86_64 [ "nvidia" "amdgpu" "intel" ];
     
     # Configure keymap in X11
     xkb = {
@@ -48,6 +51,13 @@ in
       enable = true;
       package = qtile-flake.packages.${pkgs.system}.default;
     };
+    
+    # Parallels-specific X11 configuration for proper resolution
+    resolutions = lib.mkIf isParallels [
+      { x = 1920; y = 1080; }
+      { x = 2560; y = 1440; }
+      { x = 3840; y = 2160; }
+    ];
   };
   
   services.displayManager = {
@@ -156,6 +166,9 @@ in
     lshw
     pciutils # lspci
     usbutils # lsusb
+  ] ++ lib.optionals isParallels [
+    # Parallels Tools & utilities
+    xorg.xf86videomodesetting  # modesetting driver
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -201,6 +214,24 @@ in
   # ─── VIRTUALIZATION (optional, but useful) ──────────────────────────
   virtualisation.docker.enable = true;
   # virtualisation.libvirtd.enable = true; # for VMs (QEMU/KVM)
+  
+  # ─── PARALLELS GUEST CONFIGURATION ──────────────────────────────────
+  hardware.parallels = lib.mkIf isParallels {
+    enable = true;
+    autoMountShares = true;
+  };
+  
+  # Enable clipboard sharing service for Parallels
+  systemd.services.parallels-clipboard = lib.mkIf isParallels {
+    description = "Parallels Clipboard Service";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do sleep 3600; done'";
+      Restart = "on-failure";
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

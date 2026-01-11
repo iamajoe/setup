@@ -9,6 +9,7 @@ let
   # Detect architecture
   isX86_64 = pkgs.system == "x86_64-linux";
   isAarch64 = pkgs.system == "aarch64-linux";
+  isParallels = builtins.pathExists /dev/prl_fs;
 in
 {
   home.username = buildEnv.username;
@@ -214,6 +215,8 @@ in
     gparted         # GUI partition editor
 
     rofi # application launcher
+    xclip           # clipboard utilities
+    xdotool         # X11 automation for better VM integration
 
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/waybar 
@@ -246,7 +249,7 @@ in
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
     google-chrome # browser (may not be available on aarch64)
-  ];
+  ]
 
   fonts.fontconfig.enable = true;
 }
