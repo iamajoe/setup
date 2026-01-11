@@ -156,10 +156,12 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   # $ nix search wget
   home.packages = with pkgs; [
     neovim
-    ripgrep
+    ripgrep # Improved Grep
     nixpkgs-fmt
     bat
     tmux
+    htop # Simple Terminal Based System Monitor
+    pkg-config # Wrapper Script For Allowing Packages To Get Info On Others
 
     gcc
     rust-bin.stable.latest.default
@@ -167,11 +169,13 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     nodejs
     zig
     zola
+    jdk # Java Development Kit
     docker
     lazygit
 
     # TODO: still need to add these
     # syncthing
+    brightnessctl # For Screen Brightness Control
 
     ####################
     # GUI RELATED
@@ -185,6 +189,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     # waybar
 
     obsidian
+    gimp # Great Photo Editor
+    hyprpicker # Color Picker
+    libnotify # For Notifications
+    pavucontrol # For Editing Audio Levels & Devices
+    zoom-us # Video Meetings
+    google-chrome # Browser
+
+    unrar # Tool For Handling .rar Files
+    unzip # Tool For Handling .zip Files
 
     # TODO: need to select one. generally, i use noto
     nerd-fonts.noto
