@@ -184,20 +184,6 @@ in
   '';
 
   #
-  # ─── Syncthing ────────────────────────────────────────────────────────────────
-  #
-
-  services.syncthing = {
-    enable = true;
-    openDefaultPorts = true;
-    # settings.gui = {
-      # user = buildEnv.username;
-      # password = "mypassword";
-    # };
-    # extraFlags = ["--no-default-folder"];
-  };
-
-  #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   #
 
