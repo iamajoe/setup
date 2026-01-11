@@ -135,14 +135,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
 
-  xsession.enable = true;
-  xsession.windowManager.qtile.enable = true;
-  xsession.windowManager.qtile.configFile = "/home/${buildEnv.username}/.config/qtile/config.py";
-  home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.curl}/bin/curl -fsSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile/config.py \
-      -o "$HOME/.config/qtile/config.py"
-  '';
+  # xsession.enable = true;
+  # TODO: qtile not working on nixos-25.05, needs investigation
+  # xsession.windowManager.qtile.enable = true;
+  # xsession.windowManager.qtile.configFile = "/home/${buildEnv.username}/.config/qtile/config.py";
+  # home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  #   ${pkgs.curl}/bin/curl -fsSL \
+  #     https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile/config.py \
+  #     -o "$HOME/.config/qtile/config.py"
+  # '';
 
   programs.firefox.enable = true;
 
@@ -202,7 +203,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     glxinfo         # OpenGL info
 
     # DE / WM
-    qtile
+    # qtile # TODO: re-enable when home-manager supports it in nixos-25.05
 
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/rofi
