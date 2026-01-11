@@ -240,13 +240,15 @@ in
 
     # Fonts
     # TODO: need to select one. generally, i use noto
-    nerd-fonts.noto
-    nerd-fonts.tinos
-    nerd-fonts.code-new-roman
-    nerd-fonts.inconsolata
-    nerd-fonts.commit-mono
-    nerd-fonts.zed-mono
-    nerd-fonts.jetbrains-mono
+    (nerdfonts.override { fonts = [ 
+      "Noto"
+      "Tinos" 
+      "CodeNewRoman"
+      "Inconsolata"
+      "CommitMono"
+      "ZedMono"
+      "JetBrainsMono"
+    ]; })
   ] 
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ lib.optionals isX86_64 [
