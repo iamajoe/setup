@@ -5,6 +5,11 @@ assert buildEnv.userFullname != "" && buildEnv.userFullname != null;
 assert buildEnv.userEmail != "" && buildEnv.userEmail != null;
 assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
 
+let
+  # Detect architecture
+  isX86_64 = pkgs.system == "x86_64-linux";
+  isAarch64 = pkgs.system == "aarch64-linux";
+in
 {
   home.username = buildEnv.username;
   home.homeDirectory = "/home/${buildEnv.username}";
@@ -64,6 +69,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     };
   };
   home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/fish"
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
       -o "$HOME/.config/fish/config_dev.fish"
@@ -79,6 +85,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     '';
   };
   home.activation.getTmuxConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/tmux"
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/catppucin.theme \
       -o "$HOME/.config/tmux/catppuccin.theme"
@@ -136,6 +143,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
   #
 
   home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/qtile"
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile.py \
       -o "$HOME/.config/qtile/config.py"
@@ -154,6 +162,7 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     };
   };
   home.activation.getAlacrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/alacritty"
     ${pkgs.curl}/bin/curl -fsSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
@@ -190,17 +199,15 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     # syncthing
     brightnessctl # screen brightness control
 
+    unrar # tool for handling .rar files
+    unzip # tool for handling .zip files
+
     ####################
     # GUI RELATED
 
     # System GUI tools
     blueman         # bluetooth manager GUI
     gparted         # GUI partition editor
-    
-    # GPU & Graphics tools
-    nvtopPackages.full # GPU monitoring for NVIDIA/AMD/Intel
-    vulkan-tools    # vulkaninfo, vkcube (GPU testing)
-    glxinfo         # OpenGL info
 
     # DE / WM
     # qtile # TODO: re-enable when home-manager supports it in nixos-25.05
@@ -219,12 +226,8 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     hyprpicker # color picker
     libnotify # notifications
     pavucontrol # editing audio levels & devices
-    zoom-us # video meetings
-    google-chrome # browser
 
-    unrar # tool for handling .rar files
-    unzip # tool for handling .zip files
-
+    # Fonts
     # TODO: need to select one. generally, i use noto
     nerd-fonts.noto
     nerd-fonts.tinos
@@ -233,6 +236,17 @@ assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
     nerd-fonts.commit-mono
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
+  ] 
+  # x86_64-only packages (GPU tools and packages not available on aarch64)
+  ++ lib.optionals isX86_64 [
+    # GPU & Graphics tools (x86_64-specific)
+    nvtopPackages.full # GPU monitoring for NVIDIA/AMD/Intel
+    vulkan-tools    # vulkaninfo, vkcube (GPU testing)
+    glxinfo         # OpenGL info
+
+    # Applications with limited aarch64 support
+    zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
+    google-chrome # browser (may not be available on aarch64)
   ];
 
   fonts.fontconfig.enable = true;
