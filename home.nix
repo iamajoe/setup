@@ -184,6 +184,20 @@ in
   '';
 
   #
+  # ─── Syncthing ────────────────────────────────────────────────────────────────
+  #
+
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
+    settings.gui = {
+      # user = buildEnv.username;
+      # password = "mypassword";
+    };
+    extraFlags = ["--no-default-folder"];
+  };
+
+  #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   #
 
@@ -210,8 +224,6 @@ in
     docker
     lazygit
 
-    # TODO: still need to add these
-    # syncthing
     brightnessctl # screen brightness control
 
     unrar # tool for handling .rar files
