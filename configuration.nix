@@ -225,17 +225,9 @@ in
     autoMountShares = true;
   };
   
-  # Make Parallels printing service non-critical (won't block boot if it fails)
-  systemd.services.prlshprint = lib.mkIf isParallels {
-    unitConfig = {
-      # Don't fail if this service fails (printing is optional)
-      # This won't block system activation
-    };
-    serviceConfig = {
-      Restart = "no";  # Don't restart on failure
-    };
-    wantedBy = lib.mkForce [ ];  # Don't start automatically
-    # To manually enable printing later: systemctl start prlshprint
+  # Disable Parallels printing service 
+  systemd.services.prlshprint = {
+    enable = false;
   };
   
   # Enable clipboard sharing service for Parallels (this is important!)
