@@ -34,8 +34,8 @@ in
     autoRepeatDelay = 200;
     autoRepeatInterval = 35;
     
-    # GPU drivers - all major vendors for easy GPU swapping
-    videoDrivers = [ "nvidia" "amdgpu" "intel" ];
+    # GPU drivers - x86_64 only (aarch64 is for debugging on Mac)
+    videoDrivers = lib.optionals isX86_64 [ "nvidia" "amdgpu" "intel" ];
     
     # windowManager.qtile.enable = true;
     # Configure keymap in X11
@@ -46,29 +46,25 @@ in
   };
   services.displayManager.ly.enable = true;
 
-  # ─── GPU DRIVERS ─────────────────────────────────────────────────────
-  # OpenGL/graphics support
-  hardware.graphics = {
+  # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
+  # OpenGL/graphics support - only for x86_64 production systems
+  hardware.graphics = lib.mkIf isX86_64 {
     enable = true;
-    enable32Bit = isX86_64; # Only supported on x86_64
-    extraPackages = with pkgs; 
-      # Common packages (all architectures)
-      [
-        vaapiVdpau
-        libvdpau-va-gl
-      ]
-      # x86_64-specific GPU packages
-      ++ lib.optionals isX86_64 [
-        intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
-        # Note: ROCm packages commented out due to build issues
-        # rocmPackages.clr.icd # AMD OpenCL
-        # amdvlk # AMD Vulkan
-      ];
+    enable32Bit = true; # 32-bit app support
+    extraPackages = with pkgs; [
+      # Intel
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
+      vaapiVdpau
+      libvdpau-va-gl
+      # Note: ROCm packages commented out due to build issues
+      # rocmPackages.clr.icd # AMD OpenCL
+      # amdvlk # AMD Vulkan
+    ];
   };
 
-  # NVIDIA-specific configuration
-  hardware.nvidia = {
+  # NVIDIA-specific configuration (x86_64 only)
+  hardware.nvidia = lib.mkIf isX86_64 {
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
