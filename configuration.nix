@@ -1,4 +1,4 @@
-{ config, pkgs, buildEnv, lib, ... }:
+{ config, pkgs, buildEnv, lib, qtile-flake, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 
@@ -44,7 +44,10 @@ in
       variant = "";
     };
 
-    windowManager.qtile.enable = true;
+    windowManager.qtile = {
+      enable = true;
+      package = qtile-flake.packages.${pkgs.system}.default;
+    };
   };
   
   services.displayManager = {

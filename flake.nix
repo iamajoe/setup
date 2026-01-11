@@ -38,7 +38,6 @@
     overlays = [
       inputs.neovim-nightly-overlay.overlays.default
       inputs.rust-overlay.overlays.default
-      inputs.qtile-flake.overlays.default
     ];
     buildEnv =
       let
@@ -52,7 +51,10 @@
     nixosConfigurations = {
       nixos-conf-x86_64 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit buildEnv; };
+        specialArgs = { 
+          inherit buildEnv; 
+          qtile-flake = inputs.qtile-flake;
+        };
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
@@ -78,7 +80,10 @@
 
       nixos-conf-aarch64 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
-        specialArgs = { inherit buildEnv; };
+        specialArgs = { 
+          inherit buildEnv; 
+          qtile-flake = inputs.qtile-flake;
+        };
 
         modules = [ 
           { nixpkgs.overlays = overlays; }
