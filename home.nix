@@ -238,14 +238,6 @@ in
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
     # cursor # Not in nixpkgs yet - install via their official method
-    
-    # Communication & productivity
-    discord
-    slack
-    # chatgpt desktop app not in nixpkgs - use web or unofficial packages
-    
-    # Database tools
-    mongodb-compass # MongoDB GUI
 
     # Fonts
     # TODO: need to select one. generally, i use noto
@@ -269,6 +261,14 @@ in
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
     google-chrome # browser (may not be available on aarch64)
+    
+    # Communication apps (x86_64 only - no aarch64-linux support)
+    discord
+    slack
+    # chatgpt desktop app not in nixpkgs - use web or unofficial packages
+    
+    # Database tools (x86_64 only - no aarch64-linux support)
+    mongodb-compass # MongoDB GUI
   ]);
 
   fonts.fontconfig.enable = true;
