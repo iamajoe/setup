@@ -74,8 +74,25 @@ in
   };
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
-  # OpenGL/graphics support - only for x86_64 production systems
-  # REMOVED ALL THE CODE!!
+  # OpenGL/graphics support
+  hardware.graphics = lib.mkMerge [
+    {
+      enable = true;
+    }
+    (lib.mkIf isX86_64 {
+      enable32Bit = true; # 32-bit app support (x86_64 only, required for Steam)
+      extraPackages = with pkgs; [
+        # Intel
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
+        vaapiVdpau
+        libvdpau-va-gl
+        # Note: ROCm packages commented out due to build issues
+        # rocmPackages.clr.icd # AMD OpenCL
+        # amdvlk # AMD Vulkan
+      ];
+    })
+  ];
 
   # NVIDIA-specific configuration (x86_64 only)
   hardware.nvidia = lib.mkIf isX86_64 {
@@ -239,7 +256,8 @@ in
   };
 
   # ─── Gaming ────────────────────────────────────────────────────────────────
-  programs.steam = {
+  # Steam is only available on x86_64
+  programs.steam = lib.mkIf isX86_64 {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
