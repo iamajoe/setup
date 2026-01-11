@@ -262,6 +262,11 @@ in
     dataDir = "/home/${buildEnv.username}/.local/share/syncthing";
     configDir = "/home/${buildEnv.username}/.config/syncthing";
     openDefaultPorts = true;
+    settings = {
+      gui = {
+        address = "0.0.0.0:8384"; # Listen on all interfaces (not just localhost)
+      };
+    };
   };
 
   # ─── Gaming ────────────────────────────────────────────────────────────────
