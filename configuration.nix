@@ -1,7 +1,12 @@
-{ config, pkgs, buildEnv, ... }:
+{ config, pkgs, buildEnv, lib, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 
+let
+  # Detect architecture
+  isX86_64 = pkgs.system == "x86_64-linux";
+  isAarch64 = pkgs.system == "aarch64-linux";
+in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -45,7 +50,7 @@ assert buildEnv.username != "" && buildEnv.username != null;
   # OpenGL/graphics support
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # for 32-bit apps/games
+    enable32Bit = isX86_64; # Only supported on x86_64
     extraPackages = with pkgs; [
       # Intel
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
@@ -84,15 +89,16 @@ assert buildEnv.username != "" && buildEnv.username != null;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa.support32Bit = isX86_64; # Only on x86_64
     pulse.enable = true; # PulseAudio compatibility
     jack.enable = true; # JACK compatibility
   };
 
   # ─── HARDWARE & FIRMWARE ─────────────────────────────────────────────
   hardware.enableAllFirmware = true; # enable all firmware (includes non-free)
-  hardware.cpu.amd.updateMicrocode = true; # AMD microcode updates
-  hardware.cpu.intel.updateMicrocode = true; # Intel microcode updates
+  # CPU microcode updates (architecture-specific)
+  hardware.cpu.amd.updateMicrocode = lib.mkIf isX86_64 true;
+  hardware.cpu.intel.updateMicrocode = lib.mkIf isX86_64 true;
 
   # ─── USB & STORAGE ───────────────────────────────────────────────────
   services.udisks2.enable = true; # disk management service
