@@ -209,9 +209,6 @@ in
     blueman         # bluetooth manager GUI
     gparted         # GUI partition editor
 
-    # DE / WM
-    # qtile # TODO: re-enable when home-manager supports it in nixos-25.05
-
     # TODO: need to config
     #       use as ref: https://github.com/tonybanters/rofi
     # rofi # rofi-wayland?

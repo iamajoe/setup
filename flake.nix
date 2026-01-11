@@ -2,10 +2,6 @@
   description = "dev_machine";
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.05";
-    # nixpkgs.url = "nixpkgs/nixos-unstable";
-    # Pinned commit because of issues with zoom and tree sitter
-    # Pinned commit had gcc-prefix and ROCm build issues
-    # nixpkgs.url = "github:nixos/nixpkgs/c8aa8cc00a5cb57fada0851a038d35c08a36a2bb";
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
@@ -26,6 +22,10 @@
       flake = false;
     };
 
+    qtile-flake = {
+      url = "github:qtile/qtile";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -38,6 +38,7 @@
     overlays = [
       inputs.neovim-nightly-overlay.overlays.default
       inputs.rust-overlay.overlays.default
+      inputs.qtile-flake.overlays.default
     ];
     buildEnv =
       let
