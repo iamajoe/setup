@@ -30,6 +30,14 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
+  # ─── FIREWALL ────────────────────────────────────────────────────────
+  networking.firewall = {
+    enable = true;
+    # Syncthing ports
+    allowedTCPPorts = [ 8384 22000 ];
+    allowedUDPPorts = [ 22000 21027 ];
+  };
+
   # ─── DE / WM ──────────────────────────────────────
   services.xserver = {
     enable = true;
@@ -223,7 +231,7 @@ in
   
   # Enable clipboard sharing service for Parallels
   systemd.services.parallels-clipboard = lib.mkIf isParallels {
-    description = "Parallels Clipboard Service";
+    description = "Parallels clipboard service";
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
