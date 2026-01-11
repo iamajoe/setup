@@ -241,6 +241,24 @@ in
     };
   };
 
+  # ─── NEXT CODE IS VERY home.nix
+  # NOTE: we set these here because we don't have all of the operations
+  #       and options within home.nix
+  # ─── Syncthing ────────────────────────────────────────────────────────────────
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
+    extraFlags = ["--no-default-folder"];
+  };
+
+  # ─── Gaming ────────────────────────────────────────────────────────────────
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports for Steam Local Network Game Transfers
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
