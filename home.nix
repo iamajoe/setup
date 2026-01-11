@@ -69,6 +69,43 @@ in
     };
   };
 
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    
+    shellAliases = {
+      nixrebuild = ''
+        sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
+      '';
+      hmrebuild = ''
+        home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
+      '';
+      nixclean = "nix-collect-garbage -d --delete-older-than 5d";
+      nixupdate = "cd ~/nixos_config && nix flake update && cd -";
+      
+      # Better defaults (eza is enabled via programs.eza)
+      ls = "eza";
+      ll = "eza -la";
+      lt = "eza --tree";
+      cat = "bat";
+      find = "fd";
+      
+      # Git shortcuts
+      gs = "git status";
+      gd = "git diff";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline --graph --decorate";
+    };
+    
+    history = {
+      size = 10000;
+      path = "${config.xdg.dataHome}/zsh/history";
+    };
+  };
+
   #
   # ─── Terminal software ────────────────────────────────────────────────────────────
   #

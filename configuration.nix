@@ -102,8 +102,12 @@ in
     description = buildEnv.username;
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" ];
     packages = with pkgs; [];
+    shell = pkgs.zsh;  # Set zsh as default shell
   };
   services.getty.autologinUser = buildEnv.username;
+  
+  # Enable zsh system-wide (required to add zsh to /etc/shells)
+  programs.zsh.enable = true;
 
   # ─── AUDIO ───────────────────────────────────────────────────────────
   # PipeWire (modern audio, replaces PulseAudio + JACK)
