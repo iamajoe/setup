@@ -26,19 +26,11 @@
       url = "github:qtile/qtile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
-    overlays = [
-      inputs.neovim-nightly-overlay.overlays.default
-      inputs.rust-overlay.overlays.default
-    ];
+    overlays = [ ];
     buildEnv =
       let
         raw = builtins.readFile "${userenv}";

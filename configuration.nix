@@ -30,14 +30,6 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  # ─── FIREWALL ────────────────────────────────────────────────────────
-  networking.firewall = {
-    enable = true;
-    # Syncthing ports
-    allowedTCPPorts = [ 8384 22000 ];
-    allowedUDPPorts = [ 22000 21027 ];
-  };
-
   # ─── DE / WM ──────────────────────────────────────
   services.xserver = {
     enable = true;

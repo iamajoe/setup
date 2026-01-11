@@ -21,6 +21,11 @@ in
   #
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
+
+    matchBlocks."*" = {
+      identityFile = "~/.ssh/id_rsa";
+    };
 
     matchBlocks."github.com" = {
       hostname = "github.com";
@@ -98,26 +103,14 @@ in
   programs.git = {
     enable = true;
 
-    userName  = buildEnv.userFullname;
-    userEmail = buildEnv.userEmail;
-
-    # config = {
-    #   name  = buildEnv.userFullname;
-    #   email = buildEnv.userEmail;
-    #   init.defaultBranch = "main";
-    #   core.editor        = "nvim";
-    #   color.ui           = "auto";
-    #   pull.rebase        = false;
-    #   pager.branch       = false;
-    # };
-
-    # TODO: is this working?!
-    extraConfig = {
+    settings = {
+      user.name = buildEnv.userFullname;
+      user.email = buildEnv.userEmail;
       init.defaultBranch = "main";
-      core.editor        = "nvim";
-      color.ui           = "auto";
-      pull.rebase        = false;
-      pager.branch       = false;
+      core.editor = "nvim";
+      color.ui = "auto";
+      pull.rebase = false;
+      pager.branch = false;
     };
   };
 
@@ -200,7 +193,8 @@ in
     pkg-config # wrapper script for allowing packages to get info on others
 
     gcc
-    rust-bin.stable.latest.default
+    rustc
+    cargo
     go
     python3
     nodejs
@@ -240,15 +234,13 @@ in
 
     # Fonts
     # TODO: need to select one. generally, i use noto
-    (nerdfonts.override { fonts = [ 
-      "Noto"
-      "Tinos" 
-      "CodeNewRoman"
-      "Inconsolata"
-      "CommitMono"
-      "ZedMono"
-      "JetBrainsMono"
-    ]; })
+    nerd-fonts.noto
+    nerd-fonts.tinos
+    nerd-fonts.code-new-roman
+    nerd-fonts.inconsolata
+    nerd-fonts.commit-mono
+    nerd-fonts.zed-mono
+    nerd-fonts.jetbrains-mono
   ] 
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ lib.optionals isX86_64 [
