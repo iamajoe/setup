@@ -163,6 +163,16 @@ in
     ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
+    
+    # Check if file uses deprecated 'import' syntax and update to 'general.import'
+    CONFIG_FILE="$HOME/.config/alacritty/alacritty.toml"
+    if [ -f "$CONFIG_FILE" ]; then
+      if ! ${pkgs.gnugrep}/bin/grep -q "general\.import" "$CONFIG_FILE" && \
+         ${pkgs.gnugrep}/bin/grep -q "^import" "$CONFIG_FILE"; then
+        echo "Updating deprecated 'import' to 'general.import' in Alacritty config..."
+        ${pkgs.gnused}/bin/sed -i 's/^import = /general.import = /g' "$CONFIG_FILE"
+      fi
+    fi
   '';
 
   home.activation.getRofiConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
