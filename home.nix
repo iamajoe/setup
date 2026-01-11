@@ -56,30 +56,30 @@ in
     };
   };
 
-  programs.fish = {
-    enable = false;
-    interactiveShellInit = ''
-      source "/home/${buildEnv.username}/.config/fish/config_dev.fish"
-    '';
-
-    shellAliases = {
-      nixrebuild = ''
-        sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
-      '';
-      hmrebuild = ''
-        home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
-      '';
-      nixclean = "nix-collect-garbage -d --delete-older-than 5d";
-
-      ll = "ls -la";
-    };
-  };
-  home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/fish"
-    ${pkgs.curl}/bin/curl -sSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
-      -o "$HOME/.config/fish/config_dev.fish"
-  '';
+  # programs.fish = {
+  #   enable = false;
+  #   interactiveShellInit = ''
+  #     source "/home/${buildEnv.username}/.config/fish/config_dev.fish"
+  #   '';
+  #
+  #   shellAliases = {
+  #     nixrebuild = ''
+  #       sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
+  #     '';
+  #     hmrebuild = ''
+  #       home-manager switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
+  #     '';
+  #     nixclean = "nix-collect-garbage -d --delete-older-than 5d";
+  #
+  #     ll = "ls -la";
+  #   };
+  # };
+  # home.activation.getFishConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  #   mkdir -p "$HOME/.config/fish"
+  #   ${pkgs.curl}/bin/curl -sSL \
+  #     https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/config_fish.fish \
+  #     -o "$HOME/.config/fish/config_dev.fish"
+  # '';
 
   #
   # ─── Terminal software ────────────────────────────────────────────────────────────
@@ -187,7 +187,7 @@ in
     home-manager # cli tool for home manager
     nixpkgs-fmt
 
-    neovim
+    neovim-unwrapped
     ripgrep # improved Grep
     bat
     tmux
