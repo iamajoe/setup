@@ -168,9 +168,6 @@ in
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
   '';
 
-  programs.rofi = {
-    enable = true;
-  };
   home.activation.getRofiConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.config/rofi"
     ${pkgs.curl}/bin/curl -fsSL \
