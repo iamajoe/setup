@@ -51,17 +51,20 @@ in
   hardware.graphics = {
     enable = true;
     enable32Bit = isX86_64; # Only supported on x86_64
-    extraPackages = with pkgs; [
-      # Intel
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
-      vaapiVdpau
-      libvdpau-va-gl
-      
-      # AMD
-      rocmPackages.clr.icd # OpenCL
-      amdvlk # Vulkan
-    ];
+    extraPackages = with pkgs; 
+      # Common packages (all architectures)
+      [
+        vaapiVdpau
+        libvdpau-va-gl
+      ]
+      # x86_64-specific GPU packages
+      ++ lib.optionals isX86_64 [
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
+        # Note: ROCm packages commented out due to build issues
+        # rocmPackages.clr.icd # AMD OpenCL
+        # amdvlk # AMD Vulkan
+      ];
   };
 
   # NVIDIA-specific configuration

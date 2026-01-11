@@ -1,10 +1,10 @@
 {
   description = "dev_machine";
   inputs = {
-    # nixpkgs.url = "nixpkgs/nixos-25.05";
+    nixpkgs.url = "nixpkgs/nixos-25.05";
     # nixpkgs.url = "nixpkgs/nixos-unstable";
-    # Pinned to avoid tree-sitter breaking changes in early Jan 2026
-    nixpkgs.url = "github:nixos/nixpkgs/c8aa8cc00a5cb57fada0851a038d35c08a36a2bb";
+    # Pinned commit had gcc-prefix and ROCm build issues
+    # nixpkgs.url = "github:nixos/nixpkgs/c8aa8cc00a5cb57fada0851a038d35c08a36a2bb";
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
