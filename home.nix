@@ -234,6 +234,18 @@ in
     libnotify # notifications
     pavucontrol # editing audio levels & devices
     sublime-merge # git helper interface
+    
+    # Additional editors (not default, but available when needed)
+    sublime4 # Sublime Text editor
+    # cursor # Not in nixpkgs yet - install via their official method
+    
+    # Communication & productivity
+    discord
+    slack
+    # chatgpt desktop app not in nixpkgs - use web or unofficial packages
+    
+    # Database tools
+    mongodb-compass # MongoDB GUI
 
     # Fonts
     # TODO: need to select one. generally, i use noto
