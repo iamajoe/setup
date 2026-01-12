@@ -191,6 +191,7 @@ in
   home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
     set -eux
 
+    export GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh"
     GIT_BIN=${pkgs.git}/bin/git
     NVIM_DIR="$HOME/.config/nvim"
 
