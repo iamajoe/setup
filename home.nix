@@ -94,7 +94,7 @@ in
       '';
       nixclean = "nix-collect-garbage -d --delete-older-than 5d";
       nixupdate = "cd ~/nixos_config && nix flake update && cd -";
-      
+
       # Better defaults (eza is enabled via programs.eza)
       ls = "eza";
       ll = "eza -la";
@@ -102,7 +102,7 @@ in
       cat = "bat";
       find = "fd";
       vim = "nvim";
-      
+
       # Git shortcuts
       gs = "git status";
       gd = "git diff";
@@ -117,7 +117,7 @@ in
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    
+
     # Enable oh-my-zsh
     oh-my-zsh = {
       enable = true;
@@ -133,7 +133,7 @@ in
       ];
       theme = "robbyrussell";  # or "agnoster", "powerlevel10k/powerlevel10k", etc.
     };
-    
+
     # Fix keyboard bindings for Home, End, Alt+Left/Right
     initContent = ''
       # Fix Home/End keys
@@ -141,23 +141,23 @@ in
       bindkey "^[[F" end-of-line
       bindkey "^[OH" beginning-of-line
       bindkey "^[OF" end-of-line
-      
+
       # Fix Delete key
       bindkey "^[[3~" delete-char
-      
+
       # Alt+Left/Right for word jumping
       bindkey "^[[1;3C" forward-word
       bindkey "^[[1;3D" backward-word
-      
+
       # Alternative bindings that might work better in some terminals
       bindkey "^[^[[C" forward-word
       bindkey "^[^[[D" backward-word
-      
+
       # Ctrl+Left/Right for word jumping (alternative)
       bindkey "^[[1;5C" forward-word
       bindkey "^[[1;5D" backward-word
     '';
-    
+
     shellAliases = {
       nixrebuild = ''
         sudo nixos-rebuild switch --flake "/home/${buildEnv.username}/nixos_config/#${buildEnv.nixosConfig}"
@@ -167,7 +167,7 @@ in
       '';
       nixclean = "nix-collect-garbage -d --delete-older-than 5d";
       nixupdate = "cd ~/nixos_config && nix flake update && cd -";
-      
+
       # Better defaults (eza is enabled via programs.eza)
       ls = "eza";
       ll = "eza -la";
@@ -175,7 +175,7 @@ in
       cat = "bat";
       find = "fd";
       vim = "nvim";
-      
+
       # Git shortcuts
       gs = "git status";
       gd = "git diff";
@@ -183,7 +183,7 @@ in
       gp = "git push";
       gl = "git log --oneline --graph --decorate";
     };
-    
+
     history = {
       size = 10000;
       path = "${config.xdg.dataHome}/zsh/history";
@@ -299,7 +299,7 @@ in
     jdk # java development kit
     docker
     lazygit
-    
+
     # JSON/YAML/data tools
     jq      # JSON processor
     yq-go   # YAML processor
@@ -360,12 +360,12 @@ in
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
     google-chrome # browser (may not be available on aarch64)
-    
+
     # Communication apps (x86_64 only - no aarch64-linux support)
     discord
     slack
     # chatgpt desktop app not in nixpkgs - use web or unofficial packages
-    
+
     # Database tools (x86_64 only - no aarch64-linux support)
     mongodb-compass # MongoDB GUI
   ]);
