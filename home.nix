@@ -352,7 +352,7 @@ in
     
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
-    # cursor # Not in nixpkgs yet - install via their official method
+    code-cursor # Cursor
 
     # Fonts
     # TODO: need to select one. generally, i use noto
