@@ -10,7 +10,7 @@ Nixos setup machine
 In case you want to run under ssh, do this first:
 1. `sudo nano /etc/nixos/configuration.nix`
     - Uncomment `services.openssh.enable = true;`
-2. `ifconfig` (to know the ip to ssh to)
+2. `ip address` (to know the ip to ssh to)
 
 ### Steps
 1. `sudo nano /etc/nixos/configuration.nix`
