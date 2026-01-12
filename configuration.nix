@@ -104,13 +104,13 @@ in
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     
     # Force NVIDIA as primary GPU (you have display connected to NVIDIA)
-    prime = {
-      offload.enable = false;
-      # If you have both Intel and NVIDIA, specify the bus IDs
-      # Run: lspci | grep -E "VGA|3D" to get these
-      intelBusId = "PCI:0:2:0";    # 00:02.0 from your lspci output
-      nvidiaBusId = "PCI:1:0:0";   # 01:00.0 from your lspci output
-    };
+    # prime = {
+    #   offload.enable = false;
+    #   # If you have both Intel and NVIDIA, specify the bus IDs
+    #   # Run: lspci | grep -E "VGA|3D" to get these
+    #   intelBusId = "PCI:0:2:0";    # 00:02.0 from your lspci output
+    #   nvidiaBusId = "PCI:1:0:0";   # 01:00.0 from your lspci output
+    # };
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
