@@ -217,6 +217,21 @@ in
       pager.branch = false;
     };
   };
+
+  programs.htop = {
+    enable = true;
+    settings = {
+      show_cpu_frequency = true;
+      show_cpu_usage = true;
+    };
+  };
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      color_theme = "catppuccin_mocha";
+    };
+  };
   
   # Better git diffs with delta
   programs.delta = {
@@ -278,9 +293,6 @@ in
     ripgrep # improved Grep
     fd      # Better find
     sd      # Better sed
-    tmux
-    htop # terminal based system monitor
-    btop    # Beautiful system monitor
     pkg-config # wrapper script for allowing packages to get info on others
 
     gcc
