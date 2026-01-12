@@ -11,6 +11,14 @@ in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  
+  # Reduce USB error spam on console (hide info/debug messages)
+  boot.consoleLogLevel = 3;
+  
+  # Try to fix USB timeout issues
+  boot.kernelParams = [ 
+    "usbcore.autosuspend=-1"  # Disable USB autosuspend
+  ];
 
   networking.hostName = "nixos-${buildEnv.username}";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
