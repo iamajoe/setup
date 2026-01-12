@@ -362,7 +362,7 @@ in
     adwaita-icon-theme  # Adwaita icons
     adwaita-qt          # Qt5 Adwaita theme
     adwaita-qt6         # Qt6 Adwaita theme
-    qt6ct               # Qt6 configuration tool
+    qt6Packages.qt6ct   # Qt6 configuration tool
 
     # System GUI tools
     blueman         # bluetooth manager GUI
