@@ -85,8 +85,8 @@
         # Search engine configuration
         search = {
           force = true;
-          default = "DuckDuckGo";
-          order = ["DuckDuckGo" "Google"];
+          default = "ddg";
+          order = ["ddg" "google"];
         };
       };
     };
