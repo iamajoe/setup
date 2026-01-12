@@ -1,4 +1,4 @@
-{ config, pkgs, buildEnv, lib, qtile-flake, ... }@inputs:
+{ config, pkgs, buildEnv, lib, qtile-flake, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 
@@ -40,13 +40,8 @@ in
 
   # ─── CLI ───────────────────────────────────────────────────────────
 
-  # Enable zsh system-wide (required to add zsh to /etc/shells)
   programs.zsh.enable = true;
-
-  programs.neovim = {
-    enable = true;
-    package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  };
+  programs.neovim.enable = true;
 
   # ─── DE / WM ──────────────────────────────────────
   services.xserver = {
