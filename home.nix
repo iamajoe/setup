@@ -362,7 +362,6 @@ in
     adwaita-icon-theme  # Adwaita icons
     adwaita-qt          # Qt5 Adwaita theme
     adwaita-qt6         # Qt6 Adwaita theme
-    qt5ct               # Qt5 configuration tool
     qt6ct               # Qt6 configuration tool
 
     # System GUI tools
