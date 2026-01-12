@@ -13,13 +13,13 @@
         offset = "10x50";
         scale = 0;
         notification_limit = 5;
-        
+
         progress_bar = true;
         progress_bar_height = 10;
         progress_bar_frame_width = 1;
         progress_bar_min_width = 150;
         progress_bar_max_width = 300;
-        
+
         indicate_hidden = "yes";
         transparency = 10;
         separator_height = 2;
@@ -31,7 +31,7 @@
         gap_size = 5;
         separator_color = "frame";
         sort = "yes";
-        
+
         font = "Noto Sans 12";
         line_height = 0;
         markup = "full";
@@ -44,26 +44,26 @@
         stack_duplicates = true;
         hide_duplicate_count = false;
         show_indicators = "yes";
-        
+
         icon_position = "left";
         min_icon_size = 32;
         max_icon_size = 128;
-        
+
         sticky_history = "yes";
         history_length = 20;
-        
+
         browser = "${pkgs.firefox}/bin/firefox";
         always_run_script = true;
         title = "Dunst";
         class = "Dunst";
         corner_radius = 10;
         ignore_dbusclose = false;
-        
+
         mouse_left_click = "close_current";
         mouse_middle_click = "do_action, close_current";
         mouse_right_click = "close_all";
       };
-      
+
       # Catppuccin Mocha theme colors
       urgency_low = {
         background = "#1E1E2E";
@@ -71,14 +71,14 @@
         frame_color = "#89B4FA";
         timeout = 5;
       };
-      
+
       urgency_normal = {
         background = "#1E1E2E";
         foreground = "#CDD6F4";
         frame_color = "#89B4FA";
         timeout = 10;
       };
-      
+
       urgency_critical = {
         background = "#1E1E2E";
         foreground = "#CDD6F4";

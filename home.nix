@@ -254,7 +254,7 @@ in
   programs.bat.enable = true; # Better cat with syntax highlighting
   programs.eza = {
     enable = true;
-    icons = "auto";
+    icons = "never";
     git = true;
   };
   programs.zoxide.enable = true; # Smart cd - use 'z <partial-name>' to jump
@@ -263,12 +263,12 @@ in
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
 
-  home.activation.getQtileConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/qtile"
-    ${pkgs.curl}/bin/curl -sSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile.py \
-      -o "$HOME/.config/qtile/config.py"
-  '';
+  # Qtile configuration
+  home.file.".config/qtile/config.py".source = ./qtile/config.py;
+  home.file.".config/qtile/autostart.sh" = {
+    source = ./qtile/autostart.sh;
+    executable = true;
+  };
 
   programs.firefox.enable = true;
 

@@ -59,8 +59,9 @@ in
 
     # Configure keymap in X11
     xkb = {
-      layout = "us";
+      layout = "us,pt";  # Multiple layouts: US English and Portuguese
       variant = "";
+      # options = "grp:alt_shift_toggle";  # Alt+Shift to switch layouts
     };
 
     windowManager.qtile = {
