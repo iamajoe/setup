@@ -17,6 +17,40 @@ in
   home.stateVersion = "25.05";
 
   #
+  # ─── HiDPI Support ────────────────────────────────────────────────────────────────
+  #
+  
+  # X11 DPI settings for HiDPI displays
+  xresources.properties = {
+    "Xft.dpi" = 144;  # Common for 4K displays (change to 192 for higher DPI)
+    "Xcursor.size" = 24;  # Larger cursor
+    "Xft.autohint" = 0;
+    "Xft.lcdfilter" = "lcddefault";
+    "Xft.hintstyle" = "hintfull";
+    "Xft.hinting" = 1;
+    "Xft.antialias" = 1;
+    "Xft.rgba" = "rgb";
+  };
+  
+  # Qt scaling (for Qt apps)
+  home.sessionVariables = {
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_SCALE_FACTOR = "1.5";  # Adjust to 1.5 or 2 based on your preference
+  };
+  
+  # GTK scaling (for GTK apps)
+  gtk = {
+    enable = true;
+    gtk3.extraConfig = {
+      gtk-cursor-theme-size = 24;
+      gtk-xft-dpi = 147456;  # 144 * 1024
+    };
+    gtk4.extraConfig = {
+      gtk-cursor-theme-size = 24;
+    };
+  };
+
+  #
   # ─── SSH ────────────────────────────────────────────────────────────────
   #
   programs.ssh = {

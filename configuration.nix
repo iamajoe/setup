@@ -48,6 +48,9 @@ in
     enable = true;
     autoRepeatDelay = 200;
     autoRepeatInterval = 35;
+    
+    # HiDPI support
+    dpi = 144;  # Set to 144 for 1.5x scaling, 192 for 2x scaling
 
     # GPU drivers
     videoDrivers = 
