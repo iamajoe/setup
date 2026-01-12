@@ -77,7 +77,7 @@ in
         # Intel
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
         intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
-        vaapiVdpau
+        libva-vdpau-driver # VDPAU backend for VA-API (renamed from vaapiVdpau)
         libvdpau-va-gl
         # Note: ROCm packages commented out due to build issues
         # rocmPackages.clr.icd # AMD OpenCL
