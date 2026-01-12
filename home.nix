@@ -331,6 +331,7 @@ in
 
     xclip           # clipboard utilities
     xdotool         # X11 automation for better VM integration
+    flameshot       # screenshot tool
 
     # Miscellaneous
     obsidian
