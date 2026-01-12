@@ -270,9 +270,14 @@ in
     gcc
     rustc
     cargo
+    rust-analyzer
     go
+    gopls
     python3
+    lua-language-server
     nodejs
+    typescript-language-server
+    vscode-eslint-language-server
     zig
     zola
     jdk # java development kit
