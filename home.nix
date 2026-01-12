@@ -46,7 +46,6 @@ in
     QT_SCALE_FACTOR = "1.5";  # Adjust to 1.5 or 2 based on your preference
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
-    QT_STYLE_OVERRIDE = "Adwaita-Dark";
   };
   
   # Qt configuration tool
