@@ -37,6 +37,7 @@ keys = [
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
 
     # Applications
+    Key([mod], "e", lazy.spawn("thunar"), desc="Launch terminal"),
     Key([mod], "t", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "d", lazy.spawn("rofi -show drun -show-icons"), desc="Launch Rofi"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run command"),
