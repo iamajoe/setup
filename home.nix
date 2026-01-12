@@ -18,7 +18,6 @@ in
     ./programs/dunst.nix
     ./programs/picom.nix
     ./programs/firefox.nix
-    ./programs/flameshot.nix
   ];
 
   home.username = buildEnv.username;
