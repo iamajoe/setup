@@ -71,7 +71,21 @@ in
   services.displayManager = {
     ly.enable = true;
     defaultSession = lib.mkForce "qtile";
+    
+    # Session commands - ensure X server starts properly
+    sessionPackages = [ qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default ];
   };
+  
+  # Create a proper qtile desktop entry that works with ly
+  environment.etc."xdg/xsessions/qtile-fixed.desktop".text = ''
+    [Desktop Entry]
+    Name=Qtile (Fixed)
+    Comment=Qtile Window Manager with X11
+    Exec=${pkgs.xorg.xinit}/bin/xinit ${qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/qtile start -- :0 vt$XDG_VTNR
+    Type=Application
+    Keywords=wm;tiling
+    DesktopNames=Qtile
+  '';
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support
@@ -167,6 +181,10 @@ in
     git
     curl
     wget
+    
+    # X11 tools
+    xorg.xinit      # X initialization (startx, xinit)
+    xorg.xauth      # X authority management
     
     # Filesystem utilities (CLI)
     ntfs3g          # NTFS read/write support

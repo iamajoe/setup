@@ -222,6 +222,26 @@ in
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/qtile.py \
       -o "$HOME/.config/qtile/config.py"
   '';
+  
+  # Create xinitrc for manual X11 startup if needed
+  home.file.".xinitrc" = {
+    text = ''
+      #!/bin/sh
+      # Source system profile
+      if [ -f /etc/profile ]; then
+        . /etc/profile
+      fi
+      
+      # Source user profile
+      if [ -f ~/.profile ]; then
+        . ~/.profile
+      fi
+      
+      # Start qtile
+      exec qtile start
+    '';
+    executable = true;
+  };
 
   programs.firefox.enable = true;
 
