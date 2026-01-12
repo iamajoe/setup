@@ -266,15 +266,6 @@ in
     executable = true;
   };
 
-  # Thunar file manager - volume management and custom actions
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-volman           # Automatic management of removable devices
-      thunar-archive-plugin   # Archive support (works with unzip, unrar, etc.)
-    ];
-  };
-
   #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   #
@@ -331,6 +322,10 @@ in
     xclip           # clipboard utilities
     xdotool         # X11 automation for better VM integration
     flameshot       # screenshot tool
+
+    thunar                  # file manager
+    thunar-volman           # Automatic management of removable devices
+    thunar-archive-plugin   # Archive support (works with unzip, unrar, etc.)
 
     # Miscellaneous
     obsidian
