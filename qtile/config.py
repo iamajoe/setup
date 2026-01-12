@@ -218,6 +218,8 @@ def init_top_widget_list():
 # Top bar
 screens = [
     Screen(
+        top=bar.Bar(
+            init_top_widget_list(),
             36,
             background=colors["bg"],
         ),
