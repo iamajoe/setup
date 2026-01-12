@@ -51,6 +51,10 @@ in
   '';
 
   # ─── DE / WM ──────────────────────────────────────
+  # Enable dconf for GTK settings (required for GTK dark mode and theme settings)
+  programs.dconf.enable = true;
+  services.dbus.packages = [ pkgs.dconf ];
+  
   services.xserver = {
     enable = true;
     autoRepeatDelay = 200;
@@ -191,6 +195,10 @@ in
     git
     curl
     wget
+    
+    # GTK/dconf support
+    dconf
+    glib
     
     # Filesystem utilities (CLI)
     ntfs3g          # NTFS read/write support
