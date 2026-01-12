@@ -321,8 +321,6 @@ in
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
   ]) 
-  # Neovim from unstable (if 0.12.0 not available, we'll use nightly differently)
-  ++ [ pkgs.neovim ]
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ (with pkgs; lib.optionals isX86_64 [
     # GPU & Graphics tools (x86_64-specific)
