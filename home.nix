@@ -336,7 +336,7 @@ in
     # GPU & Graphics tools (x86_64-specific)
     nvtopPackages.full # GPU monitoring for NVIDIA/AMD/Intel
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
-    glxinfo         # OpenGL info
+    mesa-demos      # OpenGL info (includes glxinfo, glxgears, etc.)
 
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
