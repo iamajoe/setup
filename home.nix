@@ -198,15 +198,10 @@ in
       source-file /home/${buildEnv.username}/.config/tmux/main.conf
     '';
   };
-  home.activation.getTmuxConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/tmux"
-    ${pkgs.curl}/bin/curl -sSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/catppucin.theme \
-      -o "$HOME/.config/tmux/catppuccin.theme"
-    ${pkgs.curl}/bin/curl -sSL \
-      https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/tmux/main.conf \
-      -o "$HOME/.config/tmux/main.conf"
-  '';
+  
+  # Tmux configuration files
+  home.file.".config/tmux/main.conf".source = ./tmux/main.conf;
+  home.file.".config/tmux/catppuccin.theme".source = ./tmux/catppuccin.theme;
 
   programs.git = {
     enable = true;
