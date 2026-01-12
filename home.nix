@@ -270,6 +270,17 @@ in
   };
   programs.zoxide.enable = true; # Smart cd - use 'z <partial-name>' to jump
 
+  programs.yazi = {
+    enable = true;
+    enableZshIntegration = true; # or Bash/Fish/Nushell
+    settings = {
+      mgr = {
+        show_hidden = false;
+        sort_by = "mtime";
+      };
+    };
+  };
+
   #
   # ─── GUI ────────────────────────────────────────────────────────────────
   #
