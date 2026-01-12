@@ -44,7 +44,6 @@ in
   home.sessionVariables = {
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     QT_SCALE_FACTOR = "1.5";  # Adjust to 1.5 or 2 based on your preference
-    QT_QPA_PLATFORMTHEME = "qt5ct";
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "Adwaita-Dark";
