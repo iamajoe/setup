@@ -47,7 +47,7 @@ in
     # GPU drivers
     videoDrivers = 
       if isParallels then [ "modesetting" ]
-      else lib.optionals isX86_64 [ "nvidia" "amdgpu" "intel" ];
+      else lib.optionals isX86_64 [ "nvidia" ];
 
     # Configure keymap in X11
     xkb = {
@@ -71,21 +71,7 @@ in
   services.displayManager = {
     ly.enable = true;
     defaultSession = lib.mkForce "qtile";
-    
-    # Session commands - ensure X server starts properly
-    sessionPackages = [ qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default ];
   };
-  
-  # Create a proper qtile desktop entry that works with ly
-  environment.etc."xdg/xsessions/qtile-fixed.desktop".text = ''
-    [Desktop Entry]
-    Name=Qtile (Fixed)
-    Comment=Qtile Window Manager with X11
-    Exec=${pkgs.xorg.xinit}/bin/xinit ${qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/qtile start -- :0 vt$XDG_VTNR
-    Type=Application
-    Keywords=wm;tiling
-    DesktopNames=Qtile
-  '';
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support
@@ -116,6 +102,15 @@ in
     open = false; # proprietary driver (set to true for open-source)
     nvidiaSettings = true; # nvidia-settings tool
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+    
+    # Force NVIDIA as primary GPU (you have display connected to NVIDIA)
+    prime = {
+      offload.enable = false;
+      # If you have both Intel and NVIDIA, specify the bus IDs
+      # Run: lspci | grep -E "VGA|3D" to get these
+      intelBusId = "PCI:0:2:0";    # 00:02.0 from your lspci output
+      nvidiaBusId = "PCI:1:0:0";   # 01:00.0 from your lspci output
+    };
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -181,10 +176,6 @@ in
     git
     curl
     wget
-    
-    # X11 tools
-    xorg.xinit      # X initialization (startx, xinit)
-    xorg.xauth      # X authority management
     
     # Filesystem utilities (CLI)
     ntfs3g          # NTFS read/write support
