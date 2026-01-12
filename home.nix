@@ -334,7 +334,6 @@ in
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ (with pkgs; lib.optionals isX86_64 [
     # GPU & Graphics tools (x86_64-specific)
-    nvtopPackages.full # GPU monitoring for NVIDIA/AMD/Intel
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
     mesa-demos      # OpenGL info (includes glxinfo, glxgears, etc.)
 
