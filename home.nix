@@ -348,6 +348,7 @@ in
     sublime-merge # git helper interface
     tidal-hifi # Tidal music streaming desktop app
     vlc # VLC media player
+    stripe-cli
     
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
