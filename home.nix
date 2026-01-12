@@ -277,7 +277,7 @@ in
     lua-language-server
     nodejs
     typescript-language-server
-    vscode-eslint-language-server
+    vscode-langservers-extracted  # includes eslint, html, css, json language servers
     zig
     zola
     jdk # java development kit
