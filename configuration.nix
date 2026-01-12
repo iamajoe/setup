@@ -1,4 +1,4 @@
-{ config, pkgs, buildEnv, lib, qtile-flake, ... }:
+{ config, pkgs, buildEnv, lib, qtile-flake, ... }@inputs:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 
@@ -38,6 +38,16 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
+  # ─── CLI ───────────────────────────────────────────────────────────
+
+  # Enable zsh system-wide (required to add zsh to /etc/shells)
+  programs.zsh.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  };
+
   # ─── DE / WM ──────────────────────────────────────
   services.xserver = {
     enable = true;
@@ -70,8 +80,19 @@ in
   
   services.displayManager = {
     ly.enable = true;
-    defaultSession = lib.mkForce "qtile";
+    defaultSession = "qtile";
+    
+    # ly configuration - save session choice
+    ly.settings = {
+      save = true;               # Save last session/user choice
+      save_file = "/var/cache/ly/save";
+    };
   };
+  
+  # Ensure ly save directory exists
+  systemd.tmpfiles.rules = [
+    "d /var/cache/ly 0755 root root -"
+  ];
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support
@@ -102,15 +123,6 @@ in
     open = false; # proprietary driver (set to true for open-source)
     nvidiaSettings = true; # nvidia-settings tool
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    
-    # Force NVIDIA as primary GPU (you have display connected to NVIDIA)
-    # prime = {
-    #   offload.enable = false;
-    #   # If you have both Intel and NVIDIA, specify the bus IDs
-    #   # Run: lspci | grep -E "VGA|3D" to get these
-    #   intelBusId = "PCI:0:2:0";    # 00:02.0 from your lspci output
-    #   nvidiaBusId = "PCI:1:0:0";   # 01:00.0 from your lspci output
-    # };
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -122,9 +134,6 @@ in
     shell = pkgs.zsh;  # Set zsh as default shell
   };
   services.getty.autologinUser = buildEnv.username;
-  
-  # Enable zsh system-wide (required to add zsh to /etc/shells)
-  programs.zsh.enable = true;
 
   # ─── AUDIO ───────────────────────────────────────────────────────────
   # PipeWire (modern audio, replaces PulseAudio + JACK)

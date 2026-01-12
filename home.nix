@@ -1,4 +1,4 @@
-{ config, pkgs, neovim-pkg, inputs, usersecrets, buildEnv, lib, ... }:
+{ config, pkgs, inputs, usersecrets, buildEnv, lib, ... }:
 
 assert buildEnv.username != "" && buildEnv.username != null;
 assert buildEnv.userFullname != "" && buildEnv.userFullname != null;
@@ -59,6 +59,7 @@ in
       lt = "eza --tree";
       cat = "bat";
       find = "fd";
+      vim = "nvim";
       
       # Git shortcuts
       gs = "git status";
@@ -131,6 +132,7 @@ in
       lt = "eza --tree";
       cat = "bat";
       find = "fd";
+      vim = "nvim";
       
       # Git shortcuts
       gs = "git status";
@@ -238,16 +240,6 @@ in
     ${pkgs.curl}/bin/curl -sSL \
       https://raw.githubusercontent.com/iamajoe/setup/refs/heads/master/templates/alacritty.toml \
       -o "$HOME/.config/alacritty/alacritty_dev.toml"
-    
-    # Check if file uses deprecated 'import' syntax and update to 'general.import'
-    CONFIG_FILE="$HOME/.config/alacritty/alacritty.toml"
-    if [ -f "$CONFIG_FILE" ]; then
-      if ! ${pkgs.gnugrep}/bin/grep -q "general\.import" "$CONFIG_FILE" && \
-         ${pkgs.gnugrep}/bin/grep -q "^import" "$CONFIG_FILE"; then
-        echo "Updating deprecated 'import' to 'general.import' in Alacritty config..."
-        ${pkgs.gnused}/bin/sed -i 's/^import = /general.import = /g' "$CONFIG_FILE"
-      fi
-    fi
   '';
 
   home.activation.getRofiConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -329,8 +321,8 @@ in
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
   ]) 
-  # Neovim nightly (0.12.0+)
-  ++ [ neovim-pkg ]
+  # Neovim from unstable (if 0.12.0 not available, we'll use nightly differently)
+  ++ [ pkgs.neovim ]
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ (with pkgs; lib.optionals isX86_64 [
     # GPU & Graphics tools (x86_64-specific)

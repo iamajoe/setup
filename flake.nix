@@ -4,10 +4,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,11 +26,17 @@
       url = "github:qtile/qtile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+    };
   };
 
-  outputs = { self, nixpkgs, neovim-nightly, hardware, home-manager, userenv, usersecrets, ... }@inputs:
+  outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
-    overlays = [ ];
+    overlays = [
+      inputs.neovim-nightly-overlay.overlays.default
+    ];
     buildEnv =
       let
         raw = builtins.readFile "${userenv}";
@@ -63,7 +65,6 @@
               backupFileExtension = "backup";
               extraSpecialArgs = { 
                 inherit inputs usersecrets;
-                neovim-pkg = neovim-nightly.packages.x86_64-linux.default;
                 buildEnv = buildEnv // {
                   system = "x86_64-linux";
                   nixosConfig = "nixos-conf-x86_64";
@@ -93,7 +94,6 @@
               backupFileExtension = "backup";
               extraSpecialArgs = { 
                 inherit inputs usersecrets;
-                neovim-pkg = neovim-nightly.packages.aarch64-linux.default;
                 buildEnv = buildEnv // {
                   system = "aarch64-linux";
                   nixosConfig = "nixos-conf-aarch64";
