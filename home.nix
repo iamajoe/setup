@@ -31,7 +31,7 @@ in
   # X11 DPI settings for HiDPI displays
   xresources.properties = {
     "Xft.dpi" = 144;  # Common for 4K displays (change to 192 for higher DPI)
-    "Xcursor.size" = 24;  # Larger cursor
+    "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
     "Xft.autohint" = 0;
     "Xft.lcdfilter" = "lcddefault";
     "Xft.hintstyle" = "hintfull";
@@ -40,21 +40,42 @@ in
     "Xft.rgba" = "rgb";
   };
   
-  # Qt scaling (for Qt apps)
+  # Qt scaling and dark mode (for Qt apps)
   home.sessionVariables = {
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     QT_SCALE_FACTOR = "1.5";  # Adjust to 1.5 or 2 based on your preference
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    # Force dark mode for various toolkits
+    GTK_THEME = "Adwaita:dark";
+    QT_STYLE_OVERRIDE = "Adwaita-Dark";
   };
   
-  # GTK scaling (for GTK apps)
+  # Qt configuration tool
+  qt = {
+    enable = true;
+    platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
+  };
+  
+  # GTK scaling and theming (for GTK apps)
   gtk = {
     enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+    };
     gtk3.extraConfig = {
-      gtk-cursor-theme-size = 24;
+      gtk-application-prefer-dark-theme = 1;
+      gtk-cursor-theme-size = 48;  # Doubled for HiDPI
       gtk-xft-dpi = 147456;  # 144 * 1024
     };
     gtk4.extraConfig = {
-      gtk-cursor-theme-size = 24;
+      gtk-application-prefer-dark-theme = 1;
+      gtk-cursor-theme-size = 48;  # Doubled for HiDPI
     };
   };
 
@@ -338,6 +359,14 @@ in
     ####################
     # GUI RELATED
 
+    # GTK/Qt theming for dark mode
+    gnome-themes-extra  # Adwaita dark theme
+    adwaita-icon-theme  # Adwaita icons
+    adwaita-qt          # Qt5 Adwaita theme
+    adwaita-qt6         # Qt6 Adwaita theme
+    qt5ct               # Qt5 configuration tool
+    qt6ct               # Qt6 configuration tool
+
     # System GUI tools
     blueman         # bluetooth manager GUI
     gparted         # GUI partition editor
@@ -360,6 +389,7 @@ in
     tidal-hifi # Tidal music streaming desktop app
     vlc # VLC media player
     stripe-cli
+    rustdesk                # Remote desktop client & server
     
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor

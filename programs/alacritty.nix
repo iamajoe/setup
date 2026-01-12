@@ -119,7 +119,7 @@
       };
 
       terminal.shell = {
-        program = "/bin/zsh";
+        program = "${pkgs.zsh}/bin/zsh";
         args = [ "--login" ];
       };
 

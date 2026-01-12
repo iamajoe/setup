@@ -42,6 +42,13 @@ in
 
   programs.zsh.enable = true;
   programs.neovim.enable = true;
+  
+  # Create /bin/sh and /bin/zsh symlinks for compatibility
+  environment.binsh = "${pkgs.bash}/bin/sh";
+  environment.pathsToLink = [ "/bin" ];
+  system.activationScripts.binzsh = ''
+    ln -sf ${pkgs.zsh}/bin/zsh /bin/zsh || true
+  '';
 
   # ─── DE / WM ──────────────────────────────────────
   services.xserver = {
@@ -236,6 +243,10 @@ in
   # ─── FIREWALL ──────────────────────────────────────────────
   networking.firewall.allowedTCPPorts = [ 
     8384 # syncthing web gui
+    21115 21116 21117 21118 21119 # rustdesk
+  ];
+  networking.firewall.allowedUDPPorts = [
+    21116 # rustdesk
   ];
   
   # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────

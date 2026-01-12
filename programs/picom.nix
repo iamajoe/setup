@@ -6,11 +6,11 @@
     backend = "glx";
     vSync = true;
 
-    fade = true;
+    fade = false;
     fadeSteps = [ 0.03 0.03 ];
     fadeDelta = 10;
 
-    shadow = true;
+    shadow = false;
     shadowOpacity = 0.75;
     shadowOffsets = [ (-15) (-15) ];
     shadowExclude = [
@@ -37,7 +37,7 @@
       # Blur
       blur-method = "dual_kawase";
       blur-strength = 5;
-      blur-background = true;
+      blur-background = false;
       blur-background-exclude = [
         "window_type = 'dock'"
         "window_type = 'desktop'"
