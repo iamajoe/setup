@@ -18,7 +18,7 @@
           "browser.startup.homepage" = "about:home";
           "privacy.trackingprotection.enabled" = true;
           "privacy.trackingprotection.socialtracking.enabled" = true;
-          
+
           # Search engine - DuckDuckGo as default
           "browser.search.defaultenginename" = "DuckDuckGo";
           "browser.urlbar.placeholderName" = "DuckDuckGo";
@@ -82,11 +82,6 @@
           "browser.ctrlTab.recentlyUsedOrder" = false;
         };
 
-        # Extensions can be added here
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          ublock-origin
-        ];
-        
         # Search engine configuration
         search = {
           force = true;
