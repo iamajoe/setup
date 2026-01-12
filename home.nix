@@ -189,20 +189,23 @@ in
 
   # Neovim
   home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    set -eux
+    set -eu
 
-    export GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh"
+    export GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
     GIT_BIN=${pkgs.git}/bin/git
     NVIM_DIR="$HOME/.config/nvim"
 
     if [ -d "$NVIM_DIR/.git" ]; then
       echo "Updating Neovim config..."
       cd "$NVIM_DIR"
-      "$GIT_BIN" fetch origin barebones
-      "$GIT_BIN" reset --hard origin/barebones
+      if "$GIT_BIN" fetch origin barebones 2>/dev/null; then
+        "$GIT_BIN" reset --hard origin/barebones
+      else
+        echo "Warning: Failed to update Neovim config, keeping existing version"
+      fi
     else
       echo "Cloning Neovim config..."
-      "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR"
+      "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR" || echo "Warning: Failed to clone Neovim config"
     fi
   '';
 
