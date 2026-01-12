@@ -17,6 +17,8 @@ in
     ./programs/rofi.nix
     ./programs/dunst.nix
     ./programs/picom.nix
+    ./programs/firefox.nix
+    ./programs/flameshot.nix
   ];
 
   home.username = buildEnv.username;
@@ -265,12 +267,14 @@ in
     executable = true;
   };
 
-  programs.firefox.enable = true;
-
-  # Alacritty configuration is in ./programs/alacritty.nix
-  # Rofi configuration is in ./programs/rofi.nix
-  # Dunst configuration is in ./programs/dunst.nix
-  # Picom configuration is in ./programs/picom.nix
+  # Thunar file manager - volume management and custom actions
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-volman           # Automatic management of removable devices
+      thunar-archive-plugin   # Archive support (works with unzip, unrar, etc.)
+    ];
+  };
 
   #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
@@ -312,8 +316,11 @@ in
 
     brightnessctl # screen brightness control
 
+    # Archive tools (for Thunar archive plugin)
     unrar # tool for handling .rar files
     unzip # tool for handling .zip files
+    p7zip # 7z archive support
+    zip   # create zip files
 
     ####################
     # GUI RELATED
@@ -321,7 +328,6 @@ in
     # System GUI tools
     blueman         # bluetooth manager GUI
     gparted         # GUI partition editor
-    flameshot       # screenshot tool
 
     xclip           # clipboard utilities
     xdotool         # X11 automation for better VM integration
@@ -333,6 +339,8 @@ in
     libnotify # notifications
     pavucontrol # editing audio levels & devices
     sublime-merge # git helper interface
+    tidal-hifi # Tidal music streaming desktop app
+    vlc # VLC media player
     
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor

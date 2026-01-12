@@ -4,9 +4,13 @@ from libqtile.lazy import lazy
 import os
 import subprocess
 
+# It can be a good reference:
+# - https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/qtile/config.py
+
 # Mod key (Mod4 = Super/Windows key)
 mod = "mod4"
 terminal = "alacritty"
+browser = "firefox"
 
 keys = [
     # Switch between windows
@@ -15,41 +19,41 @@ keys = [
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
-    
+
     # Move windows between left/right columns or move up/down in current stack.
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
-    
+
     # Grow windows
     Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
     Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    
+
     # Toggle between split and unsplit sides of stack.
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
-    
+
     # Applications
     Key([mod], "t", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Launch Rofi"),
+    Key([mod], "d", lazy.spawn("rofi -show drun -show-icons"), desc="Launch Rofi"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run command"),
-    Key([mod], "b", lazy.spawn("firefox"), desc="Launch browser"),
-    
+    Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
+
     # Screenshots
     Key([], "Print", lazy.spawn("flameshot gui"), desc="Screenshot with selection"),
     Key([mod], "s", lazy.spawn("flameshot gui"), desc="Screenshot with selection"),
-    
+
     # Toggle between different layouts
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    
+
     # Window controls
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen"),
     Key([mod], "g", lazy.window.toggle_floating(), desc="Toggle floating"),
-    
+
     # Qtile controls
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     # Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -109,11 +113,34 @@ def init_top_widget_list():
         widget.GroupBox(
             active=colors["blue"],
             inactive=colors["gray"],
-            highlight_method="block",
+            highlight_method="line",
             this_current_screen_border=colors["blue"],
             this_screen_border=colors["blue"],
             urgent_border=colors["red"],
             background=colors["bg"],
+        ),
+        widget.TextBox(
+            text = '|',
+            font = "NotoSansM Nerd Font",
+            foreground = colors["gray"],
+            padding = 2,
+            fontsize = 14
+        ),
+        # Setup a launch bar
+        widget.LaunchBar(
+             progs = [("🔥", browser, "Web browser"),
+                      ("🌐", "google-chrome-stable", "Google Chrome"),
+                      ("🚀", terminal, "Terminal"),
+                      ("📁", "thunar", "File manager"),
+                      ("🎸", "tidal-hifi", "Media player"),
+                      ("💬", "discord", "Discord"),
+                      ("💼", "slack", "Slack"),
+                      ("🍃", "mongodb-compass", "MongoDB Compass"),
+                      ("🎮", "steam", "Steam")
+                     ], 
+             fontsize = 12,
+             padding = 5,
+             foreground = colors["blue"],
         ),
         # Command prompt - for running commands directly from the bar
         # widget.Prompt(),

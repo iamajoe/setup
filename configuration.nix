@@ -306,7 +306,14 @@ in
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports for Steam Local Network Game Transfers
+    
+    # Additional gaming features
+    gamescopeSession.enable = true; # GameScope compositor for better gaming performance
+    protontricks.enable = true; # Tools for managing Proton prefixes
   };
+  
+  # Enable gamemode for better game performance
+  programs.gamemode.enable = lib.mkIf isX86_64 true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
