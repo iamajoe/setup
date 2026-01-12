@@ -9,7 +9,6 @@ from libqtile.lazy import lazy
 
 mod = "mod4"  # Super key
 
-
 def pick_terminal() -> str:
     preferred = os.environ.get("TERMINAL")
     for t in (preferred, "alacritty", "kitty", "wezterm", "foot", "xterm"):
@@ -24,7 +23,7 @@ terminal = pick_terminal()
 
 keys = [
     # Apps / qtile
-    Key([mod], "Return", lazy.spawn(terminal), desc="Terminal"),
+    Key([mod], "t", lazy.spawn(terminal), desc="Terminal"),
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Launcher (rofi)"),
     Key([mod, "shift"], "q", lazy.window.kill(), desc="Kill focused"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload config"),
@@ -50,7 +49,7 @@ keys = [
     # Layout / window states
     Key([mod], "Tab", lazy.next_layout(), desc="Next layout"),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Fullscreen"),
-    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating"),
+    Key([mod], "g", lazy.window.toggle_floating(), desc="Toggle floating"),
 ]
 
 # Workspaces
