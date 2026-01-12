@@ -11,7 +11,6 @@
         savePath = "/tmp";
         savePathFixed = false;
         saveAsFileExtension = ".png";
-        uiColor = "${lib.my.colors.lightblue}";
         startupLaunch = false;
         antialiasingPinZoom = true;
         uploadWithoutConfirmation = false;
