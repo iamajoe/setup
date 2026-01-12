@@ -4,3 +4,5 @@ hardware-configuration.nix
 
 .env*.json
 !.env.json.dist
+
+flake.lock
