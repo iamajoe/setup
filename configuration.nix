@@ -63,7 +63,7 @@ in
     autoRepeatInterval = 35;
 
     # HiDPI support
-    dpi = 144;  # Set to 144 for 1.5x scaling, 192 for 2x scaling
+    dpi = 192;  # 2x scaling for HiDPI displays
 
     # GPU drivers
     videoDrivers = 

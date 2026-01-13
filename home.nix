@@ -31,7 +31,7 @@ in
   
   # X11 DPI settings for HiDPI displays
   xresources.properties = {
-    "Xft.dpi" = 144;  # Common for 4K displays (change to 192 for higher DPI)
+    "Xft.dpi" = 192;  # 2x scaling for HiDPI displays
     "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
     "Xft.autohint" = 0;
     "Xft.lcdfilter" = "lcddefault";
@@ -44,7 +44,7 @@ in
   # Qt scaling and dark mode (for Qt apps)
   home.sessionVariables = {
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "1.5";  # Adjust to 1.5 or 2 based on your preference
+    QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
   };
@@ -70,7 +70,7 @@ in
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
       gtk-cursor-theme-size = 48;  # Doubled for HiDPI
-      gtk-xft-dpi = 147456;  # 144 * 1024
+      gtk-xft-dpi = 196608;  # 192 * 1024
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
