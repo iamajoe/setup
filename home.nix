@@ -357,6 +357,8 @@ in
     ####################
     # GUI RELATED
 
+    qtile-extras
+
     # GTK/Qt theming for dark mode
     gnome-themes-extra  # Adwaita dark theme
     adwaita-icon-theme  # Adwaita icons
