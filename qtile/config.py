@@ -111,8 +111,8 @@ layouts = [
 
 widget_defaults = dict(
     font="NotoSansM Nerd Font",
-    fontsize=20,  # Increased for HiDPI
-    padding=6,    # Increased for HiDPI
+    fontsize=24,  # Increased for HiDPI
+    padding=8,    # Increased for HiDPI
     foreground=colors["fg"],
 )
 
@@ -147,8 +147,8 @@ def init_top_widget_list():
                       ("󰆼", "mongodb-compass", "MongoDB Compass"),
                       ("󰓓", "steam", "Steam")
                      ], 
-             fontsize = 20,
-             padding = 5,
+             fontsize = 24,
+             padding = 8,
              foreground = colors["blue"],
              # Tooltip configuration
              tooltip_delay = 0.5,  # Show tooltip after 0.5 seconds
@@ -159,7 +159,7 @@ def init_top_widget_list():
         # Task list - shows all open windows with icons to help with positioning
         widget.TaskList(
             highlight_method="block",
-            icon_size=18,
+            icon_size=22,
             max_title_width=200,
             border=colors["blue"],
             borderwidth=2,
@@ -187,7 +187,7 @@ def init_top_widget_list():
         # New version with automatic layout-specific icons:
         widget_extras.CurrentLayoutIcon(
             foreground=colors["magenta"],
-            scale=0.7,
+            scale=0.9,
             padding=8,
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
@@ -222,13 +222,13 @@ def init_top_widget_list():
         # ),
         # New version (qtile-extras StatusNotifier with filtering):
         widget_extras.StatusNotifier(
-            icon_size=24,  # Larger icons for HiDPI
+            icon_size=28,  # Larger icons for HiDPI
             padding=8,
             # Filter out blueman-applet since we have dedicated Bluetooth widget
             # Also commonly filter: nm-applet (if using dedicated network widget)
             icon_theme="Adwaita",
             menu_font="NotoSansM Nerd Font",
-            menu_fontsize=14,
+            menu_fontsize=16,
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
         # Media player - displays currently playing music/video via MPRIS
@@ -332,7 +332,7 @@ screens = [
     Screen(
         top=bar.Bar(
             init_top_widget_list(),
-            36,
+            48,
             background=colors["bg"],
         ),
     ),
