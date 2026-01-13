@@ -372,6 +372,8 @@ in
     xclip           # clipboard utilities
     xdotool         # X11 automation for better VM integration
     flameshot       # screenshot tool
+    clipmenu        # Clipboard manager with rofi integration
+    clipnotify      # Clipboard change notifications
 
     thunar                  # file manager
     thunar-volman           # Automatic management of removable devices
@@ -383,6 +385,8 @@ in
     hyprpicker # color picker
     libnotify # notifications
     pavucontrol # editing audio levels & devices
+    pamixer # CLI audio mixer for PipeWire/PulseAudio
+    playerctl # CLI media player controller (MPRIS)
     sublime-merge # git helper interface
     tidal-hifi # Tidal music streaming desktop app
     vlc # VLC media player

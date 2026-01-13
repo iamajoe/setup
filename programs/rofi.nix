@@ -1,18 +1,128 @@
 { config, pkgs, ... }:
 
 {
+  # Custom Rofi helper scripts
+  home.packages = with pkgs; [
+    # Web search script
+    (pkgs.writeShellScriptBin "rofi-web-search" ''
+      #!/usr/bin/env bash
+      
+      # Prompt for search query
+      query=$(echo "" | rofi -dmenu -p "  Search")
+      
+      if [ -n "$query" ]; then
+        # URL encode the query
+        encoded=$(echo "$query" | sed 's/ /+/g')
+        
+        # Show search options (DuckDuckGo first as default)
+        option=$(echo -e "DuckDuckGo\nGoogle\nWikipedia\nYouTube\nGitHub\nRust Docs\nCrates.io\nNPM\nReddit\nGoogle Translate\nGoogle Maps\nAmazon" | rofi -dmenu -p "󰍉 Search Engine")
+        
+        case "$option" in
+          "DuckDuckGo")
+            firefox "https://duckduckgo.com/?q=$encoded"
+            ;;
+          "Google")
+            firefox "https://www.google.com/search?q=$encoded"
+            ;;
+          "Wikipedia")
+            firefox "https://en.wikipedia.org/wiki/Special:Search?search=$encoded"
+            ;;
+          "YouTube")
+            firefox "https://www.youtube.com/results?search_query=$encoded"
+            ;;
+          "GitHub")
+            firefox "https://github.com/search?q=$encoded"
+            ;;
+          "Rust Docs")
+            firefox "https://docs.rs/releases/search?query=$encoded"
+            ;;
+          "Crates.io")
+            firefox "https://crates.io/search?q=$encoded"
+            ;;
+          "NPM")
+            firefox "https://www.npmjs.com/search?q=$encoded"
+            ;;
+          "Reddit")
+            firefox "https://www.reddit.com/search/?q=$encoded"
+            ;;
+          "Google Translate")
+            firefox "https://translate.google.com/?sl=auto&tl=en&text=$encoded"
+            ;;
+          "Google Maps")
+            firefox "https://www.google.com/maps/search/$encoded"
+            ;;
+          "Amazon")
+            firefox "https://www.amazon.es/s?k=$encoded"
+            ;;
+        esac
+      fi
+    '')
+    
+    # Quick notes script
+    (pkgs.writeShellScriptBin "rofi-quick-notes" ''
+      #!/usr/bin/env bash
+      
+      NOTES_DIR="$HOME/.local/share/quick-notes"
+      mkdir -p "$NOTES_DIR"
+      
+      # Show options
+      option=$(echo -e "📝 New Note\n📋 View Notes\n🔍 Search Notes" | rofi -dmenu -p " Notes")
+      
+      case "$option" in
+        "📝 New Note")
+          title=$(echo "" | rofi -dmenu -p "Note Title")
+          if [ -n "$title" ]; then
+            note=$(echo "" | rofi -dmenu -p "Note Content")
+            if [ -n "$note" ]; then
+              timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+              echo "[$timestamp] $title" >> "$NOTES_DIR/notes.txt"
+              echo "$note" >> "$NOTES_DIR/notes.txt"
+              echo "" >> "$NOTES_DIR/notes.txt"
+              rofi -e "Note saved!"
+            fi
+          fi
+          ;;
+        "📋 View Notes")
+          if [ -f "$NOTES_DIR/notes.txt" ]; then
+            alacritty -e less "$NOTES_DIR/notes.txt"
+          else
+            rofi -e "No notes found"
+          fi
+          ;;
+        "🔍 Search Notes")
+          if [ -f "$NOTES_DIR/notes.txt" ]; then
+            query=$(echo "" | rofi -dmenu -p "Search")
+            if [ -n "$query" ]; then
+              result=$(grep -i "$query" "$NOTES_DIR/notes.txt")
+              if [ -n "$result" ]; then
+                echo "$result" | rofi -dmenu -p "Results"
+              else
+                rofi -e "No results found"
+              fi
+            fi
+          else
+            rofi -e "No notes found"
+          fi
+          ;;
+      esac
+    '')
+  ];
+
   programs.rofi = {
     enable = true;
     terminal = "${pkgs.alacritty}/bin/alacritty";
     extraConfig = {
       modi = "run,drun,window";
       icon-theme = "Oranchelo";
-      show-icons = false;
+      show-icons = true;
       drun-display-format = "{icon} {name}";
+      window-format = "{w} {c} {t}";
       location = 0;
       disable-history = false;
       hide-scrollbar = true;
-      display-drun = "";
+      display-drun = "  ";
+      display-window = "  ";
+      display-run = "  ";
       dpi = 220;
     };
     theme = let inherit (config.lib.formats.rasi) mkLiteral; in {
@@ -36,9 +146,10 @@
       };
 
       window = {
-        height = mkLiteral "360px";
+        height = mkLiteral "500px";
         border = mkLiteral "3px";
         border-color = mkLiteral "@border-col";
+        border-radius = mkLiteral "8px";
         background-color = mkLiteral "@bg-col";
       };
 
@@ -77,8 +188,8 @@
         border = mkLiteral "0px 0px 0px";
         padding = mkLiteral "6px 0px 0px";
         margin = mkLiteral "10px 0px 0px 20px";
-        columns = 2;
-        lines = 5;
+        columns = 1;
+        lines = 8;
         background-color = mkLiteral "@bg-col";
       };
 
@@ -89,7 +200,8 @@
       };
 
       element-icon = {
-        size = mkLiteral "25px";
+        size = mkLiteral "32px";
+        margin = mkLiteral "0px 10px 0px 0px";
       };
 
       "element selected" = {

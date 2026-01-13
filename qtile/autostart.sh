@@ -20,10 +20,13 @@ export QT_STYLE_OVERRIDE=Adwaita-Dark
 # Network manager applet
 # nm-applet &
 
-# Bluetooth manager
-blueman-applet &
+# Bluetooth manager (commented out - using qtile-extras Bluetooth widget instead)
+# blueman-applet &
+
+# Clipboard manager daemon
+clipmenud &
 
 # Remote desktop
-rustdesk --silent &
+# rustdesk --silent &
 
 # Add any other startup applications here

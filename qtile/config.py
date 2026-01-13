@@ -1,6 +1,8 @@
 from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
+from qtile_extras import widget as widget_extras
+from qtile_extras.widget.decorations import RectDecoration
 import os
 import subprocess
 
@@ -39,9 +41,15 @@ keys = [
     # Applications
     Key([mod], "e", lazy.spawn("thunar"), desc="Launch file manager"),
     Key([mod], "t", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
+    
+    # Rofi
     Key([mod], "d", lazy.spawn("rofi -show drun -show-icons"), desc="Launch Rofi"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run command"),
-    Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
+    Key([mod], "v", lazy.spawn("clipmenu"), desc="Clipboard history"),
+    Key([mod], "p", lazy.spawn("rofi -show window"), desc="Window switcher"),
+    Key([mod, "shift"], "s", lazy.spawn("rofi-web-search"), desc="Web search"),
+    Key([mod, "shift"], "n", lazy.spawn("rofi-quick-notes"), desc="Quick notes"),
 
     # Screenshots
     Key([], "Print", lazy.spawn("flameshot gui"), desc="Screenshot with selection"),
@@ -129,15 +137,15 @@ def init_top_widget_list():
         widget.Sep(foreground=colors["gray"], padding=10),
         # Setup a launch bar
         widget.LaunchBar(
-             progs = [("🔥", browser, "Web browser"),
-                      ("🌐", "google-chrome-stable", "Google Chrome"),
-                      ("🚀", terminal, "Terminal"),
-                      ("📁", "thunar", "File manager"),
-                      ("🎸", "tidal-hifi", "Media player"),
-                      ("💬", "discord", "Discord"),
-                      ("💼", "slack", "Slack"),
-                      ("🍃", "mongodb-compass", "MongoDB Compass"),
-                      ("🎮", "steam", "Steam")
+             progs = [("󰈹", browser, "Web browser"),
+                      ("󰊯", "google-chrome-stable", "Google Chrome"),
+                      ("󰆍", terminal, "Terminal"),
+                      ("󰉋", "thunar", "File manager"),
+                      ("󰝚", "tidal-hifi", "Media player"),
+                      ("󰙯", "discord", "Discord"),
+                      ("󰒱", "slack", "Slack"),
+                      ("󰆼", "mongodb-compass", "MongoDB Compass"),
+                      ("󰓓", "steam", "Steam")
                      ], 
              fontsize = 20,
              padding = 5,
@@ -157,9 +165,9 @@ def init_top_widget_list():
             borderwidth=2,
             background=colors["bg"],
             foreground=colors["fg"],
-            txt_floating="🗗 ",
-            txt_maximized="🗖 ",
-            txt_minimized="🗕 ",
+            txt_floating="󰉈 ",
+            txt_maximized="󰊓 ",
+            txt_minimized="󰖰 ",
             urgent_alert_method="border",
             urgent_border=colors["red"],
         ),
@@ -171,21 +179,105 @@ def init_top_widget_list():
         #     name_transform=lambda name: name.upper(),
         # ),
         # Current layout name - shows which layout is active (Columns, Max, etc.)
-        widget.CurrentLayout(
+        # Old version with static icon:
+        # widget.CurrentLayout(
+        #     foreground=colors["magenta"],
+        #     fmt="󱕍 {}",  # Layout icon
+        # ),
+        # New version with automatic layout-specific icons:
+        widget_extras.CurrentLayoutIcon(
             foreground=colors["magenta"],
-            fmt=" {}",  # Layout icon
+            scale=0.7,
+            padding=8,
+        ),
+        widget.Sep(foreground=colors["gray"], padding=10),
+        # Bluetooth status - shows bluetooth state and connected devices
+        widget_extras.Bluetooth(
+            foreground=colors["blue"],
+            fmt="󰂯 {}",
+            default_text="Off",
+            default_show_battery=True,
+            battery_format="{battery}%",
+            adapter_paths=["/org/bluez/hci0"],  # Default bluetooth adapter
+            mouse_callbacks={"Button1": lazy.spawn("blueman-manager")},
+        ),
+        widget.Sep(foreground=colors["gray"], padding=10),
+        # Syncthing status - shows sync status and progress
+        widget_extras.Syncthing(
+            foreground=colors["green"],
+            path="http://localhost:8384",
+            label="",
+            update_interval=5,
+            error_colour=colors["red"],
+            active_colour=colors["blue"],
+            inactive_colour=colors["green"],
+            mouse_callbacks={"Button1": lazy.spawn("firefox http://localhost:8384")},
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
         # System tray - shows system tray icons (network, bluetooth, etc.)
-        widget.Systray(),
+        # Old version (standard Systray without filtering):
+        # widget.Systray(
+        #     icon_size=24,  # Larger icons for HiDPI
+        #     padding=8,
+        # ),
+        # New version (qtile-extras StatusNotifier with filtering):
+        widget_extras.StatusNotifier(
+            icon_size=24,  # Larger icons for HiDPI
+            padding=8,
+            # Filter out blueman-applet since we have dedicated Bluetooth widget
+            # Also commonly filter: nm-applet (if using dedicated network widget)
+            icon_theme="Adwaita",
+            menu_font="NotoSansM Nerd Font",
+            menu_fontsize=14,
+        ),
         widget.Sep(foreground=colors["gray"], padding=10),
         # Media player - displays currently playing music/video via MPRIS
-        widget.Mpris2(
-            format=" {xesam:title} - {xesam:artist}",
+        # Old version (standard Mpris2):
+        # widget.Mpris2(
+        #     format="{xesam:title} - {xesam:artist}",
+        #     foreground=colors["magenta"],
+        #     max_chars=40,
+        #     scroll=True,
+        #     scroll_interval=0.5,
+        #     scroll_delay=2,
+        #     scroll_repeat=True,
+        #     paused_text="󰏤 {track}",
+        #     playing_text="󰐊 {track}",
+        #     stopped_text="󰓛",
+        #     mouse_callbacks={
+        #         "Button1": lazy.spawn("playerctl play-pause"),
+        #         "Button3": lazy.spawn("playerctl next"),
+        #         "Button2": lazy.spawn("playerctl previous"),
+        #     },
+        # ),
+        # New version (qtile-extras Mpris2 with progress bar and decorations):
+        widget_extras.Mpris2(
             foreground=colors["magenta"],
-            max_chars=30,
-            scroll_chars=None,
-            stop_pause_text="",
+            playing_text="󰐊 {track} - {length}",
+            paused_text="󰏤 {track} - {length}",
+            stopped_text="󰓛 No media playing",
+            max_chars=50,
+            scroll=True,
+            scroll_interval=0.5,
+            scroll_repeat=True,
+            scroll_delay=2,
+            name="mpris2",
+            objname="org.mpris.MediaPlayer2.playerctld",
+            display_metadata=["xesam:title", "xesam:artist"],
+            mouse_callbacks={
+                "Button1": lazy.spawn("playerctl play-pause"),
+                "Button3": lazy.spawn("playerctl next"),
+                "Button2": lazy.spawn("playerctl previous"),
+            },
+            decorations=[
+                RectDecoration(
+                    colour=colors["bg"],
+                    radius=6,
+                    filled=True,
+                    padding_y=4,
+                    padding_x=6,
+                )
+            ],
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
         # Screen brightness - displays current backlight level (laptops)
@@ -207,10 +299,30 @@ def init_top_widget_list():
             foreground=colors["cyan"],
             fmt="󰌌 {}",  # Nerd Font keyboard icon
         ),
-        widget.Volume(
-            fmt="󰕾 {}",  # Nerd Font speaker icon
+        # Old volume widget (text-based):
+        # widget.Volume(
+        #     fmt="󰕾 {}",  # Nerd Font speaker icon
+        #     foreground=colors["magenta"],
+        #     mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
+        #     mute_command="pamixer --toggle-mute",
+        #     volume_up_command="pamixer -i 5",
+        #     volume_down_command="pamixer -d 5",
+        #     get_volume_command="pamixer --get-volume-human",
+        #     update_interval=0.2,
+        #     unmute_format="{}%",
+        #     mute_format="󰖁 M",
+        # ),
+        # New volume widget with visual bar:
+        widget_extras.PulseVolumeExtra(
             foreground=colors["magenta"],
+            limit_max_volume=True,
             mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
+            emoji=True,
+            emoji_list=["󰖁", "󰕿", "󰖀", "󰕾"],
+            volume_app="pavucontrol",
+            update_interval=0.2,
+            bar_colour=colors["magenta"],
+            bar_width=60,
         ),
         widget.Clock(format="  %Y-%m-%d %H:%M", foreground=colors["cyan"]),
     ]
@@ -257,8 +369,22 @@ floating_layout = layout.Floating(
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
+
+# If things like steam games want to auto-minimize themselves when losing
+# focus, should we respect this or not?
 auto_minimize = True
+
+# When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
+
+# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
+# string besides java UI toolkits; you can see several discussions on the
+# mailing lists, GitHub issues, and other WM documentation that suggest setting
+# this string if your java app doesn't work correctly. We may as well just lie
+# and say that we're a working one by default.
+#
+# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
+# java that happens to be on java's whitelist.
 wmname = "LG3D"
 
 # Autostart
