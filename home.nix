@@ -410,6 +410,7 @@ in
 
     # Applications with limited aarch64 support
     zoom-us # video meetings (needs allowUnsupportedSystem on aarch64)
+    # TODO: try this out on aarch64, we want it
     google-chrome # browser (may not be available on aarch64)
 
     # Communication apps (x86_64 only - no aarch64-linux support)
@@ -418,6 +419,7 @@ in
     # chatgpt desktop app not in nixpkgs - use web or unofficial packages
 
     # Database tools (x86_64 only - no aarch64-linux support)
+    # TODO: try this out on aarch64, we want it
     mongodb-compass # MongoDB GUI
   ]);
 

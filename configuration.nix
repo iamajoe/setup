@@ -200,11 +200,11 @@ in
     git
     curl
     wget
-    
+
     # GTK/dconf support
     dconf
     glib
-    
+
     # Filesystem utilities (CLI)
     ntfs3g          # NTFS read/write support
     exfatprogs      # exFAT utilities (mkfs, fsck)
@@ -214,12 +214,12 @@ in
     xfsprogs        # XFS utilities
     f2fs-tools      # F2FS utilities
     parted          # CLI partition editor
-    
+
     # Disk management & monitoring (CLI)
     smartmontools   # S.M.A.R.T. monitoring for drives
     hdparm          # Hard disk parameters
     sdparm          # SCSI/SATA disk parameters
-    
+
     # Hardware info (CLI)
     lshw
     pciutils # lspci
@@ -286,18 +286,18 @@ in
   # ─── VIRTUALIZATION (optional, but useful) ──────────────────────────
   virtualisation.docker.enable = true;
   # virtualisation.libvirtd.enable = true; # for VMs (QEMU/KVM)
-  
+
   # ─── PARALLELS GUEST CONFIGURATION ──────────────────────────────────
   hardware.parallels = lib.mkIf isParallels {
     enable = true;
     autoMountShares = true;
   };
-  
+
   # Disable Parallels printing service 
   systemd.services.prlshprint = {
     enable = false;
   };
-  
+
   # Enable clipboard sharing service for Parallels (this is important!)
   systemd.services.parallels-clipboard = lib.mkIf isParallels {
     description = "Parallels clipboard service";
