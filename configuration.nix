@@ -54,12 +54,15 @@ in
   # Enable dconf for GTK settings (required for GTK dark mode and theme settings)
   programs.dconf.enable = true;
   services.dbus.packages = [ pkgs.dconf ];
-  
+
+  services.libinput.enable = true; # required by calibre
+  gnome.gnome-keyring.enable = true;
+
   services.xserver = {
     enable = true;
     autoRepeatDelay = 200;
     autoRepeatInterval = 35;
-    
+
     # HiDPI support
     dpi = 144;  # Set to 144 for 1.5x scaling, 192 for 2x scaling
 
@@ -78,6 +81,9 @@ in
     windowManager.qtile = {
       enable = true;
       package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      extraPackages = python3Packages: with python3Packages; [
+        qtile-extras
+      ];
     };
 
     # Parallels-specific X11 configuration for proper resolution
@@ -87,18 +93,18 @@ in
       { x = 3840; y = 2160; }
     ];
   };
-  
+
   services.displayManager = {
     ly.enable = true;
     defaultSession = "qtile";
-    
+
     # ly configuration - save session choice
     ly.settings = {
       save = true;               # Save last session/user choice
       save_file = "/var/cache/ly/save";
     };
   };
-  
+
   # Ensure ly save directory exists
   systemd.tmpfiles.rules = [
     "d /var/cache/ly 0755 root root -"
