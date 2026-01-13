@@ -24,6 +24,7 @@ export QT_STYLE_OVERRIDE=Adwaita-Dark
 blueman-applet &
 
 # Remote desktop
+~/.local/bin/rustdesk-setup.sh
 rustdesk --silent &
 
 # Add any other startup applications here

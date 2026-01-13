@@ -18,6 +18,7 @@ in
     ./programs/dunst.nix
     ./programs/picom.nix
     ./programs/firefox.nix
+    ./programs/rustdesk.nix
   ];
 
   home.username = buildEnv.username;
@@ -128,6 +129,9 @@ in
       gc = "git commit";
       gp = "git push";
       gl = "git log --oneline --graph --decorate";
+      
+      # RustDesk local network info
+      rustdesk-ip = "rustdesk-local-info";
     };
   };
 
@@ -201,6 +205,9 @@ in
       gc = "git commit";
       gp = "git push";
       gl = "git log --oneline --graph --decorate";
+      
+      # RustDesk local network info
+      rustdesk-ip = "rustdesk-local-info";
     };
 
     history = {
@@ -386,7 +393,6 @@ in
     tidal-hifi # Tidal music streaming desktop app
     vlc # VLC media player
     stripe-cli
-    rustdesk                # Remote desktop client & server
     
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
