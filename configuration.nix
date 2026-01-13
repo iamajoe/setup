@@ -56,7 +56,6 @@ in
   services.dbus.packages = [ pkgs.dconf ];
 
   services.libinput.enable = true; # required by calibre
-  gnome.gnome-keyring.enable = true;
 
   services.xserver = {
     enable = true;
