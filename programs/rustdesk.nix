@@ -19,19 +19,4 @@
       echo ""
     '')
   ];
-
-  # RustDesk configuration - Local network only
-  home.file.".config/rustdesk/RustDesk2.toml".text = ''
-    [options]
-    # Disable relay servers to force local network only
-    relay-server = ""
-    rendezvous-server = ""
-
-    # Enable direct IP connections (local network)
-    direct-server = true
-    direct-access-port = "21118"
-
-    # Network settings
-    allow-lan-discovery = true
-  '';
 }
