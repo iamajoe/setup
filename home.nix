@@ -129,9 +129,6 @@ in
       gc = "git commit";
       gp = "git push";
       gl = "git log --oneline --graph --decorate";
-      
-      # RustDesk local network info
-      rustdesk-ip = "rustdesk-local-info";
     };
   };
 
@@ -205,9 +202,6 @@ in
       gc = "git commit";
       gp = "git push";
       gl = "git log --oneline --graph --decorate";
-      
-      # RustDesk local network info
-      rustdesk-ip = "rustdesk-local-info";
     };
 
     history = {
