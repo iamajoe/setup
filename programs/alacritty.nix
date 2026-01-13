@@ -103,7 +103,7 @@
       };
 
       font = {
-        size = 15;
+        size = 12;
         offset = {
           x = 1;
           y = 2;
