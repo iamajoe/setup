@@ -7,8 +7,8 @@
       global = {
         monitor = 0;
         follow = "mouse";
-        width = 300;
-        height = 300;
+        width = 350;
+        height = 150;
         origin = "top-right";
         offset = "10x50";
         scale = 0;
@@ -27,12 +27,12 @@
         horizontal_padding = 8;
         text_icon_padding = 0;
         frame_width = 2;
-        frame_color = "#89B4FA";
+        frame_color = "#6C7086";
         gap_size = 5;
         separator_color = "frame";
         sort = "yes";
 
-        font = "Noto Sans 12";
+        font = "Noto Sans 11";
         line_height = 0;
         markup = "full";
         format = "<b>%s</b>\\n%b";
@@ -46,8 +46,8 @@
         show_indicators = "yes";
 
         icon_position = "left";
-        min_icon_size = 32;
-        max_icon_size = 128;
+        min_icon_size = 24;
+        max_icon_size = 64;
 
         sticky_history = "yes";
         history_length = 20;
@@ -56,7 +56,7 @@
         always_run_script = true;
         title = "Dunst";
         class = "Dunst";
-        corner_radius = 10;
+        corner_radius = 5;
         ignore_dbusclose = false;
 
         mouse_left_click = "close_current";
@@ -68,14 +68,14 @@
       urgency_low = {
         background = "#1E1E2E";
         foreground = "#CDD6F4";
-        frame_color = "#89B4FA";
+        frame_color = "#6C7086";
         timeout = 5;
       };
 
       urgency_normal = {
         background = "#1E1E2E";
         foreground = "#CDD6F4";
-        frame_color = "#89B4FA";
+        frame_color = "#6C7086";
         timeout = 10;
       };
 
