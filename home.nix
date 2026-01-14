@@ -30,22 +30,22 @@ in
   #
   
   # X11 DPI settings for HiDPI displays
-  xresources.properties = {
-    "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
-    # "Xft.dpi" = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
-    "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
-    "Xft.autohint" = 0;
-    "Xft.lcdfilter" = "lcddefault";
-    "Xft.hintstyle" = "hintfull";
-    "Xft.hinting" = 1;
-    "Xft.antialias" = 1;
-    "Xft.rgba" = "rgb";
-  };
+  # xresources.properties = {
+  #   "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
+  #   # "Xft.dpi" = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
+  #   "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
+  #   "Xft.autohint" = 0;
+  #   "Xft.lcdfilter" = "lcddefault";
+  #   "Xft.hintstyle" = "hintfull";
+  #   "Xft.hinting" = 1;
+  #   "Xft.antialias" = 1;
+  #   "Xft.rgba" = "rgb";
+  # };
   
   # Qt scaling and dark mode (for Qt apps)
   home.sessionVariables = {
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "1";  # Normal scaling for Qt apps (Flameshot dialogs)
+    # QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    # QT_SCALE_FACTOR = "1";  # Normal scaling for Qt apps (Flameshot dialogs)
     # QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays (commented out - was too large for some apps)
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
@@ -71,14 +71,14 @@ in
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
-      gtk-cursor-theme-size = 48;  # Doubled for HiDPI
-      gtk-xft-dpi = 9834;  # 96 * 1024
+      # gtk-cursor-theme-size = 48;  # Doubled for HiDPI
+      # gtk-xft-dpi = 9834;  # 96 * 1024
       # gtk-xft-dpi = 147456;  # 144 * 1024
       # gtk-xft-dpi = 196608;  # 192 * 1024 (commented out - was too large)
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
-      gtk-cursor-theme-size = 48;  # Doubled for HiDPI
+      # gtk-cursor-theme-size = 48;  # Doubled for HiDPI
     };
   };
 

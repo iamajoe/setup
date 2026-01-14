@@ -163,10 +163,11 @@ def init_top_widget_list():
         ),
         # Task list - shows all open windows with icons to help with positioning
         widget.TaskList(
-            highlight_method="line",
-            icon_size=22,
+            highlight_method="block",
+            icon_size=18,
+            font_size=10,
             max_title_width=200,
-            border=colors["blue"],
+            border=colors["gray"],
             borderwidth=2,
             background=colors["bg"],
             foreground=colors["fg"],
@@ -180,14 +181,13 @@ def init_top_widget_list():
         # Automatic layout-specific icons:
         widget_extras.CurrentLayoutIcon(
             use_mask=True,  # Allows the icon to be colored
-            foreground=colors["magenta"],
+            foreground=colors["cyan"],
             scale=0.5,
             padding=8,
         ),
         # Bluetooth status - shows bluetooth state and connected devices
         widget_extras.Bluetooth(
             foreground=colors["blue"],
-            # TODO: possibly set out the icon here
             fmt="{}",  # Just show the content without duplicating icons
             default_text="󰂲",  # Bluetooth off icon (crossed out)
             symbol="󰂯 ",  # Bluetooth on icon (shown before device name)
@@ -213,7 +213,6 @@ def init_top_widget_list():
             menu_fontsize=16,
         ),
         # Media player - displays currently playing music/video via MPRIS
-        # Old version (standard Mpris2):
         widget.Mpris2(
             format="{xesam:title} - {xesam:artist}",
             foreground=colors["magenta"],
@@ -231,50 +230,23 @@ def init_top_widget_list():
                 "Button2": lazy.spawn("playerctl previous"),
             },
         ),
-        # Screen brightness - displays current backlight level (laptops)
-        # widget.Backlight(
-        #     format=" {percent:2.0%}",
-        #     foreground=colors["yellow"],
-        #     backlight_name="intel_backlight",
-        # ),
-        # Battery level - shows battery percentage and charging status (laptops)
-        # widget.Battery(
-        #     format="{char} {percent:2.0%}",
-        #     charge_char="",
-        #     discharge_char="",
-        #     full_char="",
-        #     foreground=colors["green"],
-        # ),
-        widget.KeyboardLayout(
-            configured_keyboards=["us", "pt"],
-            foreground=colors["cyan"],
-            fmt="󰌌 {}",
-        ),
-        # Old volume widget (text-based):
         widget.Volume(
-            fmt="VOL 󰕾 {}",
-            # foreground=colors["magenta"],
-            # mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
+            fmt="󰕾 {}",
+            foreground=colors["yellow"],
+            mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
+            mouse_callbacks={"Button3": lazy.spawn("pamixer --toggle-mute")},
             # mute_command="pamixer --toggle-mute",
             # volume_up_command="pamixer -i 5",
             # volume_down_command="pamixer -d 5",
             # get_volume_command="pamixer --get-volume-human",
             # update_interval=0.2,
             # unmute_format="{}%",
-            # mute_format="󰖁",
+            mute_format="󰖁",
         ),
-        widget.Sep(foreground=colors["red"], padding=10),
-        # New volume widget with visual bar (requires additional setup):
-        widget_extras.PulseVolumeExtra(
-        #     foreground=colors["magenta"],
-        #     limit_max_volume=True,
-        #     mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
-        #     emoji=True,
-        #     emoji_list=["󰖁", "󰕿", "󰖀", "󰕾"],
-        #     volume_app="pavucontrol",
-        #     update_interval=0.2,
-        #     bar_colour=colors["magenta"],
-        #     bar_width=60,
+        widget.KeyboardLayout(
+            configured_keyboards=["us", "pt"],
+            foreground=colors["cyan"],
+            fmt="󰌌 {}",
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
         widget.Clock(format="  %Y-%m-%d %H:%M", foreground=colors["gray"]),

@@ -84,7 +84,6 @@ in
       package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
-        pulsectl-asyncio  # For qtile-extras PulseVolume widget
       ];
     };
 
