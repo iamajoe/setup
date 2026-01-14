@@ -137,7 +137,7 @@ def init_top_widget_list():
             background=colors["bg"],
             disable_drag=True,
             use_mouse_wheel=False,
-            block_highlight_text_color=colors["bg"],  # Dark text on yellow background
+            block_highlight_text_color=colors["white"],  # Dark text on yellow background
             rounded=False,
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
