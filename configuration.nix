@@ -85,6 +85,7 @@ in
         qtile-extras
         requests  # For qtile-extras Syncthing widget
         psutil    # For qtile system monitoring widgets
+        pulsectl-asyncio  # For qtile-extras PulseVolume widget
       ];
     };
 

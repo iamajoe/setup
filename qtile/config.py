@@ -78,7 +78,7 @@ keys = [
     Key([mod], "e", lazy.spawn("thunar"), desc="Launch file manager"),
     Key([mod], "t", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
-    
+
     # Rofi
     Key([mod], "d", lazy.spawn("rofi -show drun -show-icons"), desc="Launch Rofi"),
     Key([mod], "r", lazy.spawn("rofi -show run"), desc="Run command"),
@@ -317,7 +317,7 @@ def init_top_widget_list():
             # mute_format="󰖁",
         ),
         # New volume widget with visual bar (requires additional setup):
-        # widget_extras.PulseVolumeExtra(
+        widget_extras.PulseVolumeExtra(
         #     foreground=colors["magenta"],
         #     limit_max_volume=True,
         #     mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
@@ -327,7 +327,7 @@ def init_top_widget_list():
         #     update_interval=0.2,
         #     bar_colour=colors["magenta"],
         #     bar_width=60,
-        # ),
+        ),
         widget.Sep(foreground=colors["gray"], padding=10),
         widget.Clock(format="  %Y-%m-%d %H:%M", foreground=colors["gray"]),
     ]
