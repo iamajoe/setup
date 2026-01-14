@@ -233,8 +233,10 @@ def init_top_widget_list():
         widget.Volume(
             fmt="󰕾 {}",
             foreground=colors["yellow"],
-            mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
-            mouse_callbacks={"Button3": lazy.spawn("pamixer --toggle-mute")},
+            mouse_callbacks={
+                "Button1": lazy.spawn("pavucontrol"),
+                "Button3": lazy.spawn("pamixer --toggle-mute"),
+            },
             # mute_command="pamixer --toggle-mute",
             # volume_up_command="pamixer -i 5",
             # volume_down_command="pamixer -d 5",
