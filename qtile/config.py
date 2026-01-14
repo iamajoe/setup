@@ -116,8 +116,8 @@ mouse = [
 ########################
 widget_defaults = dict(
     font="NotoSansM Nerd Font",
-    fontsize=24,
-    padding=8,
+    fontsize=20,
+    padding=12,
     foreground=colors["fg"],
 )
 
@@ -231,7 +231,7 @@ def init_top_widget_list():
             },
         ),
         widget.Volume(
-            fmt="󰕾 {}",
+            fmt="{}",
             foreground=colors["yellow"],
             mouse_callbacks={
                 "Button1": lazy.spawn("pavucontrol"),
@@ -242,7 +242,7 @@ def init_top_widget_list():
             # volume_down_command="pamixer -d 5",
             # get_volume_command="pamixer --get-volume-human",
             # update_interval=0.2,
-            # unmute_format="{}%",
+            unmute_format="󰕾 {}%",
             mute_format="󰖁",
         ),
         widget.KeyboardLayout(
