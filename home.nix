@@ -44,7 +44,8 @@ in
   # Qt scaling and dark mode (for Qt apps)
   home.sessionVariables = {
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays
+    QT_SCALE_FACTOR = "1";  # Normal scaling for Qt apps (Flameshot dialogs)
+    # QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays (commented out - was too large for some apps)
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
   };
@@ -333,6 +334,8 @@ in
     go
     gopls
     python3
+    python3Packages.requests  # For qtile-extras Syncthing widget
+    python3Packages.psutil    # For qtile system monitoring widgets
     lua-language-server
     nodejs
     typescript-language-server

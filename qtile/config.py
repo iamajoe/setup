@@ -14,6 +14,42 @@ mod = "mod4"
 terminal = "alacritty"
 browser = "firefox"
 
+########################
+# THEME / COLORS
+########################
+# Catppuccin Mocha colors
+colors = {
+    "bg": "#1e1e2e",
+    "fg": "#cdd6f4",
+    "blue": "#89b4fa",
+    "red": "#f38ba8",
+    "green": "#a6e3a1",
+    "yellow": "#f9e2af",
+    "magenta": "#f5c2e7",
+    "cyan": "#94e2d5",
+    "gray": "#6c7086",
+
+    "white": "#ffffff",
+}
+
+########################
+# WORKSPACES/GROUPS
+########################
+# groups = [Group(i) for i in "123456789"]
+groups = [Group(i) for i in "12345"]
+
+for i in groups:
+    keys.extend([
+        # Switch to workspace
+        Key([mod], i.name, lazy.group[i.name].toscreen(), desc=f"Switch to group {i.name}"),
+        # Move window to workspace
+        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
+    ])
+
+
+########################
+# KEYBOARD SHORTCUTS / MOUSE
+########################
 keys = [
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -68,47 +104,16 @@ keys = [
     # Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 ]
 
-# Workspaces/Groups
-# groups = [Group(i) for i in "123456789"]
-groups = [Group(i) for i in "12345"]
-
-for i in groups:
-    keys.extend([
-        # Switch to workspace
-        Key([mod], i.name, lazy.group[i.name].toscreen(), desc=f"Switch to group {i.name}"),
-        # Move window to workspace
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
-    ])
-
-# Catppuccin Mocha colors
-colors = {
-    "bg": "#1e1e2e",
-    "fg": "#cdd6f4",
-    "blue": "#89b4fa",
-    "red": "#f38ba8",
-    "green": "#a6e3a1",
-    "yellow": "#f9e2af",
-    "magenta": "#f5c2e7",
-    "cyan": "#94e2d5",
-    "gray": "#6c7086",
-}
-
-# Layouts
-layouts = [
-    layout.Columns(
-        border_focus=colors["blue"],
-        border_normal=colors["gray"],
-        border_width=2,
-        margin=8,
-    ),
-    layout.Max(),
-    layout.Floating(
-        border_focus=colors["blue"],
-        border_normal=colors["gray"],
-        border_width=2,
-    ),
+# Drag floating layouts.
+mouse = [
+    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
+########################
+# TOP BAR
+########################
 widget_defaults = dict(
     font="NotoSansM Nerd Font",
     fontsize=24,  # Increased for HiDPI
@@ -121,7 +126,7 @@ def init_top_widget_list():
     return [
         # Workspace/group indicator - shows workspaces 1-9 and highlights active one
         widget.GroupBox(
-            active=colors["blue"],
+            active=colors["yellow"],
             inactive=colors["gray"],
             highlight_method="line",
             this_current_screen_border=colors["blue"],
@@ -149,27 +154,27 @@ def init_top_widget_list():
                      ], 
              fontsize = 24,
              padding = 8,
-             foreground = colors["blue"],
+             foreground = colors["white"],
              # Tooltip configuration
              tooltip_delay = 0.5,  # Show tooltip after 0.5 seconds
              tooltip_background = colors["bg"],
              tooltip_foreground = colors["fg"],
         ),
-        widget.Sep(foreground=colors["gray"], padding=10),
         # Task list - shows all open windows with icons to help with positioning
         widget.TaskList(
-            highlight_method="block",
+            highlight_method="line",
             icon_size=22,
             max_title_width=200,
             border=colors["blue"],
             borderwidth=2,
             background=colors["bg"],
             foreground=colors["fg"],
-            txt_floating="󰉈 ",
-            txt_maximized="󰊓 ",
-            txt_minimized="󰖰 ",
+            txt_floating=" 󰉈 ",
+            txt_maximized=" 󰊓 ",
+            txt_minimized=" 󰖰 ",
             urgent_alert_method="border",
             urgent_border=colors["red"],
+            rounded=False,
         ),
         # Chord widget - shows active key chord mode
         # widget.Chord(
@@ -186,27 +191,28 @@ def init_top_widget_list():
         # ),
         # New version with automatic layout-specific icons:
         widget_extras.CurrentLayoutIcon(
+            use_mask=True,  # Allows the icon to be colored
             foreground=colors["magenta"],
-            scale=0.9,
+            scale=0.5,
             padding=8,
         ),
-        widget.Sep(foreground=colors["gray"], padding=10),
         # Bluetooth status - shows bluetooth state and connected devices
         widget_extras.Bluetooth(
             foreground=colors["blue"],
-            fmt="󰂯 {}",
-            default_text="Off",
+            # TODO: possibly set out the icon here
+            fmt="{}",  # Just show the content without duplicating icons
+            default_text="󰂲",  # Bluetooth off icon (crossed out)
+            symbol="󰂯 ",  # Bluetooth on icon (shown before device name)
             default_show_battery=True,
             battery_format="{battery}%",
             adapter_paths=["/org/bluez/hci0"],  # Default bluetooth adapter
             mouse_callbacks={"Button1": lazy.spawn("blueman-manager")},
         ),
-        widget.Sep(foreground=colors["gray"], padding=10),
         # Syncthing status - shows sync status and progress
         widget_extras.Syncthing(
             foreground=colors["green"],
             path="http://localhost:8384",
-            label="",
+            label="󰓦 ",
             update_interval=5,
             error_colour=colors["red"],
             active_colour=colors["blue"],
@@ -230,7 +236,6 @@ def init_top_widget_list():
             menu_font="NotoSansM Nerd Font",
             menu_fontsize=16,
         ),
-        widget.Sep(foreground=colors["gray"], padding=10),
         # Media player - displays currently playing music/video via MPRIS
         # Old version (standard Mpris2):
         # widget.Mpris2(
@@ -279,7 +284,6 @@ def init_top_widget_list():
                 )
             ],
         ),
-        widget.Sep(foreground=colors["gray"], padding=10),
         # Screen brightness - displays current backlight level (laptops)
         # widget.Backlight(
         #     format=" {percent:2.0%}",
@@ -300,31 +304,32 @@ def init_top_widget_list():
             fmt="󰌌 {}",  # Nerd Font keyboard icon
         ),
         # Old volume widget (text-based):
-        # widget.Volume(
-        #     fmt="󰕾 {}",  # Nerd Font speaker icon
-        #     foreground=colors["magenta"],
-        #     mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
-        #     mute_command="pamixer --toggle-mute",
-        #     volume_up_command="pamixer -i 5",
-        #     volume_down_command="pamixer -d 5",
-        #     get_volume_command="pamixer --get-volume-human",
-        #     update_interval=0.2,
-        #     unmute_format="{}%",
-        #     mute_format="󰖁 M",
-        # ),
-        # New volume widget with visual bar:
-        widget_extras.PulseVolumeExtra(
+        widget.Volume(
+            fmt="󰕾 {}",  # Nerd Font speaker icon
             foreground=colors["magenta"],
-            limit_max_volume=True,
             mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
-            emoji=True,
-            emoji_list=["󰖁", "󰕿", "󰖀", "󰕾"],
-            volume_app="pavucontrol",
+            mute_command="pamixer --toggle-mute",
+            volume_up_command="pamixer -i 5",
+            volume_down_command="pamixer -d 5",
+            get_volume_command="pamixer --get-volume-human",
             update_interval=0.2,
-            bar_colour=colors["magenta"],
-            bar_width=60,
+            unmute_format="{}%",
+            mute_format="󰖁",
         ),
-        widget.Clock(format="  %Y-%m-%d %H:%M", foreground=colors["cyan"]),
+        # New volume widget with visual bar (requires additional setup):
+        # widget_extras.PulseVolumeExtra(
+        #     foreground=colors["magenta"],
+        #     limit_max_volume=True,
+        #     mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
+        #     emoji=True,
+        #     emoji_list=["󰖁", "󰕿", "󰖀", "󰕾"],
+        #     volume_app="pavucontrol",
+        #     update_interval=0.2,
+        #     bar_colour=colors["magenta"],
+        #     bar_width=60,
+        # ),
+        widget.Sep(foreground=colors["gray"], padding=10),
+        widget.Clock(format="  %Y-%m-%d %H:%M", foreground=colors["gray"]),
     ]
 
 # Top bar
@@ -338,21 +343,26 @@ screens = [
     ),
 ]
 
-# Drag floating layouts.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
+########################
+# LAYOUTS
+########################
+layouts = [
+    layout.Columns(
+        border_focus=colors["yellow"],
+        border_normal=colors["gray"],
+        border_width=2,
+        margin=4,
+    ),
+    layout.Max(),
+    layout.Floating(
+        border_focus=colors["yellow"],
+        border_normal=colors["gray"],
+        border_width=2,
+    ),
 ]
 
-dgroups_key_binder = None
-dgroups_app_rules = []
-follow_mouse_focus = True
-bring_front_click = False
-cursor_warp = False
-
 floating_layout = layout.Floating(
-    border_focus=colors["blue"],
+    border_focus=colors["yellow"],
     border_normal=colors["gray"],
     border_width=2,
     float_rules=[
@@ -365,6 +375,16 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),
     ],
 )
+
+########################
+# GENERAL
+########################
+
+dgroups_key_binder = None
+dgroups_app_rules = []
+follow_mouse_focus = True
+bring_front_click = False
+cursor_warp = False
 
 auto_fullscreen = True
 focus_on_window_activation = "smart"

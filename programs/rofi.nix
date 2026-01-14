@@ -124,6 +124,7 @@
       display-window = "  ";
       display-run = "  ";
       dpi = 220;
+      placeholder = "Search...";
     };
     theme = let inherit (config.lib.formats.rasi) mkLiteral; in {
       "*" = {
@@ -165,9 +166,9 @@
       };
 
       prompt = {
-        background-color = mkLiteral "@blue";
+        background-color = mkLiteral "transparent";
         padding = mkLiteral "6px";
-        text-color = mkLiteral "@bg-col";
+        text-color = mkLiteral "@blue";
         border-radius = mkLiteral "3px";
         margin = mkLiteral "20px 0px 0px 20px";
       };
@@ -182,6 +183,7 @@
         margin = mkLiteral "20px 0px 0px 10px";
         text-color = mkLiteral "@fg-col";
         background-color = mkLiteral "@bg-col";
+        placeholder-color = mkLiteral "@grey";
       };
 
       listview = {
