@@ -33,21 +33,6 @@ colors = {
 }
 
 ########################
-# WORKSPACES/GROUPS
-########################
-# groups = [Group(i) for i in "123456789"]
-groups = [Group(i) for i in "12345"]
-
-for i in groups:
-    keys.extend([
-        # Switch to workspace
-        Key([mod], i.name, lazy.group[i.name].toscreen(), desc=f"Switch to group {i.name}"),
-        # Move window to workspace
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
-    ])
-
-
-########################
 # KEYBOARD SHORTCUTS / MOUSE
 ########################
 keys = [
@@ -110,6 +95,20 @@ mouse = [
     Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
+
+########################
+# WORKSPACES/GROUPS
+########################
+# groups = [Group(i) for i in "123456789"]
+groups = [Group(i) for i in "12345"]
+
+for i in groups:
+    keys.extend([
+        # Switch to workspace
+        Key([mod], i.name, lazy.group[i.name].toscreen(), desc=f"Switch to group {i.name}"),
+        # Move window to workspace
+        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
+    ])
 
 ########################
 # TOP BAR
