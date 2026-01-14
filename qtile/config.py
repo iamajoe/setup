@@ -185,7 +185,7 @@ def init_top_widget_list():
         widget.TaskList(
             highlight_method="block",
             icon_size=18,
-            font_size=10,
+            fontsize=12,
             margin_y=0,
             max_title_width=300,
             border=colors["darker_gray"],
@@ -199,13 +199,42 @@ def init_top_widget_list():
             urgent_border=colors["red"],
             rounded=False,
         ),
-        # Automatic layout-specific icons:
-        widget_extras.CurrentLayoutIcon(
-            use_mask=True,  # Allows the icon to be colored
-            foreground=colors["cyan"],
-            scale=0.5,
-            padding=8,
+        widget.Volume(
+            fmt="{}",
+            foreground=colors["yellow"],
+            mouse_callbacks={
+                "Button1": lazy.spawn("pavucontrol"),
+                "Button3": lazy.spawn("pamixer --toggle-mute"),
+            },
+            # mute_command="pamixer --toggle-mute",
+            # volume_up_command="pamixer -i 5",
+            # volume_down_command="pamixer -d 5",
+            get_volume_command="pamixer --get-volume",
+            check_mute_command="pamixer --get-mute",
+            check_mute_string="true",
+            update_interval=0.2,
+            unmute_format="󰕾 {}%",
+            mute_format="󰖁",
         ),
+        # Media player - displays currently playing music/video via MPRIS
+        widget.Mpris2(
+            format="{xesam:title} - {xesam:artist}",
+            foreground=colors["yellow"],
+            max_chars=40,
+            scroll=True,
+            scroll_interval=0.5,
+            scroll_delay=2,
+            scroll_repeat=True,
+            paused_text="󰏤 {track}",
+            playing_text="󰐊 {track}",
+            stopped_text="󰓛",
+            mouse_callbacks={
+                "Button1": lazy.spawn("playerctl play-pause"),
+                "Button3": lazy.spawn("playerctl next"),
+                "Button2": lazy.spawn("playerctl previous"),
+            },
+        ),
+        widget.Sep(foreground=colors["gray"], padding=10),
         # Bluetooth status - shows bluetooth state and connected devices
         # widget_extras.Bluetooth(
         #     foreground=colors["blue"],
@@ -233,47 +262,19 @@ def init_top_widget_list():
             menu_font="NotoSansM Nerd Font",
             menu_fontsize=16,
         ),
-        # Media player - displays currently playing music/video via MPRIS
-        widget.Mpris2(
-            format="{xesam:title} - {xesam:artist}",
-            foreground=colors["magenta"],
-            max_chars=40,
-            scroll=True,
-            scroll_interval=0.5,
-            scroll_delay=2,
-            scroll_repeat=True,
-            paused_text="󰏤 {track}",
-            playing_text="󰐊 {track}",
-            stopped_text="󰓛",
-            mouse_callbacks={
-                "Button1": lazy.spawn("playerctl play-pause"),
-                "Button3": lazy.spawn("playerctl next"),
-                "Button2": lazy.spawn("playerctl previous"),
-            },
-        ),
-        widget.Volume(
-            fmt="{}",
-            foreground=colors["yellow"],
-            mouse_callbacks={
-                "Button1": lazy.spawn("pavucontrol"),
-                "Button3": lazy.spawn("pamixer --toggle-mute"),
-            },
-            # mute_command="pamixer --toggle-mute",
-            # volume_up_command="pamixer -i 5",
-            # volume_down_command="pamixer -d 5",
-            get_volume_command="pamixer --get-volume",
-            check_mute_command="pamixer --get-mute",
-            check_mute_string="true",
-            update_interval=0.2,
-            unmute_format="󰕾 {}%",
-            mute_format="󰖁",
-        ),
         widget.KeyboardLayout(
             configured_keyboards=["us", "pt"],
             foreground=colors["cyan"],
             fmt="󰌌 {}",
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
+        # Automatic layout-specific icons:
+        widget_extras.CurrentLayoutIcon(
+            use_mask=True,  # Allows the icon to be colored
+            foreground=colors["cyan"],
+            scale=0.5,
+            padding=8,
+        ),
         widget.Clock(format="%d-%m-%Y %H:%M", foreground=colors["gray"]),
     ]
 
