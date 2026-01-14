@@ -86,7 +86,7 @@ keys = [
 
     # Qtile controls
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    # Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 ]
 
 # Drag floating layouts.
