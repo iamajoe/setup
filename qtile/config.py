@@ -231,36 +231,6 @@ def init_top_widget_list():
                 "Button2": lazy.spawn("playerctl previous"),
             },
         ),
-        widget.Sep(foreground=colors["red"], padding=10),
-        # New version (qtile-extras Mpris2 with progress bar and decorations):
-        widget_extras.Mpris2(
-            foreground=colors["magenta"],
-            playing_text="󰐊 {track} - {length}",
-            paused_text="󰏤 {track} - {length}",
-            stopped_text="󰓛 No media playing",
-            max_chars=50,
-            scroll=True,
-            scroll_interval=0.5,
-            scroll_repeat=True,
-            scroll_delay=2,
-            name="mpris2",
-            objname="org.mpris.MediaPlayer2.playerctld",
-            display_metadata=["xesam:title", "xesam:artist"],
-            mouse_callbacks={
-                "Button1": lazy.spawn("playerctl play-pause"),
-                "Button3": lazy.spawn("playerctl next"),
-                "Button2": lazy.spawn("playerctl previous"),
-            },
-            decorations=[
-                RectDecoration(
-                    colour=colors["bg"],
-                    radius=6,
-                    filled=True,
-                    padding_y=4,
-                    padding_x=6,
-                )
-            ],
-        ),
         # Screen brightness - displays current backlight level (laptops)
         # widget.Backlight(
         #     format=" {percent:2.0%}",
@@ -278,7 +248,7 @@ def init_top_widget_list():
         widget.KeyboardLayout(
             configured_keyboards=["us", "pt"],
             foreground=colors["cyan"],
-            fmt="󰌌 {}",  # Nerd Font keyboard icon
+            fmt="󰌌 {}",
         ),
         # Old volume widget (text-based):
         widget.Volume(
