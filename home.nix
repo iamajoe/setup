@@ -72,7 +72,8 @@ in
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
       gtk-cursor-theme-size = 48;  # Doubled for HiDPI
-      gtk-xft-dpi = 147456;  # 144 * 1024
+      gtk-xft-dpi = 9834;  # 96 * 1024
+      # gtk-xft-dpi = 147456;  # 144 * 1024
       # gtk-xft-dpi = 196608;  # 192 * 1024 (commented out - was too large)
     };
     gtk4.extraConfig = {
