@@ -266,7 +266,7 @@ def init_top_widget_list():
         ),
         widget.KeyboardLayout(
             configured_keyboards=["us", "pt"],
-            foreground=colors["cyan"],
+            foreground=colors["magenta"],
             fmt="󰌌 {}",
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
@@ -274,7 +274,7 @@ def init_top_widget_list():
         widget_extras.CurrentLayoutIcon(
             use_mask=True,  # Allows the icon to be colored
             foreground=colors["cyan"],
-            scale=0.5,
+            scale=0.4,
             padding=8,
         ),
         widget.Clock(format="%d-%m-%Y %H:%M", foreground=colors["gray"]),
