@@ -28,10 +28,10 @@ in
   #
   # ─── HiDPI Support ────────────────────────────────────────────────────────────────
   #
-  
+
   # X11 DPI settings for HiDPI displays
-  # xresources.properties = {
-  #   "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
+  xresources.properties = {
+    "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
   #   # "Xft.dpi" = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
   #   "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
   #   "Xft.autohint" = 0;
@@ -40,8 +40,8 @@ in
   #   "Xft.hinting" = 1;
   #   "Xft.antialias" = 1;
   #   "Xft.rgba" = "rgb";
-  # };
-  
+  };
+
   # Qt scaling and dark mode (for Qt apps)
   home.sessionVariables = {
     # QT_AUTO_SCREEN_SCALE_FACTOR = "1";
@@ -50,7 +50,7 @@ in
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
   };
-  
+
   # Qt configuration tool
   qt = {
     enable = true;
