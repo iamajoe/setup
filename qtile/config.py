@@ -185,7 +185,7 @@ def init_top_widget_list():
         widget.TaskList(
             highlight_method="block",
             icon_size=18,
-            fontsize=12,
+            fontsize=14,
             margin_y=0,
             max_title_width=300,
             border=colors["darker_gray"],
@@ -214,11 +214,13 @@ def init_top_widget_list():
             check_mute_string="true",
             update_interval=0.2,
             unmute_format="󰕾 {}%",
-            mute_format="󰖁",
+            # TODO: mute not working out
+            # mute_format="󰖁",
+            mute_format="󰕾",
         ),
         # Media player - displays currently playing music/video via MPRIS
         widget.Mpris2(
-            format="{xesam:title} - {xesam:artist}",
+            format="{xesam:artist} - {xesam:title}",
             foreground=colors["yellow"],
             max_chars=40,
             scroll=True,
