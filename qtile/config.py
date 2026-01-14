@@ -31,6 +31,7 @@ colors = {
 
     "white": "#ffffff",
     "darker_gray_cyan": "#2D3D3A",
+    "darker_gray": "#2F313B",
 }
 
 ########################
@@ -76,6 +77,25 @@ keys = [
     # Screenshots
     Key([], "Print", lazy.spawn("flameshot gui"), desc="Screenshot with selection"),
     Key([mod], "s", lazy.spawn("flameshot gui"), desc="Screenshot with selection"),
+
+    # Media controls
+    # Volume controls (media keys)
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5"), desc="Volume up"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5"), desc="Volume down"),
+    Key([], "XF86AudioMute", lazy.spawn("pamixer --toggle-mute"), desc="Toggle mute"),
+    # Volume controls (alternative keybindings)
+    Key([mod, "shift"], "p", lazy.spawn("pamixer -i 5"), desc="Volume up"),
+    Key([mod, "shift"], "o", lazy.spawn("pamixer -d 5"), desc="Volume down"),
+    Key([mod, "shift"], "0", lazy.spawn("pamixer --toggle-mute"), desc="Toggle mute"),
+
+    # Media player controls (media keys)
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc="Play/Pause"),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc="Next track"),
+    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc="Previous track"),
+    # Media player controls (alternative keybindings)
+    Key([mod, "shift"], "i", lazy.spawn("playerctl play-pause"), desc="Play/Pause"),
+    Key([mod, "shift"], "u", lazy.spawn("playerctl next"), desc="Next track"),
+    Key([mod, "shift"], "y", lazy.spawn("playerctl previous"), desc="Previous track"),
 
     # Toggle between different layouts
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -168,7 +188,7 @@ def init_top_widget_list():
             font_size=10,
             margin_y=0,
             max_title_width=300,
-            border=colors["darker_gray_cyan"],
+            border=colors["darker_gray"],
             # borderwidth=2,
             background=colors["bg"],
             foreground=colors["fg"],
@@ -187,22 +207,22 @@ def init_top_widget_list():
             padding=8,
         ),
         # Bluetooth status - shows bluetooth state and connected devices
-        widget_extras.Bluetooth(
-            foreground=colors["blue"],
-            fmt="{}",  # Just show the content without duplicating icons
-            default_text="󰂲",  # Bluetooth off icon (crossed out)
-            symbol="󰂯 ",  # Bluetooth on icon (shown before device name)
-            default_show_battery=True,
-            battery_format="{battery}%",
-            adapter_paths=["/org/bluez/hci0"],  # Default bluetooth adapter
-            mouse_callbacks={"Button1": lazy.spawn("blueman-manager")},
-        ),
+        # widget_extras.Bluetooth(
+        #     foreground=colors["blue"],
+        #     fmt="{}",  # Just show the content without duplicating icons
+        #     default_text="󰂲",  # Bluetooth off icon (crossed out)
+        #     symbol="󰂯 ",  # Bluetooth on icon (shown before device name)
+        #     default_show_battery=True,
+        #     battery_format="{battery}%",
+        #     adapter_paths=["/org/bluez/hci0"],  # Default bluetooth adapter
+        #     mouse_callbacks={"Button1": lazy.spawn("blueman-manager")},
+        # ),
         # System tray - shows system tray icons (network, bluetooth, etc.)
         # Old version (standard Systray without filtering):
-        # widget.Systray(
-        #     icon_size=24,
-        #     padding=8,
-        # ),
+        widget.Systray(
+            icon_size=20,
+            padding=8,
+        ),
         # New version (qtile-extras StatusNotifier with filtering):
         widget_extras.StatusNotifier(
             icon_size=28,
@@ -236,10 +256,11 @@ def init_top_widget_list():
             foreground=colors["yellow"],
             mouse_callbacks={
                 "Button1": lazy.spawn("pavucontrol"),
+                "Button3": lazy.spawn("pamixer --toggle-mute"),
             },
-            mute_command="pamixer --toggle-mute",
-            volume_up_command="pamixer -i 5",
-            volume_down_command="pamixer -d 5",
+            # mute_command="pamixer --toggle-mute",
+            # volume_up_command="pamixer -i 5",
+            # volume_down_command="pamixer -d 5",
             get_volume_command="pamixer --get-volume",
             check_mute_command="pamixer --get-mute",
             check_mute_string="true",
