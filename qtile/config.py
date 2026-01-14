@@ -185,7 +185,7 @@ def init_top_widget_list():
         widget.TaskList(
             highlight_method="block",
             icon_size=18,
-            fontsize=14,
+            fontsize=18,
             margin_y=0,
             max_title_width=300,
             border=colors["darker_gray"],
@@ -268,6 +268,7 @@ def init_top_widget_list():
             configured_keyboards=["us", "pt"],
             foreground=colors["magenta"],
             fmt="󰌌 {}",
+            fontsize=18,
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
         # Automatic layout-specific icons:
