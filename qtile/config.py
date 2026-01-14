@@ -30,6 +30,7 @@ colors = {
     "gray": "#6c7086",
 
     "white": "#ffffff",
+    "darker_gray_cyan": "#2D3D3A",
 }
 
 ########################
@@ -115,7 +116,7 @@ for i in groups:
 ########################
 widget_defaults = dict(
     font="NotoSansM Nerd Font",
-    fontsize=20,
+    fontsize=22,
     padding=12,
     foreground=colors["fg"],
 )
@@ -165,9 +166,10 @@ def init_top_widget_list():
             highlight_method="block",
             icon_size=18,
             font_size=10,
-            max_title_width=200,
-            border=colors["gray"],
-            borderwidth=2,
+            margin_y=0,
+            max_title_width=300,
+            border=colors["darker_gray_cyan"],
+            # borderwidth=2,
             background=colors["bg"],
             foreground=colors["fg"],
             txt_floating=" 󰉈 ",
@@ -234,13 +236,14 @@ def init_top_widget_list():
             foreground=colors["yellow"],
             mouse_callbacks={
                 "Button1": lazy.spawn("pavucontrol"),
-                "Button3": lazy.spawn("pamixer --toggle-mute"),
             },
-            # mute_command="pamixer --toggle-mute",
-            # volume_up_command="pamixer -i 5",
-            # volume_down_command="pamixer -d 5",
-            # get_volume_command="pamixer --get-volume-human",
-            # update_interval=0.2,
+            mute_command="pamixer --toggle-mute",
+            volume_up_command="pamixer -i 5",
+            volume_down_command="pamixer -d 5",
+            get_volume_command="pamixer --get-volume",
+            check_mute_command="pamixer --get-mute",
+            check_mute_string="true",
+            update_interval=0.2,
             unmute_format="󰕾 {}%",
             mute_format="󰖁",
         ),
