@@ -251,7 +251,7 @@ def init_top_widget_list():
             fmt="󰌌 {}",
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
-        widget.Clock(format="  %Y-%m-%d %H:%M", foreground=colors["gray"]),
+        widget.Clock(format="%d-%m-%Y %H:%M", foreground=colors["gray"]),
     ]
 
 # Top bar
@@ -276,11 +276,11 @@ layouts = [
         margin=4,
     ),
     layout.Max(),
-    layout.Floating(
-        border_focus=colors["yellow"],
-        border_normal=colors["gray"],
-        border_width=2,
-    ),
+    # layout.Floating(
+    #     border_focus=colors["yellow"],
+    #     border_normal=colors["gray"],
+    #     border_width=2,
+    # ),
 ]
 
 floating_layout = layout.Floating(
