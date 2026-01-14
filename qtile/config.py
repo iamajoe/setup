@@ -116,8 +116,8 @@ mouse = [
 ########################
 widget_defaults = dict(
     font="NotoSansM Nerd Font",
-    fontsize=24,  # Increased for HiDPI
-    padding=8,    # Increased for HiDPI
+    fontsize=24,
+    padding=8,
     foreground=colors["fg"],
 )
 
@@ -177,20 +177,7 @@ def init_top_widget_list():
             urgent_border=colors["red"],
             rounded=False,
         ),
-        # Chord widget - shows active key chord mode
-        # widget.Chord(
-        #     chords_colors={
-        #         "launch": (colors["red"], colors["fg"]),
-        #     },
-        #     name_transform=lambda name: name.upper(),
-        # ),
-        # Current layout name - shows which layout is active (Columns, Max, etc.)
-        # Old version with static icon:
-        # widget.CurrentLayout(
-        #     foreground=colors["magenta"],
-        #     fmt="󱕍 {}",  # Layout icon
-        # ),
-        # New version with automatic layout-specific icons:
+        # Automatic layout-specific icons:
         widget_extras.CurrentLayoutIcon(
             use_mask=True,  # Allows the icon to be colored
             foreground=colors["magenta"],
@@ -209,26 +196,15 @@ def init_top_widget_list():
             adapter_paths=["/org/bluez/hci0"],  # Default bluetooth adapter
             mouse_callbacks={"Button1": lazy.spawn("blueman-manager")},
         ),
-        # Syncthing status - shows sync status and progress
-        widget_extras.Syncthing(
-            foreground=colors["green"],
-            path="http://localhost:8384",
-            label="󰓦 ",
-            update_interval=5,
-            error_colour=colors["red"],
-            active_colour=colors["blue"],
-            inactive_colour=colors["green"],
-            mouse_callbacks={"Button1": lazy.spawn("firefox http://localhost:8384")},
-        ),
         # System tray - shows system tray icons (network, bluetooth, etc.)
         # Old version (standard Systray without filtering):
         # widget.Systray(
-        #     icon_size=24,  # Larger icons for HiDPI
+        #     icon_size=24,
         #     padding=8,
         # ),
         # New version (qtile-extras StatusNotifier with filtering):
         widget_extras.StatusNotifier(
-            icon_size=28,  # Larger icons for HiDPI
+            icon_size=28,
             padding=8,
             # Filter out blueman-applet since we have dedicated Bluetooth widget
             # Also commonly filter: nm-applet (if using dedicated network widget)
@@ -238,23 +214,24 @@ def init_top_widget_list():
         ),
         # Media player - displays currently playing music/video via MPRIS
         # Old version (standard Mpris2):
-        # widget.Mpris2(
-        #     format="{xesam:title} - {xesam:artist}",
-        #     foreground=colors["magenta"],
-        #     max_chars=40,
-        #     scroll=True,
-        #     scroll_interval=0.5,
-        #     scroll_delay=2,
-        #     scroll_repeat=True,
-        #     paused_text="󰏤 {track}",
-        #     playing_text="󰐊 {track}",
-        #     stopped_text="󰓛",
-        #     mouse_callbacks={
-        #         "Button1": lazy.spawn("playerctl play-pause"),
-        #         "Button3": lazy.spawn("playerctl next"),
-        #         "Button2": lazy.spawn("playerctl previous"),
-        #     },
-        # ),
+        widget.Mpris2(
+            format="{xesam:title} - {xesam:artist}",
+            foreground=colors["magenta"],
+            max_chars=40,
+            scroll=True,
+            scroll_interval=0.5,
+            scroll_delay=2,
+            scroll_repeat=True,
+            paused_text="󰏤 {track}",
+            playing_text="󰐊 {track}",
+            stopped_text="󰓛",
+            mouse_callbacks={
+                "Button1": lazy.spawn("playerctl play-pause"),
+                "Button3": lazy.spawn("playerctl next"),
+                "Button2": lazy.spawn("playerctl previous"),
+            },
+        ),
+        widget.Sep(foreground=colors["red"], padding=10),
         # New version (qtile-extras Mpris2 with progress bar and decorations):
         widget_extras.Mpris2(
             foreground=colors["magenta"],
@@ -316,6 +293,7 @@ def init_top_widget_list():
             # unmute_format="{}%",
             # mute_format="󰖁",
         ),
+        widget.Sep(foreground=colors["red"], padding=10),
         # New volume widget with visual bar (requires additional setup):
         widget_extras.PulseVolumeExtra(
         #     foreground=colors["magenta"],

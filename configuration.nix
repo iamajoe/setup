@@ -63,7 +63,8 @@ in
     autoRepeatInterval = 35;
 
     # HiDPI support
-    dpi = 144;  # 1.5x scaling for HiDPI displays
+    dpi = 96;  # 1.5x scaling for HiDPI displays
+    # dpi = 144;  # 1.5x scaling for HiDPI displays
     # dpi = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
 
     # GPU drivers
@@ -83,8 +84,6 @@ in
       package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
-        requests  # For qtile-extras Syncthing widget
-        psutil    # For qtile system monitoring widgets
         pulsectl-asyncio  # For qtile-extras PulseVolume widget
       ];
     };
