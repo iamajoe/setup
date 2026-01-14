@@ -31,7 +31,8 @@ in
   
   # X11 DPI settings for HiDPI displays
   xresources.properties = {
-    "Xft.dpi" = 192;  # 2x scaling for HiDPI displays
+    "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
+    # "Xft.dpi" = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
     "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
     "Xft.autohint" = 0;
     "Xft.lcdfilter" = "lcddefault";
@@ -71,7 +72,8 @@ in
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
       gtk-cursor-theme-size = 48;  # Doubled for HiDPI
-      gtk-xft-dpi = 196608;  # 192 * 1024
+      gtk-xft-dpi = 147456;  # 144 * 1024
+      # gtk-xft-dpi = 196608;  # 192 * 1024 (commented out - was too large)
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
@@ -334,8 +336,6 @@ in
     go
     gopls
     python3
-    python3Packages.requests  # For qtile-extras Syncthing widget
-    python3Packages.psutil    # For qtile system monitoring widgets
     lua-language-server
     nodejs
     typescript-language-server

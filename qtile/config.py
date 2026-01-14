@@ -126,17 +126,18 @@ def init_top_widget_list():
     return [
         # Workspace/group indicator - shows workspaces 1-9 and highlights active one
         widget.GroupBox(
-            active=colors["yellow"],
+            active=colors["cyan"],
             inactive=colors["gray"],
             highlight_method="line",
-            this_current_screen_border=colors["blue"],
-            this_screen_border=colors["blue"],
+            this_current_screen_border=colors["yellow"],
+            this_screen_border=colors["yellow"],
+            other_current_screen_border=colors["yellow"],
+            other_screen_border=colors["yellow"],
             urgent_border=colors["red"],
             background=colors["bg"],
             disable_drag=True,
             use_mouse_wheel=False,
-            # Show window count indicators
-            block_highlight_text_color=colors["fg"],
+            block_highlight_text_color=colors["bg"],  # Dark text on yellow background
             rounded=False,
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
@@ -154,7 +155,7 @@ def init_top_widget_list():
                      ], 
              fontsize = 24,
              padding = 8,
-             foreground = colors["white"],
+             foreground = colors["gray"],  # Gray icons by default
              # Tooltip configuration
              tooltip_delay = 0.5,  # Show tooltip after 0.5 seconds
              tooltip_background = colors["bg"],
@@ -219,7 +220,6 @@ def init_top_widget_list():
             inactive_colour=colors["green"],
             mouse_callbacks={"Button1": lazy.spawn("firefox http://localhost:8384")},
         ),
-        widget.Sep(foreground=colors["gray"], padding=10),
         # System tray - shows system tray icons (network, bluetooth, etc.)
         # Old version (standard Systray without filtering):
         # widget.Systray(
@@ -305,16 +305,16 @@ def init_top_widget_list():
         ),
         # Old volume widget (text-based):
         widget.Volume(
-            fmt="󰕾 {}",  # Nerd Font speaker icon
-            foreground=colors["magenta"],
-            mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
-            mute_command="pamixer --toggle-mute",
-            volume_up_command="pamixer -i 5",
-            volume_down_command="pamixer -d 5",
-            get_volume_command="pamixer --get-volume-human",
-            update_interval=0.2,
-            unmute_format="{}%",
-            mute_format="󰖁",
+            fmt="VOL 󰕾 {}",
+            # foreground=colors["magenta"],
+            # mouse_callbacks={"Button1": lazy.spawn("pavucontrol")},
+            # mute_command="pamixer --toggle-mute",
+            # volume_up_command="pamixer -i 5",
+            # volume_down_command="pamixer -d 5",
+            # get_volume_command="pamixer --get-volume-human",
+            # update_interval=0.2,
+            # unmute_format="{}%",
+            # mute_format="󰖁",
         ),
         # New volume widget with visual bar (requires additional setup):
         # widget_extras.PulseVolumeExtra(

@@ -130,6 +130,7 @@
       "*" = {
         bg-col = mkLiteral "#1e1e2e";
         bg-col-light = mkLiteral "#1e1e2e";
+        bg-col-dark = mkLiteral "#11111b";  # Darker background for input bar
         border-col = mkLiteral "#1e1e2e";
         selected-col = mkLiteral "#1e1e2e";
         blue = mkLiteral "#89b4fa";
@@ -160,9 +161,10 @@
 
       inputbar = {
         children = map mkLiteral ["prompt" "entry"];
-        background-color = mkLiteral "@bg-col";
+        background-color = mkLiteral "@bg-col-dark";  # Darker background
         border-radius = mkLiteral "5px";
-        padding = mkLiteral "2px";
+        padding = mkLiteral "8px";
+        margin = mkLiteral "2px";  # 2px margin from edges
       };
 
       prompt = {
@@ -170,7 +172,7 @@
         padding = mkLiteral "6px";
         text-color = mkLiteral "@blue";
         border-radius = mkLiteral "3px";
-        margin = mkLiteral "20px 0px 0px 20px";
+        margin = mkLiteral "0px";
       };
 
       "textbox-prompt-colon" = {
@@ -180,16 +182,17 @@
 
       entry = {
         padding = mkLiteral "6px";
-        margin = mkLiteral "20px 0px 0px 10px";
+        margin = mkLiteral "0px 0px 0px 10px";
         text-color = mkLiteral "@fg-col";
-        background-color = mkLiteral "@bg-col";
+        background-color = mkLiteral "transparent";  # Transparent to show darker inputbar
         placeholder-color = mkLiteral "@grey";
+        placeholder = "Search...";
       };
 
       listview = {
         border = mkLiteral "0px 0px 0px";
         padding = mkLiteral "6px 0px 0px";
-        margin = mkLiteral "10px 0px 0px 20px";
+        margin = mkLiteral "8px 20px 0px 20px";  # Spacing after input bar
         columns = 1;
         lines = 8;
         background-color = mkLiteral "@bg-col";

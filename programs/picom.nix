@@ -18,7 +18,7 @@
       ];
 
       # Opacity: inactive windows slightly transparent
-      inactive-opacity = 0.8;   # 80% opacity for inactive windows
+      inactive-opacity = 0.7;   # 80% opacity for inactive windows
       active-opacity = 1.0;     # 100% opacity for active window
       frame-opacity = 0.75;     # 75% opacity for window borders/decorations
 
