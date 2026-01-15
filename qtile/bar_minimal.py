@@ -40,14 +40,17 @@ def create_bar(colors, terminal=None, browser=None):
     )
 
     def spacer(length=8):
-        return widget.Spacer(length=length, background=colors["bg"])
+        return widget.Spacer(length=length, background=BG_COLOR)
+
+    def flex_spacer_transparent():
+        return widget.Spacer(background="00000000")
 
     def flex_spacer():
         return widget.Spacer(background=BG_COLOR)
 
     widgets = [
         # Left flexible spacer - pushes everything to center
-        flex_spacer(),
+        flex_spacer_transparent(),
 
         # ========== CENTERED BAR CONTENT ==========
 
@@ -119,18 +122,17 @@ def create_bar(colors, terminal=None, browser=None):
 
         # Status Notifier (icons like Bluetooth, etc.)
         widget_extras.StatusNotifier(
-            icon_size=ICON_SIZE,
+            # icon_size=ICON_SIZE,
             icon_theme="Papirus-Dark",
-            padding=8,
+            # padding=8,
             background=BG_COLOR,
             decorations=[rounded_decoration],
         ),
-        spacer(12),
 
         # System Tray
         widget.Systray(
-            icon_size=ICON_SIZE,
-            padding=8,
+            # icon_size=ICON_SIZE,
+            # padding=8,
             background=BG_COLOR,
             decorations=[rounded_decoration],
         ),
@@ -161,7 +163,7 @@ def create_bar(colors, terminal=None, browser=None):
         # ========== END CENTERED CONTENT ==========
 
         # Right flexible spacer - balances the left spacer
-        flex_spacer(),
+        flex_spacer_transparent(),
     ]
 
     return bar.Bar(
