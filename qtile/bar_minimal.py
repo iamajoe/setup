@@ -3,9 +3,10 @@ Minimal Centered Bar for Qtile
 A sleek, centered bar with only essential widgets
 """
 
-from libqtile import bar, widget, lazy
+from libqtile import bar, widget
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
+import subprocess
 
 
 def create_bar(colors, terminal=None, browser=None):
@@ -108,7 +109,7 @@ def create_bar(colors, terminal=None, browser=None):
             popup_hide_timeout=2,
             popup_show_args="above",
             mouse_callbacks={
-                "Button3": lazy.spawn("pavucontrol"),
+                "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
             decorations=[rounded_decoration],
         ),

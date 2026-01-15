@@ -5,7 +5,6 @@ from libqtile import bar, widget
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
 from qtile_extras.popup.templates.mpris2 import DEFAULT_LAYOUT
-from libqtile.lazy import lazy
 import subprocess
 
 
@@ -167,7 +166,7 @@ def create_bar(colors, terminal, browser):
             popup_show_args="above",
             # Right click for full control panel
             mouse_callbacks={
-                "Button3": lazy.spawn("pavucontrol"),
+                "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
             decorations=[rounded_decoration],
         ),
@@ -185,8 +184,8 @@ def create_bar(colors, terminal, browser):
             ).stdout.strip() == "true" else " 󰍮",
             update_interval=1,
             mouse_callbacks={
-                "Button1": lazy.spawn("pamixer --default-source --toggle-mute"),
-                "Button3": lazy.spawn("pavucontrol"),
+                "Button1": lambda: subprocess.Popen(["pamixer", "--default-source", "--toggle-mute"]),
+                "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
             decorations=[rounded_decoration],
         ),
@@ -233,9 +232,9 @@ def create_bar(colors, terminal, browser):
             popup_hide_timeout=0,  # 0 = stays until manually closed (click again or ESC)
             # Mouse callbacks
             mouse_callbacks={
-                "Button1": lazy.widget["mpris"].toggle_player(),  # Click to show/hide popup
-                "Button3": lazy.spawn("playerctl next"),  # Right click = next
-                "Button2": lazy.spawn("playerctl previous"),  # Middle click = previous
+                "Button1": lambda: widget_extras.Mpris2.toggle_player(),  # Click to show/hide popup
+                "Button3": lambda: subprocess.Popen(["playerctl", "next"]),  # Right click = next
+                "Button2": lambda: subprocess.Popen(["playerctl", "previous"]),  # Middle click = previous
             },
             decorations=[rounded_decoration],
         ),
