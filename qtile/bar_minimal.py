@@ -140,23 +140,21 @@ def create_bar(colors, terminal=None, browser=None):
         # Clock + Date
         widget.Clock(
             font=FONT,
+            fontsize=FONT_SIZE, 
+            foreground=INACTIVE_COLOR,
+            background=BG_COLOR,
+            format="%a %d %b",
+            mouse_callbacks={
+                "Button1": lambda: subprocess.Popen(["gsimplecal"]),
+            },
+            decorations=[rounded_decoration],
+        ),
+        widget.Clock(
+            font=FONT,
             fontsize=FONT_SIZE,
             foreground=FG_COLOR,
             background=BG_COLOR,
             format="%H:%M",
-            decorations=[rounded_decoration],
-        ),
-
-        # Date
-        widget.Clock(
-            font=FONT,
-            fontsize=FONT_SIZE, 
-            foreground=INACTIVE_COLOR,
-            background=BG_COLOR,
-            format="%a %b %d",
-            mouse_callbacks={
-                "Button1": lambda: subprocess.Popen(["gsimplecal"]),
-            },
             decorations=[rounded_decoration],
         ),
 
