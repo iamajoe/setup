@@ -315,6 +315,8 @@ in
     source = ./qtile/autostart.sh;
     executable = true;
   };
+  home.file.".config/qtile/shortcuts.txt".source = ./qtile/shortcuts.txt;
+  home.file.".config/qtile/keyboard-layout.txt".source = ./qtile/keyboard-layout.txt;
 
   #
   # ─── Dependencies ────────────────────────────────────────────────────────────────

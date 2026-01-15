@@ -1,0 +1,57 @@
+
+╔═══════════════════════════════════════════════════════════════════════════════════════════╗
+║                              [36mQTILE KEYBOARD SHORTCUTS[0m                                     ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════╝
+
+[33mWINDOW MANAGEMENT[0m
+  [36mMod + h/j/k/l[0m                Move focus left/down/up/right
+  [36mMod + Shift + h/j/k/l[0m        Move window left/down/up/right
+  [36mMod + Ctrl + h/j/k/l[0m         Grow window left/down/up/right
+  [36mMod + n[0m                      Reset all window sizes
+  [36mMod + w[0m                      Kill focused window
+  [36mMod + f[0m                      Toggle fullscreen
+  [36mMod + g[0m                      Toggle floating
+  [36mMod + Tab[0m                    Next layout
+  [36mMod + Shift + Return[0m         Toggle split
+
+[33mAPPLICATIONS[0m
+  [36mMod + t[0m                      Launch terminal (Alacritty)
+  [36mMod + e[0m                      Launch file manager (Thunar)
+  [36mMod + b[0m                      Launch browser (Firefox)
+
+[33mROFI LAUNCHERS[0m
+  [36mMod + d[0m                      Application launcher (drun)
+  [36mMod + r[0m                      Run command
+  [36mMod + p[0m                      Window switcher
+  [36mMod + v[0m                      Clipboard history
+  [36mMod + Shift + s[0m              Web search
+  [36mMod + Shift + n[0m              Quick notes
+
+[33mMEDIA CONTROLS[0m
+  [36mMod + Shift + p[0m              Volume up
+  [36mMod + Shift + o[0m              Volume down
+  [36mMod + Shift + 0[0m              Toggle mute
+  [36mMod + Shift + i[0m              Play/Pause
+  [36mMod + Shift + u[0m              Next track
+  [36mMod + Shift + y[0m              Previous track
+  [35mXF86Audio* keys[0m              Also work for media/volume
+
+[33mSCREENSHOTS[0m
+  [36mPrint Screen[0m                 Screenshot with selection (Flameshot)
+  [36mMod + s[0m                      Screenshot with selection (Flameshot)
+
+[33mQTILE CONTROLS[0m
+  [36mMod + Ctrl + r[0m               Reload Qtile config
+  [36mMod + Ctrl + q[0m               Quit Qtile
+
+[33mHELP OVERLAYS[0m
+  [35mMod + Ctrl + 1[0m               Show this shortcuts overlay
+  [35mMod + Ctrl + 2[0m               Show keyboard layout overlay
+
+[33mWORKSPACE SWITCHING[0m
+  [36mMod + 1-9[0m                    Switch to workspace 1-9
+
+═══════════════════════════════════════════════════════════════════════════════════════════
+[32mNote:[0m "Mod" is typically the Super/Windows key
+Press [35mq[0m or [35mMod+Ctrl+1[0m to close this overlay
+═══════════════════════════════════════════════════════════════════════════════════════════

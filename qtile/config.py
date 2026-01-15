@@ -1,5 +1,5 @@
 from libqtile import bar, layout, widget, hook
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
@@ -130,6 +130,38 @@ for i in groups:
         # Move window to workspace
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
     ])
+
+# Scratchpad for help overlays
+groups.append(
+    ScratchPad("scratchpad", [
+        # Qtile shortcuts cheatsheet
+        DropDown(
+            "shortcuts",
+            f"{terminal} -e less -R ~/.config/qtile/shortcuts.txt",
+            width=0.6,
+            height=0.7,
+            x=0.2,
+            y=0.15,
+            opacity=0.95,
+        ),
+        # Keyboard layout overlay
+        DropDown(
+            "keyboard",
+            f"{terminal} -e less -R ~/.config/qtile/keyboard-layout.txt",
+            width=0.8,
+            height=0.8,
+            x=0.1,
+            y=0.1,
+            opacity=0.95,
+        ),
+    ])
+)
+
+# Add keybindings for scratchpads
+keys.extend([
+    Key([mod, "control"], "1", lazy.group["scratchpad"].dropdown_toggle("shortcuts"), desc="Toggle shortcuts overlay"),
+    Key([mod, "control"], "2", lazy.group["scratchpad"].dropdown_toggle("keyboard"), desc="Toggle keyboard layout overlay"),
+])
 
 ########################
 # TOP BAR
