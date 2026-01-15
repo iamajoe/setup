@@ -1,10 +1,15 @@
 from libqtile import bar, layout, widget, hook
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown, Rule
 from libqtile.lazy import lazy
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
 import os
 import subprocess
+
+# Import bar configuration
+# Comment/uncomment to switch between bar styles:
+# from bar_default import create_bar  # Default bar - solid background, full width
+from bar_rounded import create_bar  # Rounded bar - transparent background, centered TaskList
 
 # It can be a good reference:
 # - https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/qtile/config.py
@@ -120,8 +125,7 @@ mouse = [
 ########################
 # WORKSPACES/GROUPS
 ########################
-# groups = [Group(i) for i in "123456789"]
-groups = [Group(i) for i in "12345"]
+groups = [Group(i) for i in "123456789"]
 
 for i in groups:
     keys.extend([
@@ -131,7 +135,19 @@ for i in groups:
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
     ])
 
-# Scratchpad for help overlays
+dgroups_app_rules = [
+    Rule(Match(wm_class="alacritty"), group="1"),
+    Rule(Match(wm_class="firefox"), group="2"),
+    Rule(Match(wm_class="google-chrome"), group="3"),
+    Rule(Match(wm_class="tidal-hifi"), group="8"),
+    Rule(Match(wm_class="discord"), group="8"),
+    Rule(Match(wm_class="slack"), group="8"),
+    Rule(Match(wm_class="steam"), group="9"),
+]
+
+########################
+# SCRATCHPAD 
+########################
 groups.append(
     ScratchPad("scratchpad", [
         # Qtile shortcuts cheatsheet
@@ -173,154 +189,10 @@ widget_defaults = dict(
     foreground=colors["fg"],
 )
 
-# Initialize and return the widget list for the top bar
-def init_top_widget_list():
-    return [
-        # Workspace/group indicator - shows workspaces 1-9 and highlights active one
-        widget.GroupBox(
-            active=colors["white"],
-            inactive=colors["gray"],
-            highlight_method="line",
-            this_current_screen_border=colors["magenta"],
-            this_screen_border=colors["magenta"],
-            other_current_screen_border=colors["magenta"],
-            other_screen_border=colors["magenta"],
-            urgent_border=colors["red"],
-            background=colors["bg"],
-            disable_drag=True,
-            use_mouse_wheel=False,
-            block_highlight_text_color=colors["white"],  # Dark text on yellow background
-            rounded=False,
-        ),
-        widget.Sep(foreground=colors["gray"], padding=10),
-        # Setup a launch bar
-        widget.LaunchBar(
-             progs = [("󰈹", browser, "Web browser"),
-                      ("󰊯", "google-chrome-stable", "Google Chrome"),
-                      ("󰆍", terminal, "Terminal"),
-                      ("󰉋", "thunar", "File manager"),
-                      ("󰝚", "tidal-hifi", "Media player"),
-                      ("󰙯", "discord", "Discord"),
-                      ("󰒱", "slack", "Slack"),
-                      ("󰆼", "mongodb-compass", "MongoDB Compass"),
-                      ("󰓓", "steam", "Steam")
-                     ], 
-             fontsize = 24,
-             padding = 8,
-             foreground = colors["gray"],  # Gray icons by default
-             # Tooltip configuration
-             tooltip_delay = 0.5,  # Show tooltip after 0.5 seconds
-             tooltip_background = colors["bg"],
-             tooltip_foreground = colors["fg"],
-        ),
-        # Task list - shows all open windows with icons to help with positioning
-        widget.TaskList(
-            highlight_method="block",
-            icon_size=18,
-            fontsize=18,
-            margin_y=0,
-            max_title_width=300,
-            border=colors["darker_gray"],
-            # borderwidth=2,
-            background=colors["bg"],
-            foreground=colors["fg"],
-            txt_floating=" 󰉈 ",
-            txt_maximized=" 󰊓 ",
-            txt_minimized=" 󰖰 ",
-            urgent_alert_method="border",
-            urgent_border=colors["red"],
-            rounded=False,
-        ),
-        widget.Volume(
-            fmt="{}",
-            foreground=colors["yellow"],
-            mouse_callbacks={
-                "Button1": lazy.spawn("pavucontrol"),
-                "Button3": lazy.spawn("pamixer --toggle-mute"),
-            },
-            # mute_command="pamixer --toggle-mute",
-            # volume_up_command="pamixer -i 5",
-            # volume_down_command="pamixer -d 5",
-            get_volume_command="pamixer --get-volume",
-            check_mute_command="pamixer --get-mute",
-            check_mute_string="true",
-            update_interval=0.2,
-            unmute_format="󰕾 {}%",
-            # TODO: mute not working out
-            # mute_format="󰖁",
-            mute_format="󰕾",
-        ),
-        # Media player - displays currently playing music/video via MPRIS
-        widget.Mpris2(
-            format="{xesam:artist} - {xesam:title}",
-            foreground=colors["yellow"],
-            max_chars=40,
-            scroll=True,
-            scroll_interval=0.5,
-            scroll_delay=2,
-            scroll_repeat=True,
-            paused_text="󰏤 {track}",
-            playing_text="󰐊 {track}",
-            stopped_text="󰓛",
-            mouse_callbacks={
-                "Button1": lazy.spawn("playerctl play-pause"),
-                "Button3": lazy.spawn("playerctl next"),
-                "Button2": lazy.spawn("playerctl previous"),
-            },
-        ),
-        widget.Sep(foreground=colors["gray"], padding=10),
-        # Bluetooth status - shows bluetooth state and connected devices
-        # widget_extras.Bluetooth(
-        #     foreground=colors["blue"],
-        #     fmt="{}",  # Just show the content without duplicating icons
-        #     default_text="󰂲",  # Bluetooth off icon (crossed out)
-        #     symbol="󰂯 ",  # Bluetooth on icon (shown before device name)
-        #     default_show_battery=True,
-        #     battery_format="{battery}%",
-        #     adapter_paths=["/org/bluez/hci0"],  # Default bluetooth adapter
-        #     mouse_callbacks={"Button1": lazy.spawn("blueman-manager")},
-        # ),
-        # System tray - shows system tray icons (network, bluetooth, etc.)
-        # Old version (standard Systray without filtering):
-        widget.Systray(
-            icon_size=20,
-            padding=8,
-        ),
-        # New version (qtile-extras StatusNotifier with filtering):
-        widget_extras.StatusNotifier(
-            icon_size=22,
-            padding=8,
-            # Filter out blueman-applet since we have dedicated Bluetooth widget
-            # Also commonly filter: nm-applet (if using dedicated network widget)
-            icon_theme="Adwaita",
-            menu_font="NotoSansM Nerd Font",
-            menu_fontsize=16,
-        ),
-        widget.KeyboardLayout(
-            configured_keyboards=["us", "pt"],
-            foreground=colors["yellow"],
-            fmt="󰌌 {}",
-            fontsize=20,
-        ),
-        widget.Sep(foreground=colors["gray"], padding=10),
-        # Automatic layout-specific icons:
-        widget_extras.CurrentLayoutIcon(
-            use_mask=True,  # Allows the icon to be colored
-            foreground=colors["yellow"],
-            scale=0.4,
-            padding=8,
-        ),
-        widget.Clock(format="%d-%m-%Y %H:%M", foreground=colors["gray"]),
-    ]
-
-# Top bar
+# Create screens with the selected bar
 screens = [
     Screen(
-        top=bar.Bar(
-            init_top_widget_list(),
-            48,
-            background=colors["bg"],
-        ),
+        top=create_bar(colors, terminal, browser),
     ),
 ]
 

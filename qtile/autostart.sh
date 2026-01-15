@@ -21,7 +21,7 @@ export QT_STYLE_OVERRIDE=Adwaita-Dark
 # nm-applet &
 
 # Bluetooth manager (commented out - using qtile-extras Bluetooth widget instead)
-# blueman-applet &
+blueman-applet &
 
 # Clipboard manager daemon
 clipmenud &
@@ -29,4 +29,10 @@ clipmenud &
 # Remote desktop
 # rustdesk --silent &
 
-# Add any other startup applications here
+# set display timeout, sleep, and poweroff
+# xset s off
+# xset s noblank
+# xset -dpms
+
+# set keyboard repeat rate
+# xset r rate 350 60

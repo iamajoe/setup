@@ -317,6 +317,9 @@ in
   };
   home.file.".config/qtile/shortcuts.txt".source = ./qtile/shortcuts.txt;
   home.file.".config/qtile/keyboard-layout.txt".source = ./qtile/keyboard-layout.txt;
+  # Modular bar configurations
+  home.file.".config/qtile/bar_default.py".source = ./qtile/bar_default.py;
+  home.file.".config/qtile/bar_rounded.py".source = ./qtile/bar_rounded.py;
 
   #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
