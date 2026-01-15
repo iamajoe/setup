@@ -54,7 +54,7 @@ def create_bar(colors, terminal=None, browser=None):
 
         # ========== CENTERED BAR CONTENT ==========
 
-        spacer(12),
+        spacer(20),
 
         # Workspace indicators (numbers only)
         widget.GroupBox(
@@ -76,7 +76,6 @@ def create_bar(colors, terminal=None, browser=None):
             margin_y=4,
             rounded=True,
             disable_drag=True,
-            decorations=[rounded_decoration],
         ),
         spacer(12),
 
@@ -86,7 +85,7 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=ICON_SIZE,
             foreground=colors["yellow"],
             background=BG_COLOR,
-            padding=6,
+            padding=10,
             func=lambda: "󰖁" if subprocess.run(
                 ["pamixer", "--get-mute"],
                 capture_output=True,
@@ -97,7 +96,6 @@ def create_bar(colors, terminal=None, browser=None):
                 "Button1": lambda: subprocess.Popen(["pamixer", "--toggle-mute"]),
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
-            decorations=[rounded_decoration],
         ),
 
         # Microphone mute toggle
@@ -106,7 +104,7 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=ICON_SIZE,
             foreground=colors["yellow"],
             background=BG_COLOR,
-            padding=6,
+            padding=10,
             func=lambda: "󰍭" if subprocess.run(
                 ["pamixer", "--default-source", "--get-mute"],
                 capture_output=True,
@@ -118,7 +116,6 @@ def create_bar(colors, terminal=None, browser=None):
                 "Button1": lambda: subprocess.Popen(["pamixer", "--default-source", "--toggle-mute"]),
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
-            decorations=[rounded_decoration],
         ),
         spacer(12),
 
@@ -126,17 +123,15 @@ def create_bar(colors, terminal=None, browser=None):
         widget_extras.StatusNotifier(
             icon_size=ICON_SIZE,
             icon_theme="Papirus-Dark",
-            padding=8,
+            padding=10,
             background=BG_COLOR,
-            decorations=[rounded_decoration],
         ),
 
         # System Tray
         widget.Systray(
             icon_size=ICON_SIZE,
-            padding=8,
+            padding=10,
             background=BG_COLOR,
-            decorations=[rounded_decoration],
         ),
 
         spacer(12),
@@ -147,7 +142,7 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=FONT_SIZE,
             foreground=FG_COLOR,
             background=BG_COLOR,
-            padding=8,
+            padding=10,
             format='<span foreground="{inactive}">%a %d %b</span> <span foreground="{fg}">%H:%M</span>'.format(
                 fg=FG_COLOR,
                 inactive=INACTIVE_COLOR
@@ -156,10 +151,9 @@ def create_bar(colors, terminal=None, browser=None):
             mouse_callbacks={
                 "Button1": lambda: subprocess.Popen(["gsimplecal"]),
             },
-            decorations=[rounded_decoration],
         ),
 
-        spacer(12),
+        spacer(20),
 
         # ========== END CENTERED CONTENT ==========
 
