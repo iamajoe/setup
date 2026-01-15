@@ -161,12 +161,6 @@ def create_bar(colors, terminal, browser):
             unmute_format="󰕾 {volume}%",
             mute_format="󰖁",
             update_interval=0.2,
-            # Built-in popup on left-click with volume slider
-            mode="both",  # Show widget in bar + popup on click
-            popup_hide_timeout=2,  # Auto-hide popup after 2 seconds
-            popup_show_args="above",
-            # Icon theme for the popup (NixOS Home Manager path)
-            theme_path=f"{os.path.expanduser('~')}/.local/state/home-manager/gcroots/current-home/home-path/share/icons/Papirus-Dark",
             # Right click for full control panel
             mouse_callbacks={
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
