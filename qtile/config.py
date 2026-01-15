@@ -152,7 +152,7 @@ groups.append(
         # Qtile shortcuts cheatsheet
         DropDown(
             "shortcuts",
-            f"{terminal} -e less -R {os.path.expanduser('~/.config/qtile/shortcuts.txt')}"
+            f"{terminal} -e less -R {os.path.expanduser('~/.config/qtile/shortcuts.txt')}",
             width=0.6,
             height=0.7,
             x=0.2,
@@ -163,7 +163,7 @@ groups.append(
         # Keyboard layout overlay
         DropDown(
             "keyboard",
-            f"{terminal} -e less -R {os.path.expanduser('~/.config/qtile/keyboard-layout.txt')}"
+            f"{terminal} -e less -R {os.path.expanduser('~/.config/qtile/keyboard-layout.txt')}",
             width=0.8,
             height=0.8,
             x=0.1,
