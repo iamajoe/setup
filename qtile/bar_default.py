@@ -5,6 +5,7 @@ from libqtile import bar, widget
 from qtile_extras import widget as widget_extras
 from qtile_extras.popup.templates.mpris2 import DEFAULT_LAYOUT
 import subprocess
+import os
 
 
 def create_bar(colors, terminal, browser):
@@ -132,8 +133,8 @@ def create_bar(colors, terminal, browser):
             mode="both",  # Show widget in bar + popup on click
             popup_hide_timeout=2,  # Auto-hide popup after 2 seconds
             popup_show_args="above",
-            # Icon theme for the popup
-            theme_path="/usr/share/icons/Papirus-Dark",
+            # Icon theme for the popup (NixOS path)
+            theme_path=f"{os.path.expanduser('~')}/.nix-profile/share/icons/Papirus-Dark",
             # Right click for full control panel
             mouse_callbacks={
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),

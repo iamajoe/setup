@@ -7,6 +7,7 @@ from libqtile import bar, widget
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
 import subprocess
+import os
 
 
 def create_bar(colors, terminal=None, browser=None):
@@ -108,8 +109,8 @@ def create_bar(colors, terminal=None, browser=None):
             mode="both",
             popup_hide_timeout=2,
             popup_show_args="above",
-            # Icon theme for the popup
-            theme_path="/usr/share/icons/Papirus-Dark",
+            # Icon theme for the popup (NixOS path)
+            theme_path=f"{os.path.expanduser('~')}/.nix-profile/share/icons/Papirus-Dark",
             mouse_callbacks={
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
