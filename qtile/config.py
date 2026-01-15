@@ -7,9 +7,9 @@ import os
 import subprocess
 
 # Import bar configuration
-# Comment/uncomment to switch between bar styles:
 # from bar_default import create_bar  # Default bar - solid background, full width
-from bar_rounded import create_bar  # Rounded bar - transparent background, centered TaskList
+# from bar_rounded import create_bar  # Rounded bar - transparent background, centered TaskList
+from bar_minimal import create_bar  # Minimal bar - centered, rounded, essential widgets only
 
 # Mod key (Mod4 = Super/Windows key)
 mod = "mod4"

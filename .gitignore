@@ -6,3 +6,5 @@ hardware-configuration.nix
 !.env.json.dist
 
 flake.lock
+
+__pycache__

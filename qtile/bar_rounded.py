@@ -21,8 +21,6 @@ BORDER_RADIUS = 12  # Rounded corners for widgets
 
 
 def create_bar(colors, terminal, browser):
-    """Create and return the rounded bar configuration with transparent background"""
-    
     # Semantic color mappings from colors dict passed from config.py
     BG_COLOR = colors["bg"]
     FG_COLOR = colors["fg"]
@@ -175,10 +173,10 @@ def create_bar(colors, terminal, browser):
         ),
         medium_spacer,
         # Microphone mute toggle
-        widget.GenericPollText(
+        widget.GenPollText(
             font=FONT,
             fontsize=ICON_SIZE,
-            foreground=colors["red"],
+            foreground=SUCCESS_COLOR,
             background="00000000",
             func=lambda: " 󰍭" if subprocess.run(
                 ["pamixer", "--default-source", "--get-mute"],
@@ -252,7 +250,7 @@ def create_bar(colors, terminal, browser):
             icon_size=FONT_SIZE,
             padding=8,
             background="00000000",
-            icon_theme="Adwaita",
+            icon_theme="Papirus-Dark",
             menu_font=FONT,
             menu_fontsize=FONT_SIZE - 6,
         ),

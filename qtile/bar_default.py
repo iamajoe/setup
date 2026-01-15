@@ -8,20 +8,14 @@ from libqtile.lazy import lazy
 import subprocess
 
 
-########################
-# THEME CONSTANTS
-########################
-FONT = "NotoSansM Nerd Font, Font Awesome 6 Free Solid, Material Design Icons"
-FONT_SIZE = 22
-ICON_SIZE = 20
-
-# Visual settings
-BORDER_RADIUS = 0  # No rounded corners for default bar
-
-
 def create_bar(colors, terminal, browser):
-    """Create and return the default bar configuration"""
-    
+    FONT = "NotoSansM Nerd Font, Font Awesome 6 Free Solid, Material Design Icons"
+    FONT_SIZE = 22
+    ICON_SIZE = 20
+
+    # Visual settings
+    BORDER_RADIUS = 0  # No rounded corners for default bar
+
     # Semantic color mappings from colors dict passed from config.py
     BG_COLOR = colors["bg"]
     FG_COLOR = colors["fg"]
@@ -145,10 +139,10 @@ def create_bar(colors, terminal, browser):
             },
         ),
         # Microphone mute toggle
-        widget.GenericPollText(
+        widget.GenPollText(
             font=FONT,
             fontsize=ICON_SIZE,
-            foreground=colors["red"],
+            foreground=SUCCESS_COLOR,
             func=lambda: "󰍭" if subprocess.run(
                 ["pamixer", "--default-source", "--get-mute"],
                 capture_output=True,
@@ -214,7 +208,7 @@ def create_bar(colors, terminal, browser):
         widget_extras.StatusNotifier(
             icon_size=FONT_SIZE,
             padding=8,
-            icon_theme="Adwaita",
+            icon_theme="Papirus-Dark",
             menu_font=FONT,
             menu_fontsize=FONT_SIZE - 6,
         ),

@@ -65,12 +65,19 @@ in
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;
     };
+    # OLD ICON THEME (Adwaita)
+    # iconTheme = {
+    #   name = "Adwaita";
+    #   package = pkgs.adwaita-icon-theme;
+    # };
+    # NEW ICON THEME (Papirus-Dark with Adwaita fallback)
     iconTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
+      gtk-fallback-icon-theme = "Adwaita";  # Fallback if icon not found in Papirus
       # gtk-cursor-theme-size = 48;  # Doubled for HiDPI
       # gtk-xft-dpi = 9834;  # 96 * 1024
       # gtk-xft-dpi = 147456;  # 144 * 1024
@@ -78,6 +85,7 @@ in
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
+      gtk-fallback-icon-theme = "Adwaita";  # Fallback if icon not found in Papirus
       # gtk-cursor-theme-size = 48;  # Doubled for HiDPI
     };
   };
@@ -320,6 +328,7 @@ in
   # Modular bar configurations
   home.file.".config/qtile/bar_default.py".source = ./qtile/bar_default.py;
   home.file.".config/qtile/bar_rounded.py".source = ./qtile/bar_rounded.py;
+  home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
   #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
@@ -415,6 +424,10 @@ in
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
     font-awesome  # Font Awesome 6 Free (includes Solid, Regular, Brands)
+    
+    # Icon themes
+    papirus-icon-theme  # Primary icon theme (Papirus-Dark variant)
+    adwaita-icon-theme  # Fallback icon theme
   ]) 
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ (with pkgs; lib.optionals isX86_64 [
