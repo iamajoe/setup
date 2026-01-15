@@ -17,10 +17,11 @@
         "window_type = 'desktop'"
       ];
 
-      # Opacity: inactive windows slightly transparent
-      inactive-opacity = 0.7;   # 80% opacity for inactive windows
-      active-opacity = 1.0;     # 100% opacity for active window
-      frame-opacity = 0.75;     # 75% opacity for window borders/decorations
+      # Disable opacity for better performance
+      # Steam and other GPU-intensive apps are very slow with opacity
+      inactive-opacity = 1.0;   # No transparency for better performance
+      active-opacity = 1.0;     # No transparency
+      frame-opacity = 1.0;      # No transparency for borders
 
       blur-background = false;
 
@@ -32,6 +33,11 @@
       detect-transient = true;
       use-damage = true;
       log-level = "warn";
+      
+      # Additional performance settings
+      unredir-if-possible = true;  # Disable compositor for fullscreen windows
+      glx-no-stencil = true;
+      glx-no-rebind-pixmap = true;
     };
   };
 }
