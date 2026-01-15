@@ -81,7 +81,7 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=ICON_SIZE,
             foreground=SUCCESS_COLOR,
             background=colors["bg"],
-            padding=2
+            padding=2,
             func=lambda: "󰖁" if subprocess.run(
                 ["pamixer", "--get-mute"],
                 capture_output=True,
@@ -101,7 +101,7 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=ICON_SIZE,
             foreground=SUCCESS_COLOR,
             background=colors["bg"],
-            padding=2
+            padding=2,
             func=lambda: "󰍭" if subprocess.run(
                 ["pamixer", "--default-source", "--get-mute"],
                 capture_output=True,
