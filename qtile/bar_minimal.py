@@ -108,6 +108,8 @@ def create_bar(colors, terminal=None, browser=None):
             mode="both",
             popup_hide_timeout=2,
             popup_show_args="above",
+            # Icon theme for the popup
+            theme_path="/usr/share/icons/Papirus-Dark",
             mouse_callbacks={
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },

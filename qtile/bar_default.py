@@ -132,6 +132,8 @@ def create_bar(colors, terminal, browser):
             mode="both",  # Show widget in bar + popup on click
             popup_hide_timeout=2,  # Auto-hide popup after 2 seconds
             popup_show_args="above",
+            # Icon theme for the popup
+            theme_path="/usr/share/icons/Papirus-Dark",
             # Right click for full control panel
             mouse_callbacks={
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
