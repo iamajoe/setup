@@ -41,6 +41,13 @@ def create_bar(colors, terminal=None, browser=None):
 
     def spacer(length=8):
         return widget.Spacer(length=length, background=BG_COLOR)
+    
+    def fixed_spacer(width):
+        return widget.TextBox(
+            text="",
+            width=width,
+            background=BG_COLOR,
+        )
 
     def flex_spacer_transparent():
         return widget.Spacer(background="00000000")
@@ -54,12 +61,12 @@ def create_bar(colors, terminal=None, browser=None):
 
         # ========== CENTERED BAR CONTENT ==========
 
-        spacer(50),
+        fixed_spacer(50),
 
         # Workspace indicators (numbers only)
         widget.GroupBox(
             font=FONT,
-            fontsize=FONT_SIZE + 1,
+            fontsize=FONT_SIZE,
             foreground=INACTIVE_COLOR,
             background=BG_COLOR,
             active=ACTIVE_COLOR,  # Active workspace
@@ -152,7 +159,7 @@ def create_bar(colors, terminal=None, browser=None):
             },
         ),
 
-        spacer(50),
+        fixed_spacer(50),
 
         # ========== END CENTERED CONTENT ==========
 
