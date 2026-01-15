@@ -414,6 +414,7 @@ in
     nerd-fonts.commit-mono
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
+    font-awesome  # Font Awesome 6 Free (includes Solid, Regular, Brands)
   ]) 
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ (with pkgs; lib.optionals isX86_64 [

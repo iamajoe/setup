@@ -11,9 +11,6 @@ import subprocess
 # from bar_default import create_bar  # Default bar - solid background, full width
 from bar_rounded import create_bar  # Rounded bar - transparent background, centered TaskList
 
-# It can be a good reference:
-# - https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/qtile/config.py
-
 # Mod key (Mod4 = Super/Windows key)
 mod = "mod4"
 terminal = "alacritty"
@@ -136,8 +133,8 @@ for i in groups:
     ])
 
 dgroups_app_rules = [
-    Rule(Match(wm_class="alacritty"), group="1"),
-    Rule(Match(wm_class="firefox"), group="2"),
+    Rule(Match(wm_class=terminal), group="1"),
+    Rule(Match(wm_class=browser), group="2"),
     Rule(Match(wm_class="google-chrome"), group="3"),
     Rule(Match(wm_class="tidal-hifi"), group="8"),
     Rule(Match(wm_class="discord"), group="8"),
@@ -180,16 +177,8 @@ keys.extend([
 ])
 
 ########################
-# TOP BAR
+# SCREENS
 ########################
-widget_defaults = dict(
-    font="NotoSansM Nerd Font",
-    fontsize=22,
-    padding=12,
-    foreground=colors["fg"],
-)
-
-# Create screens with the selected bar
 screens = [
     Screen(
         top=create_bar(colors, terminal, browser),

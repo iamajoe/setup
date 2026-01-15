@@ -5,25 +5,46 @@ from libqtile import bar, widget
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
 from libqtile.lazy import lazy
+import subprocess
+
+
+########################
+# THEME CONSTANTS
+########################
+FONT = "NotoSansM Nerd Font, Font Awesome 6 Free Solid, Material Design Icons"
+FONT_SIZE = 22
+ICON_SIZE = 20
+
+# Visual settings
+BORDER_RADIUS = 12  # Rounded corners for widgets
 
 
 def create_bar(colors, terminal, browser):
     """Create and return the rounded bar configuration with transparent background"""
+    
+    # Semantic color mappings from colors dict passed from config.py
+    BG_COLOR = colors["bg"]
+    FG_COLOR = colors["fg"]
+    HIGHLIGHT_COLOR = colors["magenta"]
+    NOTIFICATION_COLOR = colors["magenta"]
+    INACTIVE_COLOR = colors["gray"]
+    ACTIVE_COLOR = colors["white"]
+    SUCCESS_COLOR = colors["green"]
 
     # Make background semi-transparent
     transparent_bg = "#1e1e2eCC"  # 80% opacity
 
     widget_defaults = dict(
-        font="NotoSansM Nerd Font",
-        fontsize=22,
+        font=FONT,
+        fontsize=FONT_SIZE,
         padding=12,
-        foreground=colors["fg"],
+        foreground=FG_COLOR,
     )
 
     # Decoration for rounded corners
     rounded_decoration = RectDecoration(
-        colour=colors["bg"],
-        radius=12,
+        colour=BG_COLOR,
+        radius=BORDER_RADIUS,
         filled=True,
         padding_y=4,
         padding_x=8,
@@ -53,18 +74,18 @@ def create_bar(colors, terminal, browser):
         large_spacer,
         # Workspace/group indicator
         widget.GroupBox(
-            active=colors["white"],
-            inactive=colors["gray"],
+            active=ACTIVE_COLOR,
+            inactive=INACTIVE_COLOR,
             highlight_method="line",
-            this_current_screen_border=colors["magenta"],
-            this_screen_border=colors["magenta"],
-            other_current_screen_border=colors["magenta"],
-            other_screen_border=colors["magenta"],
+            this_current_screen_border=HIGHLIGHT_COLOR,
+            this_screen_border=HIGHLIGHT_COLOR,
+            other_current_screen_border=HIGHLIGHT_COLOR,
+            other_screen_border=HIGHLIGHT_COLOR,
             urgent_border=colors["red"],
             background="00000000",
             disable_drag=True,
             use_mouse_wheel=False,
-            block_highlight_text_color=colors["white"],
+            block_highlight_text_color=ACTIVE_COLOR,
             rounded=False,
             decorations=[rounded_decoration],
         ),
@@ -81,14 +102,14 @@ def create_bar(colors, terminal, browser):
                       ("󰆼", "mongodb-compass", "MongoDB Compass"),
                       ("󰓓", "steam", "Steam")
                      ], 
-             fontsize = 24,
+             fontsize = FONT_SIZE + 2,
              padding = 8,
-             foreground = colors["gray"],
+             foreground = INACTIVE_COLOR,
              background="00000000",
              # Tooltip configuration
              tooltip_delay = 0.5,
-             tooltip_background = colors["bg"],
-             tooltip_foreground = colors["fg"],
+             tooltip_background = BG_COLOR,
+             tooltip_foreground = FG_COLOR,
              decorations=[rounded_decoration],
         ),
         large_spacer,
@@ -97,13 +118,13 @@ def create_bar(colors, terminal, browser):
         # Task list - centered with all open windows
         widget.TaskList(
             highlight_method="block",
-            icon_size=18,
-            fontsize=18,
+            icon_size=ICON_SIZE - 2,
+            fontsize=FONT_SIZE - 4,
             margin_y=0,
             max_title_width=300,
             border=colors["darker_gray"],
             background="00000000",
-            foreground=colors["fg"],
+            foreground=FG_COLOR,
             txt_floating=" 󰉈 ",
             txt_maximized=" 󰊓 ",
             txt_minimized=" 󰖰 ",
@@ -121,8 +142,8 @@ def create_bar(colors, terminal, browser):
             foreground=colors["yellow"],
             background="00000000",
             mouse_callbacks={
-                "Button1": lazy.spawn("pavucontrol"),
-                "Button3": lazy.spawn("pamixer --toggle-mute"),
+                "Button1": lazy.spawn("pamixer --toggle-mute"),
+                "Button3": lazy.spawn("pavucontrol"),
             },
             get_volume_command="pamixer --get-volume",
             check_mute_command="pamixer --get-mute",
@@ -130,6 +151,25 @@ def create_bar(colors, terminal, browser):
             update_interval=0.2,
             unmute_format="󰕾 {}%",
             mute_format="󰕾",
+            decorations=[rounded_decoration],
+        ),
+        medium_spacer,
+        # Microphone mute toggle
+        widget.GenericPollText(
+            font=FONT,
+            fontsize=ICON_SIZE,
+            foreground=colors["red"],
+            background="00000000",
+            func=lambda: " 󰍭" if subprocess.run(
+                ["pamixer", "--default-source", "--get-mute"],
+                capture_output=True,
+                text=True
+            ).stdout.strip() == "true" else " 󰍮",
+            update_interval=1,
+            mouse_callbacks={
+                "Button1": lazy.spawn("pamixer --default-source --toggle-mute"),
+                "Button3": lazy.spawn("pavucontrol"),
+            },
             decorations=[rounded_decoration],
         ),
         medium_spacer,
@@ -156,17 +196,17 @@ def create_bar(colors, terminal, browser):
         large_spacer,
         # System tray
         widget.Systray(
-            icon_size=20,
+            icon_size=ICON_SIZE,
             padding=8,
             background="00000000",
         ),
         widget_extras.StatusNotifier(
-            icon_size=22,
+            icon_size=FONT_SIZE,
             padding=8,
             background="00000000",
             icon_theme="Adwaita",
-            menu_font="NotoSansM Nerd Font",
-            menu_fontsize=16,
+            menu_font=FONT,
+            menu_fontsize=FONT_SIZE - 6,
         ),
         medium_spacer,
         # Keyboard layout
@@ -175,7 +215,7 @@ def create_bar(colors, terminal, browser):
             foreground=colors["yellow"],
             background="00000000",
             fmt="󰌌 {}",
-            fontsize=20,
+            fontsize=ICON_SIZE,
             decorations=[rounded_decoration],
         ),
         medium_spacer,
@@ -192,7 +232,7 @@ def create_bar(colors, terminal, browser):
         # Clock
         widget.Clock(
             format="%d-%m-%Y %H:%M",
-            foreground=colors["gray"],
+            foreground=INACTIVE_COLOR,
             background="00000000",
             decorations=[rounded_decoration],
         ),
