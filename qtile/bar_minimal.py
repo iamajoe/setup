@@ -122,7 +122,6 @@ def create_bar(colors, terminal=None, browser=None):
         # Status Notifier (icons like Bluetooth, etc.)
         widget_extras.StatusNotifier(
             icon_size=ICON_SIZE,
-            icon_theme="Papirus-Dark",
             padding=10,
             background=BG_COLOR,
         ),
