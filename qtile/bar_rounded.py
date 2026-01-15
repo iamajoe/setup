@@ -137,21 +137,40 @@ def create_bar(colors, terminal, browser):
         # Flexible spacer to center the TaskList
         flex_spacer,
         large_spacer,
-        # Volume widget
-        widget.Volume(
-            fmt="{}",
+        # Volume widget - OLD IMPLEMENTATION (basic widget without popup)
+        # widget.Volume(
+        #     fmt="{}",
+        #     foreground=colors["yellow"],
+        #     background="00000000",
+        #     mouse_callbacks={
+        #         "Button1": lazy.spawn("pamixer --toggle-mute"),
+        #         "Button3": lazy.spawn("pavucontrol"),
+        #     },
+        #     get_volume_command="pamixer --get-volume",
+        #     check_mute_command="pamixer --get-mute",
+        #     check_mute_string="true",
+        #     update_interval=0.2,
+        #     unmute_format="󰕾 {}%",
+        #     mute_format="󰕾",
+        #     decorations=[rounded_decoration],
+        # ),
+        # NEW IMPLEMENTATION (qtile-extras with popup slider) - PulseVolumeExtra has built-in left-click popup
+        widget_extras.PulseVolumeExtra(
+            font=FONT,
+            fontsize=FONT_SIZE - 2,
             foreground=colors["yellow"],
             background="00000000",
+            unmute_format="󰕾 {volume}%",
+            mute_format="󰖁",
+            update_interval=0.2,
+            # Built-in popup on left-click with volume slider
+            mode="both",  # Show widget in bar + popup on click
+            popup_hide_timeout=2,  # Auto-hide popup after 2 seconds
+            popup_show_args="above",
+            # Right click for full control panel
             mouse_callbacks={
-                "Button1": lazy.spawn("pamixer --toggle-mute"),
                 "Button3": lazy.spawn("pavucontrol"),
             },
-            get_volume_command="pamixer --get-volume",
-            check_mute_command="pamixer --get-mute",
-            check_mute_string="true",
-            update_interval=0.2,
-            unmute_format="󰕾 {}%",
-            mute_format="󰕾",
             decorations=[rounded_decoration],
         ),
         medium_spacer,
