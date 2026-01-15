@@ -4,6 +4,7 @@ Rounded bar configuration - transparent background, rounded corners, centered Ta
 from libqtile import bar, widget
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
+from qtile_extras.popup.templates.mpris2 import DEFAULT_LAYOUT
 from libqtile.lazy import lazy
 import subprocess
 
@@ -173,23 +174,51 @@ def create_bar(colors, terminal, browser):
             decorations=[rounded_decoration],
         ),
         medium_spacer,
-        # Media player
-        widget.Mpris2(
-            format="{xesam:artist} - {xesam:title}",
+        # Media player - displays currently playing music/video via MPRIS
+        # OLD IMPLEMENTATION (basic widget without popup)
+        # widget.Mpris2(
+        #     format="{xesam:artist} - {xesam:title}",
+        #     foreground=colors["yellow"],
+        #     background="00000000",
+        #     max_chars=40,
+        #     scroll=True,
+        #     scroll_interval=0.5,
+        #     scroll_delay=2,
+        #     scroll_repeat=True,
+        #     paused_text="󰏤 {track}",
+        #     playing_text="󰐊 {track}",
+        #     stopped_text="󰓛",
+        #     mouse_callbacks={
+        #         "Button1": lazy.spawn("playerctl play-pause"),
+        #         "Button3": lazy.spawn("playerctl next"),
+        #         "Button2": lazy.spawn("playerctl previous"),
+        #     },
+        #     decorations=[rounded_decoration],
+        # ),
+        # NEW IMPLEMENTATION (qtile-extras with popup showing cover art + controls)
+        widget_extras.Mpris2(
+            name="mpris",
+            font=FONT,
+            fontsize=FONT_SIZE - 2,
             foreground=colors["yellow"],
             background="00000000",
-            max_chars=40,
-            scroll=True,
-            scroll_interval=0.5,
-            scroll_delay=2,
-            scroll_repeat=True,
+            format="{xesam:title}",
             paused_text="󰏤 {track}",
             playing_text="󰐊 {track}",
             stopped_text="󰓛",
+            max_chars=40,
+            scroll=True,
+            scroll_interval=0.5,
+            scroll_wait_intervals=4,
+            # Popup configuration - shows cover art + controls on click
+            popup_layout=DEFAULT_LAYOUT,
+            popup_show_args="above",
+            popup_hide_timeout=0,  # 0 = stays until manually closed (click again or ESC)
+            # Mouse callbacks
             mouse_callbacks={
-                "Button1": lazy.spawn("playerctl play-pause"),
-                "Button3": lazy.spawn("playerctl next"),
-                "Button2": lazy.spawn("playerctl previous"),
+                "Button1": lazy.widget["mpris"].toggle_player(),  # Click to show/hide popup
+                "Button3": lazy.spawn("playerctl next"),  # Right click = next
+                "Button2": lazy.spawn("playerctl previous"),  # Middle click = previous
             },
             decorations=[rounded_decoration],
         ),
