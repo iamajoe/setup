@@ -176,9 +176,9 @@ groups.append(
 
 # Add keybindings for scratchpads
 keys.extend([
-    Key([mod, "control"], "s", lazy.group["scratchpad"].dropdown_toggle("mixer"), desc="Sound board"),
-    Key([mod, "control"], "t", lazy.group["scratchpad"].dropdown_toggle("term"), desc="Terminal"),
-    Key([mod, "control"], "2", lazy.group["scratchpad"].dropdown_toggle("keyboard"), desc="Toggle keyboard layout overlay"),
+    Key([mod, "control"], "s", lazy.group["scratchpad"].dropdown_toggle("mixer"), desc="Sound board overlay"),
+    Key([mod, "control"], "t", lazy.group["scratchpad"].dropdown_toggle("term"), desc="Terminal overlay"),
+    Key([mod, "control"], "1", lazy.group["scratchpad"].dropdown_toggle("shortcuts"), desc="Toggle shortcuts overlay"),
     Key([mod, "control"], "2", lazy.group["scratchpad"].dropdown_toggle("keyboard"), desc="Toggle keyboard layout overlay"),
 ])
 
