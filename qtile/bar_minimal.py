@@ -54,12 +54,12 @@ def create_bar(colors, terminal=None, browser=None):
 
         # ========== CENTERED BAR CONTENT ==========
 
-        spacer(20),
+        spacer(50),
 
         # Workspace indicators (numbers only)
         widget.GroupBox(
             font=FONT,
-            fontsize=FONT_SIZE + 2,
+            fontsize=FONT_SIZE + 1,
             foreground=INACTIVE_COLOR,
             background=BG_COLOR,
             active=ACTIVE_COLOR,  # Active workspace
@@ -152,7 +152,7 @@ def create_bar(colors, terminal=None, browser=None):
             },
         ),
 
-        spacer(20),
+        spacer(50),
 
         # ========== END CENTERED CONTENT ==========
 
