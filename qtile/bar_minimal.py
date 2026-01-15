@@ -54,6 +54,8 @@ def create_bar(colors, terminal=None, browser=None):
 
         # ========== CENTERED BAR CONTENT ==========
 
+        spacer(12),
+
         # Workspace indicators (numbers only)
         widget.GroupBox(
             font=FONT,
@@ -69,7 +71,7 @@ def create_bar(colors, terminal=None, browser=None):
             urgent_alert_method="block",
             urgent_border=colors["red"],
             borderwidth=0,
-            padding=12,
+            padding=14,
             margin_x=0,
             margin_y=4,
             rounded=True,
@@ -82,7 +84,7 @@ def create_bar(colors, terminal=None, browser=None):
         widget.GenPollText(
             font=FONT,
             fontsize=ICON_SIZE,
-            foreground=SUCCESS_COLOR,
+            foreground=colors["yellow"],
             background=BG_COLOR,
             padding=6,
             func=lambda: "󰖁" if subprocess.run(
@@ -102,7 +104,7 @@ def create_bar(colors, terminal=None, browser=None):
         widget.GenPollText(
             font=FONT,
             fontsize=ICON_SIZE,
-            foreground=SUCCESS_COLOR,
+            foreground=colors["yellow"],
             background=BG_COLOR,
             padding=6,
             func=lambda: "󰍭" if subprocess.run(
@@ -122,17 +124,17 @@ def create_bar(colors, terminal=None, browser=None):
 
         # Status Notifier (icons like Bluetooth, etc.)
         widget_extras.StatusNotifier(
-            # icon_size=ICON_SIZE,
+            icon_size=ICON_SIZE,
             icon_theme="Papirus-Dark",
-            # padding=8,
+            padding=8,
             background=BG_COLOR,
             decorations=[rounded_decoration],
         ),
 
         # System Tray
         widget.Systray(
-            # icon_size=ICON_SIZE,
-            # padding=8,
+            icon_size=ICON_SIZE,
+            padding=8,
             background=BG_COLOR,
             decorations=[rounded_decoration],
         ),
@@ -142,23 +144,22 @@ def create_bar(colors, terminal=None, browser=None):
         # Clock + Date
         widget.Clock(
             font=FONT,
-            fontsize=FONT_SIZE, 
-            foreground=INACTIVE_COLOR,
+            fontsize=FONT_SIZE,
+            foreground=FG_COLOR,
             background=BG_COLOR,
-            format="%a %d %b",
+            padding=8,
+            format='<span foreground="{inactive}">%a %d %b</span> <span foreground="{fg}">%H:%M</span>'.format(
+                fg=FG_COLOR,
+                inactive=INACTIVE_COLOR
+            ),
+            markup=True,
             mouse_callbacks={
                 "Button1": lambda: subprocess.Popen(["gsimplecal"]),
             },
             decorations=[rounded_decoration],
         ),
-        widget.Clock(
-            font=FONT,
-            fontsize=FONT_SIZE,
-            foreground=FG_COLOR,
-            background=BG_COLOR,
-            format="%H:%M",
-            decorations=[rounded_decoration],
-        ),
+
+        spacer(12),
 
         # ========== END CENTERED CONTENT ==========
 
