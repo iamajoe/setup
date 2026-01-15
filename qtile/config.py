@@ -147,32 +147,38 @@ dgroups_app_rules = [
 ########################
 groups.append(
     ScratchPad("scratchpad", [
+        DropDown('mixer', 'pavucontrol', width=0.4, height=0.6, x=0.3, y=0.2, opacity=1),
+        DropDown('term', terminal, width=0.4, height=0.6, x=0.3, y=0.2, opacity=1),
         # Qtile shortcuts cheatsheet
         DropDown(
             "shortcuts",
-            f"{terminal} -e less -R ~/.config/qtile/shortcuts.txt",
+            f"{terminal} -e less -R {os.path.expanduser('~/.config/qtile/shortcuts.txt')}"
             width=0.6,
             height=0.7,
             x=0.2,
             y=0.15,
             opacity=0.95,
+            on_focus_lost_hide=True
         ),
         # Keyboard layout overlay
         DropDown(
             "keyboard",
-            f"{terminal} -e less -R ~/.config/qtile/keyboard-layout.txt",
+            f"{terminal} -e less -R {os.path.expanduser('~/.config/qtile/keyboard-layout.txt')}"
             width=0.8,
             height=0.8,
             x=0.1,
             y=0.1,
             opacity=0.95,
+            on_focus_lost_hide=True
         ),
     ])
 )
 
 # Add keybindings for scratchpads
 keys.extend([
-    Key([mod, "control"], "1", lazy.group["scratchpad"].dropdown_toggle("shortcuts"), desc="Toggle shortcuts overlay"),
+    Key([mod, "control"], "s", lazy.group["scratchpad"].dropdown_toggle("mixer"), desc="Sound board"),
+    Key([mod, "control"], "t", lazy.group["scratchpad"].dropdown_toggle("term"), desc="Terminal"),
+    Key([mod, "control"], "2", lazy.group["scratchpad"].dropdown_toggle("keyboard"), desc="Toggle keyboard layout overlay"),
     Key([mod, "control"], "2", lazy.group["scratchpad"].dropdown_toggle("keyboard"), desc="Toggle keyboard layout overlay"),
 ])
 

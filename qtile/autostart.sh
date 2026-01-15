@@ -3,6 +3,9 @@
 # Qtile autostart script
 # This script runs once when Qtile starts
 
+# Set root window background color
+xsetroot -solid "#121312" &
+
 # Force dark mode for all applications
 export GTK_THEME=Adwaita:dark
 export QT_STYLE_OVERRIDE=Adwaita-Dark

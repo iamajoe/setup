@@ -22,8 +22,8 @@ def create_bar(colors, terminal=None, browser=None):
 
     # Typography
     FONT = "NotoSansM Nerd Font, Font Awesome 6 Free Solid, sans-serif"
-    FONT_SIZE = 14
-    ICON_SIZE = 18
+    FONT_SIZE = 20
+    ICON_SIZE = 22
 
     # Layout
     BORDER_RADIUS = 16  # Rounded corners
@@ -51,17 +51,6 @@ def create_bar(colors, terminal=None, browser=None):
 
         # ========== CENTERED BAR CONTENT ==========
 
-        # Clock + Date
-        widget.Clock(
-            font=FONT,
-            fontsize=FONT_SIZE,
-            foreground=FG_COLOR,
-            background=colors["bg"],
-            format="%H:%M",
-            decorations=[rounded_decoration],
-        ),
-        spacer(12),
-
         # Workspace indicators (numbers only)
         widget.GroupBox(
             font=FONT,
@@ -86,17 +75,6 @@ def create_bar(colors, terminal=None, browser=None):
         ),
         spacer(12),
 
-        # Date
-        widget.Clock(
-            font=FONT,
-            fontsize=FONT_SIZE - 2,
-            foreground=INACTIVE_COLOR,
-            background=colors["bg"],
-            format="%a %b %d",
-            decorations=[rounded_decoration],
-        ),
-        spacer(12),
-
         # Volume
         widget_extras.PulseVolumeExtra(
             font=FONT,
@@ -107,6 +85,44 @@ def create_bar(colors, terminal=None, browser=None):
             mute_format="󰖁",
             update_interval=0.2,
             mouse_callbacks={
+                "Button3": lambda: subprocess.Popen(["pavucontrol"]),
+            },
+            decorations=[rounded_decoration],
+        ),
+
+        # Volume mute toggle
+        widget.GenPollText(
+            font=FONT,
+            fontsize=ICON_SIZE,
+            foreground=SUCCESS_COLOR,
+            background="00000000",
+            func=lambda: "󰖁" if subprocess.run(
+                ["pamixer", "--get-mute"],
+                capture_output=True,
+                text=True
+            ).stdout.strip() == "true" else "󰕾",
+            update_interval=1,
+            mouse_callbacks={
+                "Button1": lambda: subprocess.Popen(["pamixer", "--toggle-mute"]),
+                "Button3": lambda: subprocess.Popen(["pavucontrol"]),
+            },
+            decorations=[rounded_decoration],
+        ),
+
+        # Microphone mute toggle
+        widget.GenPollText(
+            font=FONT,
+            fontsize=ICON_SIZE,
+            foreground=SUCCESS_COLOR,
+            background="00000000",
+            func=lambda: " 󰍭" if subprocess.run(
+                ["pamixer", "--default-source", "--get-mute"],
+                capture_output=True,
+                text=True
+            ).stdout.strip() == "true" else " 󰍮",
+            update_interval=1,
+            mouse_callbacks={
+                "Button1": lambda: subprocess.Popen(["pamixer", "--default-source", "--toggle-mute"]),
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
             decorations=[rounded_decoration],
@@ -128,6 +144,31 @@ def create_bar(colors, terminal=None, browser=None):
             icon_size=ICON_SIZE - 2,
             padding=4,
             background=colors["bg"],
+            decorations=[rounded_decoration],
+        ),
+
+        spacer(12),
+
+        # Clock + Date
+        widget.Clock(
+            font=FONT,
+            fontsize=FONT_SIZE,
+            foreground=FG_COLOR,
+            background=colors["bg"],
+            format="%H:%M",
+            decorations=[rounded_decoration],
+        ),
+
+        # Date
+        widget.Clock(
+            font=FONT,
+            fontsize=FONT_SIZE - 2,
+            foreground=INACTIVE_COLOR,
+            background=colors["bg"],
+            format="%a %b %d",
+            mouse_callbacks={
+                "Button1": lambda: subprocess.Popen(["gsimplecal"]),
+            },
             decorations=[rounded_decoration],
         ),
 

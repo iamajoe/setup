@@ -7,52 +7,52 @@
     (pkgs.writeShellScriptBin "rofi-web-search" ''
       #!/usr/bin/env bash
       
-      # Prompt for search query
-      query=$(echo "" | rofi -dmenu -p "  Search")
+      # Prompt for search query with faster response
+      query=$(rofi -dmenu -i -p "  Search" -no-lazy-grab)
       
       if [ -n "$query" ]; then
         # URL encode the query
-        encoded=$(echo "$query" | sed 's/ /+/g')
+        encoded=$(printf %s "$query" | jq -sRr @uri)
         
-        # Show search options (DuckDuckGo first as default)
-        option=$(echo -e "DuckDuckGo\nGoogle\nWikipedia\nYouTube\nGitHub\nRust Docs\nCrates.io\nNPM\nReddit\nGoogle Translate\nGoogle Maps\nAmazon" | rofi -dmenu -p "󰍉 Search Engine")
+        # Show search options (DuckDuckGo first as default) with faster menu
+        option=$(printf "DuckDuckGo\nGoogle\nWikipedia\nYouTube\nGitHub\nRust Docs\nCrates.io\nNPM\nReddit\nGoogle Translate\nGoogle Maps\nAmazon" | rofi -dmenu -i -p "󰍉 Search Engine" -no-lazy-grab)
         
         case "$option" in
           "DuckDuckGo")
-            firefox "https://duckduckgo.com/?q=$encoded"
+            firefox "https://duckduckgo.com/?q=$encoded" &
             ;;
           "Google")
-            firefox "https://www.google.com/search?q=$encoded"
+            firefox "https://www.google.com/search?q=$encoded" &
             ;;
           "Wikipedia")
-            firefox "https://en.wikipedia.org/wiki/Special:Search?search=$encoded"
+            firefox "https://en.wikipedia.org/wiki/Special:Search?search=$encoded" &
             ;;
           "YouTube")
-            firefox "https://www.youtube.com/results?search_query=$encoded"
+            firefox "https://www.youtube.com/results?search_query=$encoded" &
             ;;
           "GitHub")
-            firefox "https://github.com/search?q=$encoded"
+            firefox "https://github.com/search?q=$encoded" &
             ;;
           "Rust Docs")
-            firefox "https://docs.rs/releases/search?query=$encoded"
+            firefox "https://docs.rs/releases/search?query=$encoded" &
             ;;
           "Crates.io")
-            firefox "https://crates.io/search?q=$encoded"
+            firefox "https://crates.io/search?q=$encoded" &
             ;;
           "NPM")
-            firefox "https://www.npmjs.com/search?q=$encoded"
+            firefox "https://www.npmjs.com/search?q=$encoded" &
             ;;
           "Reddit")
-            firefox "https://www.reddit.com/search/?q=$encoded"
+            firefox "https://www.reddit.com/search/?q=$encoded" &
             ;;
           "Google Translate")
-            firefox "https://translate.google.com/?sl=auto&tl=en&text=$encoded"
+            firefox "https://translate.google.com/?sl=auto&tl=en&text=$encoded" &
             ;;
           "Google Maps")
-            firefox "https://www.google.com/maps/search/$encoded"
+            firefox "https://www.google.com/maps/search/$encoded" &
             ;;
           "Amazon")
-            firefox "https://www.amazon.es/s?k=$encoded"
+            firefox "https://www.amazon.es/s?k=$encoded" &
             ;;
         esac
       fi
@@ -65,43 +65,46 @@
       NOTES_DIR="$HOME/.local/share/quick-notes"
       mkdir -p "$NOTES_DIR"
       
-      # Show options
-      option=$(echo -e "📝 New Note\n📋 View Notes\n🔍 Search Notes" | rofi -dmenu -p " Notes")
+      # Show options with faster response
+      option=$(printf "📝 New Note\n📋 View Notes\n🔍 Search Notes" | rofi -dmenu -i -p " Notes" -no-lazy-grab)
       
       case "$option" in
         "📝 New Note")
-          title=$(echo "" | rofi -dmenu -p "Note Title")
+          # Combined title and note input for faster workflow
+          title=$(rofi -dmenu -i -p "Note Title" -no-lazy-grab)
           if [ -n "$title" ]; then
-            note=$(echo "" | rofi -dmenu -p "Note Content")
+            note=$(rofi -dmenu -i -p "Note Content" -lines 5 -no-lazy-grab)
             if [ -n "$note" ]; then
               timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-              echo "[$timestamp] $title" >> "$NOTES_DIR/notes.txt"
-              echo "$note" >> "$NOTES_DIR/notes.txt"
-              echo "" >> "$NOTES_DIR/notes.txt"
-              rofi -e "Note saved!"
+              {
+                echo "[$timestamp] $title"
+                echo "$note"
+                echo ""
+              } >> "$NOTES_DIR/notes.txt"
+              notify-send "Note Saved" "$title" -t 2000
             fi
           fi
           ;;
         "📋 View Notes")
-          if [ -f "$NOTES_DIR/notes.txt" ]; then
-            alacritty -e less "$NOTES_DIR/notes.txt"
+          if [ -f "$NOTES_DIR/notes.txt" ] && [ -s "$NOTES_DIR/notes.txt" ]; then
+            alacritty -e less -R "$NOTES_DIR/notes.txt"
           else
-            rofi -e "No notes found"
+            notify-send "No Notes" "No notes found" -t 2000
           fi
           ;;
         "🔍 Search Notes")
-          if [ -f "$NOTES_DIR/notes.txt" ]; then
-            query=$(echo "" | rofi -dmenu -p "Search")
+          if [ -f "$NOTES_DIR/notes.txt" ] && [ -s "$NOTES_DIR/notes.txt" ]; then
+            query=$(rofi -dmenu -i -p "Search" -no-lazy-grab)
             if [ -n "$query" ]; then
-              result=$(grep -i "$query" "$NOTES_DIR/notes.txt")
+              result=$(grep -i "$query" "$NOTES_DIR/notes.txt" || echo "")
               if [ -n "$result" ]; then
-                echo "$result" | rofi -dmenu -p "Results"
+                echo "$result" | rofi -dmenu -i -p "Search Results" -no-lazy-grab
               else
-                rofi -e "No results found"
+                notify-send "No Results" "No matches found for: $query" -t 2000
               fi
             fi
           else
-            rofi -e "No notes found"
+            notify-send "No Notes" "No notes to search" -t 2000
           fi
           ;;
       esac

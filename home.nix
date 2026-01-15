@@ -33,7 +33,7 @@ in
   xresources.properties = {
     "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
   #   # "Xft.dpi" = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
-  #   "Xcursor.size" = 48;  # Larger cursor for HiDPI (doubled from 24)
+    "Xcursor.size" = 32;  # Larger cursor for better visibility
   #   "Xft.autohint" = 0;
   #   "Xft.lcdfilter" = "lcddefault";
   #   "Xft.hintstyle" = "hintfull";
@@ -49,6 +49,10 @@ in
     # QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays (commented out - was too large for some apps)
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
+    
+    # Clipmenu configuration
+    CM_LAUNCHER = "rofi";  # Use rofi as the menu launcher for clipmenu
+    CM_HISTLENGTH = "10";  # Keep last 10 clipboard items
   };
 
   # Qt configuration tool
@@ -58,6 +62,15 @@ in
     style.name = "adwaita-dark";
   };
   
+  # Cursor theme and size
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 32;  # Larger cursor for better visibility
+    x11.enable = true;
+    gtk.enable = true;
+  };
+
   # GTK scaling and theming (for GTK apps)
   gtk = {
     enable = true;
@@ -78,7 +91,7 @@ in
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
       gtk-fallback-icon-theme = "Adwaita";  # Fallback if icon not found in Papirus
-      # gtk-cursor-theme-size = 48;  # Doubled for HiDPI
+      gtk-cursor-theme-size = 32;  # Larger cursor for better visibility
       # gtk-xft-dpi = 9834;  # 96 * 1024
       # gtk-xft-dpi = 147456;  # 144 * 1024
       # gtk-xft-dpi = 196608;  # 192 * 1024 (commented out - was too large)
@@ -86,7 +99,7 @@ in
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
       gtk-fallback-icon-theme = "Adwaita";  # Fallback if icon not found in Papirus
-      # gtk-cursor-theme-size = 48;  # Doubled for HiDPI
+      gtk-cursor-theme-size = 32;  # Larger cursor for better visibility
     };
   };
 
@@ -386,8 +399,10 @@ in
     # System GUI tools
     blueman         # bluetooth manager GUI
     gparted         # GUI partition editor
+    gsimplecal      # lightweight calendar popup
 
     xclip           # clipboard utilities
+    xsel            # alternative clipboard utility (required by clipmenu)
     xdotool         # X11 automation for better VM integration
     flameshot       # screenshot tool
     clipmenu        # Clipboard manager with rofi integration
