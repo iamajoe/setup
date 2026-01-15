@@ -12,7 +12,7 @@ import os
 
 def create_bar(colors, terminal=None, browser=None):
     # Semantic color mappings
-    BG_COLOR = "00000000"  # Fully transparent
+    BG_COLOR = colors["bg"] 
     FG_COLOR = colors["fg"]
     ACTIVE_COLOR = colors["magenta"]  # Active workspace
     INACTIVE_COLOR = colors["gray"]   # Inactive workspaces
@@ -34,13 +34,13 @@ def create_bar(colors, terminal=None, browser=None):
     rounded_decoration = RectDecoration(
         radius=BORDER_RADIUS,
         filled=True,
-        colour=colors["bg"],  # Solid background for the bar section
+        colour=BG_COLOR,  # Solid background for the bar section
         padding_y=4,
         padding_x=12,
     )
 
     def spacer(length=8):
-        return widget.Spacer(length=length, background=BG_COLOR)
+        return widget.Spacer(length=length, background=colors["bg"])
 
     def flex_spacer():
         return widget.Spacer(background=BG_COLOR)
@@ -56,11 +56,11 @@ def create_bar(colors, terminal=None, browser=None):
             font=FONT,
             fontsize=FONT_SIZE + 2,
             foreground=INACTIVE_COLOR,
-            background=colors["bg"],
+            background=BG_COLOR,
             active=ACTIVE_COLOR,  # Active workspace
             inactive=INACTIVE_COLOR,  # Inactive workspaces
             highlight_method="block",
-            block_highlight_text_color=colors["bg"],  # Text color when selected
+            block_highlight_text_color=BG_COLOR,  # Text color when selected
             this_current_screen_border=ACTIVE_COLOR,  # Selected workspace background
             this_screen_border=ACTIVE_COLOR,
             urgent_alert_method="block",
@@ -80,8 +80,8 @@ def create_bar(colors, terminal=None, browser=None):
             font=FONT,
             fontsize=ICON_SIZE,
             foreground=SUCCESS_COLOR,
-            background=colors["bg"],
-            padding=2,
+            background=BG_COLOR,
+            padding=6,
             func=lambda: "󰖁" if subprocess.run(
                 ["pamixer", "--get-mute"],
                 capture_output=True,
@@ -100,13 +100,14 @@ def create_bar(colors, terminal=None, browser=None):
             font=FONT,
             fontsize=ICON_SIZE,
             foreground=SUCCESS_COLOR,
-            background=colors["bg"],
-            padding=2,
+            background=BG_COLOR,
+            padding=6,
             func=lambda: "󰍭" if subprocess.run(
                 ["pamixer", "--default-source", "--get-mute"],
                 capture_output=True,
                 text=True
-            ).stdout.strip() == "true" else "󰍮",
+            ).stdout.strip() == "true" else "󰍬",
+            # ).stdout.strip() == "true" else "󰍮",
             update_interval=1,
             mouse_callbacks={
                 "Button1": lambda: subprocess.Popen(["pamixer", "--default-source", "--toggle-mute"]),
@@ -121,7 +122,7 @@ def create_bar(colors, terminal=None, browser=None):
             icon_size=ICON_SIZE,
             icon_theme="Papirus-Dark",
             padding=8,
-            background=colors["bg"],
+            background=BG_COLOR,
             decorations=[rounded_decoration],
         ),
         spacer(12),
@@ -130,7 +131,7 @@ def create_bar(colors, terminal=None, browser=None):
         widget.Systray(
             icon_size=ICON_SIZE,
             padding=8,
-            background=colors["bg"],
+            background=BG_COLOR,
             decorations=[rounded_decoration],
         ),
 
@@ -141,7 +142,7 @@ def create_bar(colors, terminal=None, browser=None):
             font=FONT,
             fontsize=FONT_SIZE,
             foreground=FG_COLOR,
-            background=colors["bg"],
+            background=BG_COLOR,
             format="%H:%M",
             decorations=[rounded_decoration],
         ),
@@ -151,7 +152,7 @@ def create_bar(colors, terminal=None, browser=None):
             font=FONT,
             fontsize=FONT_SIZE, 
             foreground=INACTIVE_COLOR,
-            background=colors["bg"],
+            background=BG_COLOR,
             format="%a %b %d",
             mouse_callbacks={
                 "Button1": lambda: subprocess.Popen(["gsimplecal"]),
@@ -168,8 +169,8 @@ def create_bar(colors, terminal=None, browser=None):
     return bar.Bar(
         widgets,
         BAR_SIZE,
-        background=BG_COLOR,  # Transparent bar background
+        background="00000000",  # Transparent bar background
         margin=[8, 100, 0, 100],  # top, right, bottom, left margins (centered with side margins)
         border_width=0,
-        border_color=BG_COLOR,
+        border_color="00000000",
     )
