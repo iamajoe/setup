@@ -146,13 +146,13 @@ def init_top_widget_list():
     return [
         # Workspace/group indicator - shows workspaces 1-9 and highlights active one
         widget.GroupBox(
-            active=colors["cyan"],
+            active=colors["white"],
             inactive=colors["gray"],
             highlight_method="line",
-            this_current_screen_border=colors["yellow"],
-            this_screen_border=colors["yellow"],
-            other_current_screen_border=colors["yellow"],
-            other_screen_border=colors["yellow"],
+            this_current_screen_border=colors["magenta"],
+            this_screen_border=colors["magenta"],
+            other_current_screen_border=colors["magenta"],
+            other_screen_border=colors["magenta"],
             urgent_border=colors["red"],
             background=colors["bg"],
             disable_drag=True,
@@ -256,7 +256,7 @@ def init_top_widget_list():
         ),
         # New version (qtile-extras StatusNotifier with filtering):
         widget_extras.StatusNotifier(
-            icon_size=28,
+            icon_size=22,
             padding=8,
             # Filter out blueman-applet since we have dedicated Bluetooth widget
             # Also commonly filter: nm-applet (if using dedicated network widget)
@@ -266,15 +266,15 @@ def init_top_widget_list():
         ),
         widget.KeyboardLayout(
             configured_keyboards=["us", "pt"],
-            foreground=colors["magenta"],
+            foreground=colors["yellow"],
             fmt="󰌌 {}",
-            fontsize=18,
+            fontsize=20,
         ),
         widget.Sep(foreground=colors["gray"], padding=10),
         # Automatic layout-specific icons:
         widget_extras.CurrentLayoutIcon(
             use_mask=True,  # Allows the icon to be colored
-            foreground=colors["cyan"],
+            foreground=colors["yellow"],
             scale=0.4,
             padding=8,
         ),
@@ -331,7 +331,7 @@ floating_layout = layout.Floating(
 
 dgroups_key_binder = None
 dgroups_app_rules = []
-follow_mouse_focus = True
+follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
 
