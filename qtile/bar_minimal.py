@@ -109,8 +109,8 @@ def create_bar(colors, terminal=None, browser=None):
             mode="both",
             popup_hide_timeout=2,
             popup_show_args="above",
-            # Icon theme for the popup (NixOS path)
-            theme_path=f"{os.path.expanduser('~')}/.nix-profile/share/icons/Papirus-Dark",
+            # Icon theme for the popup (NixOS Home Manager path)
+            theme_path=f"{os.path.expanduser('~')}/.local/state/home-manager/gcroots/current-home/home-path/share/icons/Papirus-Dark",
             mouse_callbacks={
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
