@@ -66,7 +66,7 @@ def create_bar(colors, terminal=None, browser=None):
             urgent_alert_method="block",
             urgent_border=colors["red"],
             borderwidth=0,
-            padding=8,
+            padding=12,
             margin_x=0,
             margin_y=4,
             rounded=True,
@@ -75,27 +75,13 @@ def create_bar(colors, terminal=None, browser=None):
         ),
         spacer(12),
 
-        # Volume
-        widget_extras.PulseVolumeExtra(
-            font=FONT,
-            fontsize=FONT_SIZE - 2,
-            foreground=WARNING_COLOR,
-            background=colors["bg"],
-            unmute_format="󰕾",
-            mute_format="󰖁",
-            update_interval=0.2,
-            mouse_callbacks={
-                "Button3": lambda: subprocess.Popen(["pavucontrol"]),
-            },
-            decorations=[rounded_decoration],
-        ),
-
         # Volume mute toggle
         widget.GenPollText(
             font=FONT,
             fontsize=ICON_SIZE,
             foreground=SUCCESS_COLOR,
-            background="00000000",
+            background=colors["bg"],
+            padding=2
             func=lambda: "󰖁" if subprocess.run(
                 ["pamixer", "--get-mute"],
                 capture_output=True,
@@ -114,12 +100,13 @@ def create_bar(colors, terminal=None, browser=None):
             font=FONT,
             fontsize=ICON_SIZE,
             foreground=SUCCESS_COLOR,
-            background="00000000",
-            func=lambda: " 󰍭" if subprocess.run(
+            background=colors["bg"],
+            padding=2
+            func=lambda: "󰍭" if subprocess.run(
                 ["pamixer", "--default-source", "--get-mute"],
                 capture_output=True,
                 text=True
-            ).stdout.strip() == "true" else " 󰍮",
+            ).stdout.strip() == "true" else "󰍮",
             update_interval=1,
             mouse_callbacks={
                 "Button1": lambda: subprocess.Popen(["pamixer", "--default-source", "--toggle-mute"]),
@@ -131,9 +118,9 @@ def create_bar(colors, terminal=None, browser=None):
 
         # Status Notifier (icons like Bluetooth, etc.)
         widget_extras.StatusNotifier(
-            icon_size=ICON_SIZE - 2,
+            icon_size=ICON_SIZE,
             icon_theme="Papirus-Dark",
-            padding=4,
+            padding=8,
             background=colors["bg"],
             decorations=[rounded_decoration],
         ),
@@ -141,8 +128,8 @@ def create_bar(colors, terminal=None, browser=None):
 
         # System Tray
         widget.Systray(
-            icon_size=ICON_SIZE - 2,
-            padding=4,
+            icon_size=ICON_SIZE,
+            padding=8,
             background=colors["bg"],
             decorations=[rounded_decoration],
         ),
@@ -162,7 +149,7 @@ def create_bar(colors, terminal=None, browser=None):
         # Date
         widget.Clock(
             font=FONT,
-            fontsize=FONT_SIZE - 2,
+            fontsize=FONT_SIZE, 
             foreground=INACTIVE_COLOR,
             background=colors["bg"],
             format="%a %b %d",
