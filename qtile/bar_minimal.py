@@ -41,7 +41,7 @@ def create_bar(colors, terminal=None, browser=None):
 
     def spacer(length=8):
         return widget.Spacer(length=length, background=BG_COLOR)
-    
+
     def fixed_spacer(width):
         return widget.TextBox(
             text="",
@@ -60,6 +60,14 @@ def create_bar(colors, terminal=None, browser=None):
         flex_spacer_transparent(),
 
         # ========== CENTERED BAR CONTENT ==========
+
+        widget.TextBox(
+            text=""
+            padding=0
+            fontsize=30
+            background=BG_COLOR,
+            background="00000000",
+        ),
 
         fixed_spacer(50),
 
@@ -160,6 +168,14 @@ def create_bar(colors, terminal=None, browser=None):
         ),
 
         fixed_spacer(50),
+
+        widget.TextBox(
+            text=""
+            padding=0
+            fontsize=30
+            background=BG_COLOR,
+            background="00000000",
+        ),
 
         # ========== END CENTERED CONTENT ==========
 
