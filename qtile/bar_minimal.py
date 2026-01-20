@@ -64,12 +64,12 @@ def create_bar(colors, terminal=None, browser=None):
         widget.TextBox(
             text="",
             padding=0,
-            fontsize=30,
+            fontsize=34,
             foreground=BG_COLOR,
             background="00000000",
         ),
 
-        fixed_spacer(50),
+        fixed_spacer(30),
 
         # Workspace indicators (numbers only)
         widget.GroupBox(
@@ -167,12 +167,12 @@ def create_bar(colors, terminal=None, browser=None):
             },
         ),
 
-        fixed_spacer(50),
+        fixed_spacer(30),
 
         widget.TextBox(
             text="",
             padding=0,
-            fontsize=30,
+            fontsize=34,
             foreground=BG_COLOR,
             background="00000000",
         ),
