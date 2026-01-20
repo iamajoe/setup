@@ -65,7 +65,7 @@ def create_bar(colors, terminal=None, browser=None):
             text="",
             padding=0,
             fontsize=30,
-            background=BG_COLOR,
+            foreground=BG_COLOR,
             background="00000000",
         ),
 
@@ -173,7 +173,7 @@ def create_bar(colors, terminal=None, browser=None):
             text="",
             padding=0,
             fontsize=30,
-            background=BG_COLOR,
+            foreground=BG_COLOR,
             background="00000000",
         ),
 
