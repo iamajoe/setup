@@ -99,8 +99,8 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=FONT_SIZE,
             foreground=INACTIVE_COLOR,
             background="00000000",
-            padding=30,
-            width=300,
+            padding=50,
+            width=400,
         ),
         spacer(12),
 
