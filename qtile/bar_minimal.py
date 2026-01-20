@@ -170,9 +170,9 @@ def create_bar(colors, terminal=None, browser=None):
         fixed_spacer(50),
 
         widget.TextBox(
-            text=""
-            padding=0
-            fontsize=30
+            text="",
+            padding=0,
+            fontsize=30,
             background=BG_COLOR,
             background="00000000",
         ),
