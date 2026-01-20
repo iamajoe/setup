@@ -62,7 +62,7 @@ def create_bar(colors, terminal=None, browser=None):
         # ========== CENTERED BAR CONTENT ==========
 
         widget.TextBox(
-            text=""
+            text="",
             padding=0,
             fontsize=30,
             background=BG_COLOR,
