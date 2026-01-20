@@ -110,7 +110,7 @@
         };
         normal = {
           family = "NotoSansM Nerd Font";
-          style = "Light";
+          style = "Regular";
         };
         bold = {
           family = "NotoSansM Nerd Font";

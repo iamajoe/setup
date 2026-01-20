@@ -63,8 +63,8 @@ def create_bar(colors, terminal=None, browser=None):
 
         widget.TextBox(
             text=""
-            padding=0
-            fontsize=30
+            padding=0,
+            fontsize=30,
             background=BG_COLOR,
             background="00000000",
         ),
