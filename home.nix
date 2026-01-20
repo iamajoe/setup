@@ -421,10 +421,10 @@ in
     pamixer # CLI audio mixer for PipeWire/PulseAudio
     playerctl # CLI media player controller (MPRIS)
     sublime-merge # git helper interface
-    tidal-hifi # Tidal music streaming desktop app
+    spotify # music streaming desktop app
     vlc # VLC media player
     stripe-cli
-    
+
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
     code-cursor # Cursor

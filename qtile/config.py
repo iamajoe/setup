@@ -136,7 +136,7 @@ dgroups_app_rules = [
     Rule(Match(wm_class=terminal), group="1"),
     Rule(Match(wm_class=browser), group="2"),
     Rule(Match(wm_class="google-chrome"), group="3"),
-    Rule(Match(wm_class="tidal-hifi"), group="8"),
+    Rule(Match(wm_class="spotify"), group="8"),
     Rule(Match(wm_class="discord"), group="8"),
     Rule(Match(wm_class="slack"), group="8"),
     Rule(Match(wm_class="steam"), group="9"),
