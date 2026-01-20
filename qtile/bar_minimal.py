@@ -64,7 +64,7 @@ def create_bar(colors, terminal=None, browser=None):
         widget.TextBox(
             text="",
             padding=0,
-            fontsize=34,
+            fontsize=38,
             foreground=BG_COLOR,
             background="00000000",
         ),
@@ -96,9 +96,11 @@ def create_bar(colors, terminal=None, browser=None):
 
         widget.WindowName(
             font=FONT,
+            fontsize=FONT_SIZE,
             foreground=INACTIVE_COLOR,
             background="00000000",
-            padding=14,
+            padding=30,
+            width=300,
         ),
         spacer(12),
 
@@ -180,7 +182,7 @@ def create_bar(colors, terminal=None, browser=None):
         widget.TextBox(
             text="",
             padding=0,
-            fontsize=34,
+            fontsize=38,
             foreground=BG_COLOR,
             background="00000000",
         ),
