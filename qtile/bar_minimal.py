@@ -94,6 +94,14 @@ def create_bar(colors, terminal=None, browser=None):
         ),
         spacer(12),
 
+        widget.WindowName(
+            font=FONT,
+            foreground=INACTIVE_COLOR,
+            background="00000000",
+            padding=14,
+        ),
+        spacer(12),
+
         # Volume mute toggle
         widget.GenPollText(
             font=FONT,
