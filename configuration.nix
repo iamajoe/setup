@@ -140,7 +140,6 @@ in
     open = false; # proprietary driver (set to true for open-source)
     nvidiaSettings = true; # nvidia-settings tool
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    open = false; # keep proprietary for GTX 1060
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
