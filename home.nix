@@ -426,6 +426,7 @@ in
     spotify # music streaming desktop app
     vlc # VLC media player
     stripe-cli
+    rpi-imager # raspberry pi sd card installer
 
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
@@ -441,7 +442,7 @@ in
     nerd-fonts.zed-mono
     nerd-fonts.jetbrains-mono
     font-awesome  # Font Awesome 6 Free (includes Solid, Regular, Brands)
-    
+
     # Icon themes
     papirus-icon-theme  # Primary icon theme (Papirus-Dark variant)
     adwaita-icon-theme  # Fallback icon theme
