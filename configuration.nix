@@ -142,6 +142,8 @@ in
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  hardware.opengl.enable = true;
+
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.${buildEnv.username} = {
     isNormalUser = true;
@@ -172,7 +174,8 @@ in
   # ─── USB & STORAGE ───────────────────────────────────────────────────
   services.udisks2.enable = true; # disk management service
   services.gvfs.enable = true; # virtual filesystem (for USB automount in file managers)
-  
+  security.polkit.enable = true;
+
   # Filesystem support for various storage types
   boot.supportedFilesystems = [ 
     "ntfs"      # Windows NTFS

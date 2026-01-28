@@ -3,7 +3,8 @@
 {
   services.picom = {
     enable = true;
-    backend = "glx";
+    # backend = "glx";
+    backend = "xrender";
     vSync = true;  # Prevent screen tearing
 
     # Disable all animations and effects
@@ -33,7 +34,7 @@
       detect-transient = true;
       use-damage = true;
       log-level = "warn";
-      
+
       # Additional performance settings
       unredir-if-possible = true;  # Disable compositor for fullscreen windows
       glx-no-stencil = true;
