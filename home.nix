@@ -386,6 +386,8 @@ in
     p7zip # 7z archive support
     zip   # create zip files
 
+    appimage-run # runs AppImage
+
     ####################
     # GUI RELATED
 
