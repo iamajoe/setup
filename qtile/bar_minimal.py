@@ -144,6 +144,23 @@ def create_bar(colors, terminal=None, browser=None):
         ),
         spacer(12),
 
+        # Restart servers
+        widget.TextBox(
+            font=FONT,
+            fontsize=ICON_SIZE,
+            foreground=colors["yellow"],
+            background=BG_COLOR,
+            text="",
+            padding=10,
+            mouse_callbacks={
+                "Button1": lambda: (
+                    subprocess.Popen(["pulseaudio", "-k"]),
+                    qtile.cmd_reload_config(),
+                ),
+            },
+        ),
+        spacer(12),
+
         # Status Notifier (icons like Bluetooth, etc.)
         widget_extras.StatusNotifier(
             icon_size=ICON_SIZE,
