@@ -142,7 +142,6 @@ def create_bar(colors, terminal=None, browser=None):
                 "Button3": lambda: subprocess.Popen(["pavucontrol"]),
             },
         ),
-        spacer(12),
 
         # Restart servers
         widget.TextBox(
@@ -154,7 +153,15 @@ def create_bar(colors, terminal=None, browser=None):
             padding=10,
             mouse_callbacks={
                 "Button1": lambda: (
-                    subprocess.Popen(["pulseaudio", "-k"]),
+                    # restart audio server
+                    subprocess.Popen([
+                        "systemctl",
+                        "--user",
+                        "restart",
+                        "pipewire",
+                        "pipewire-pulse",
+                        "wireplumber",
+                    ]),
                     qtile.cmd_reload_config(),
                 ),
             },

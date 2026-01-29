@@ -142,8 +142,6 @@ in
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  hardware.opengl.enable = true;
-
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.${buildEnv.username} = {
     isNormalUser = true;
@@ -257,7 +255,12 @@ in
   # };
 
   services.openssh.enable = true;
-  
+
+  # try to fix audio mic shutting down disabling the usb autosuspend
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"
+  '';
+
   # ─── FIREWALL ──────────────────────────────────────────────
   networking.firewall.allowedTCPPorts = [ 
     8384 # syncthing web gui
@@ -266,7 +269,7 @@ in
   networking.firewall.allowedUDPPorts = [
     21116 # rustdesk
   ];
-  
+
   # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
   services.fstrim.enable = true; # Automatic SSD TRIM (weekly)
 
