@@ -37,7 +37,6 @@
 
   outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
-    # Local overlay: Neovim 0.12 with overrides fixed for current nixpkgs (no "lua" arg).
     overlays = [
       (import ./nix/overlays/neovim-0.12.nix { neovim-src = inputs.neovim-src; })
     ];
