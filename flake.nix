@@ -27,10 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Neovim 0.12 source for our local overlay (nix/overlays/neovim-0.12.nix)
+    # Neovim: use "nightly" for prerelease from GitHub releases, or "master" for tip of master.
+    # Update: nix flake lock --update-input neovim-src
     neovim-src = {
-      url = "github:neovim/neovim";
-      ref = "refs/tags/v0.12.0";
+      url = "github:neovim/neovim/nightly";
       flake = false;
     };
   };
@@ -38,7 +38,7 @@
   outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
     overlays = [
-      (import ./nix/overlays/neovim-0.12.nix { neovim-src = inputs.neovim-src; })
+      (import ./nix/overlays/neovim-nightly.nix { neovim-src = inputs.neovim-src; })
     ];
     buildEnv =
       let
