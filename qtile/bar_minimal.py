@@ -173,12 +173,10 @@ def create_bar(colors, terminal=None, browser=None):
             fontsize=ICON_SIZE,
             foreground=colors["yellow"],
             background=colors["cyan"],
-            text="",
+            text="󱝯",
             padding=10,
             mouse_callbacks={
-                "Button1": lambda: (
-                    qtile.cmd_spawn("firefox --new-tab http://localhost:8384")
-                ),
+                "Button1": lambda: qtile.cmd_spawn("firefox --new-tab http://localhost:8384")
             },
         ),
         spacer(12),
