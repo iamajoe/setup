@@ -76,7 +76,8 @@ in
     xkb = {
       layout = "us,pt";  # Multiple layouts: US English and Portuguese
       variant = "";
-      # options = "grp:alt_shift_toggle";  # Alt+Shift to switch layouts
+      options = "ctrl:nocaps";  # Caps Lock acts as Control
+      # options = "grp:alt_shift_toggle,ctrl:nocaps";  # Alt+Shift to switch layouts + Caps→Ctrl
     };
 
     windowManager.qtile = {
