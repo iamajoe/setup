@@ -27,15 +27,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
+    # Neovim 0.12 source for our local overlay (nix/overlays/neovim-0.12.nix)
+    neovim-src = {
+      url = "github:neovim/neovim";
+      ref = "refs/tags/v0.12.0";
+      flake = false;
     };
   };
 
   outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
+    # Local overlay: Neovim 0.12 with overrides fixed for current nixpkgs (no "lua" arg).
     overlays = [
-      inputs.neovim-nightly-overlay.overlays.default
+      (import ./nix/overlays/neovim-0.12.nix { neovim-src = inputs.neovim-src; })
     ];
     buildEnv =
       let
