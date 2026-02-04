@@ -427,6 +427,7 @@ in
     vlc # VLC media player
     stripe-cli
     rpi-imager # raspberry pi sd card installer
+    freecad
 
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
