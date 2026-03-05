@@ -1,0 +1,34 @@
+# Language-specific overrides mirroring nvim's global expandtab/tabstop = 2 for
+# web/scripting languages, while keeping language-standard indent for Go and Rust.
+
+# [[language]]
+# name = "typescript"
+# indent = { tab-width = 2, unit = "  " }
+# auto-format = true
+
+# [[language]]
+# name = "tsx"
+# indent = { tab-width = 2, unit = "  " }
+# auto-format = true
+
+# [[language]]
+# name = "javascript"
+# indent = { tab-width = 2, unit = "  " }
+# auto-format = true
+
+# [[language]]
+# name = "jsx"
+# indent = { tab-width = 2, unit = "  " }
+# auto-format = true
+
+# Go uses gofmt which enforces tabs; keep standard tab-width = 4
+# [[language]]
+# name = "go"
+# indent = { tab-width = 4, unit = "\t" }
+# auto-format = true
+
+# rustfmt uses 4-space indent
+# [[language]]
+# name = "rust"
+# indent = { tab-width = 4, unit = "    " }
+# auto-format = true

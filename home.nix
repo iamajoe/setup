@@ -49,7 +49,7 @@ in
     # QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays (commented out - was too large for some apps)
     # Force dark mode for various toolkits
     GTK_THEME = "Adwaita:dark";
-    
+
     # Clipmenu configuration
     CM_LAUNCHER = "rofi";  # Use rofi as the menu launcher for clipmenu
     CM_HISTLENGTH = "10";  # Keep last 10 clipboard items
@@ -61,7 +61,7 @@ in
     platformTheme.name = "adwaita";
     style.name = "adwaita-dark";
   };
-  
+
   # Cursor theme and size
   home.pointerCursor = {
     name = "Adwaita";
@@ -166,14 +166,11 @@ in
     # Enable oh-my-zsh
     oh-my-zsh = {
       enable = true;
-      plugins = [ 
-        "git" 
-        "sudo" 
-        "docker" 
-        "kubectl" 
-        "terraform"
+      plugins = [
+        "git"
+        "sudo"
+        "docker"
         "colorize"
-        "aws"
         "tmux"
       ];
       theme = "robbyrussell";  # or "agnoster", "powerlevel10k/powerlevel10k", etc.
@@ -244,10 +241,19 @@ in
       source-file /home/${buildEnv.username}/.config/tmux/main.conf
     '';
   };
-  
+
   # Tmux configuration files
   home.file.".config/tmux/main.conf".source = ./tmux/main.conf;
   home.file.".config/tmux/catppuccin.theme".source = ./tmux/catppuccin.theme;
+
+  programs.helix = {
+    enable = true;
+  };
+
+  # Helix configuration files
+  home.file.".config/helix/config.toml".source = ./helix/config.toml;
+  home.file.".config/helix/languages.toml".source = ./helix/languages.toml;
+  home.file.".config/helix/themes".source = ./helix/themes;
 
   programs.git = {
     enable = true;
@@ -256,7 +262,7 @@ in
       user.name = buildEnv.userFullname;
       user.email = buildEnv.userEmail;
       init.defaultBranch = "main";
-      core.editor = "nvim";
+      core.editor = "hx";
       color.ui = "auto";
       pull.rebase = false;
       pager.branch = false;
@@ -277,7 +283,7 @@ in
       color_theme = "catppuccin_mocha";
     };
   };
-  
+
   # Better git diffs with delta
   programs.delta = {
     enable = true;
@@ -319,8 +325,35 @@ in
     enable = true;
     enableZshIntegration = true; # or Bash/Fish/Nushell
     settings = {
+      opener = {
+        open = [
+          { run = "open %s1"; orphan = true; for = "macos"; desc = "Open (default app)"; }
+          { run = "xdg-open %s1"; orphan = true; for = "linux"; desc = "Open (default app)"; }
+        ];
+        edit = [
+          { run = "/Users/joel/.cargo/bin/hx %s"; block = true; for = "macos"; }
+          { run = "nvim %s"; block = true; for = "linux"; }
+        ];
+      };
+      open = {
+        prepend_rules = [
+          { mime = "image/*"; use = "open"; }
+          { mime = "application/pdf"; use = "open"; }
+          { mime = "video/*"; use = "open"; }
+          { mime = "audio/*"; use = "open"; }
+          { mime = "application/zip"; use = "open"; }
+        ];
+        rules = [
+          { mime = "application/json"; use = "edit"; }
+          { mime = "text/*"; use = "edit"; }
+          { name = "*.md"; use = "edit"; }
+          { name = "*.yml"; use = "edit"; }
+          { name = "*.txt"; use = "edit"; }
+          { name = "*.json"; use = "edit"; }
+        ];
+      };
       mgr = {
-        show_hidden = false;
+        show_hidden = true;
         sort_by = "mtime";
       };
     };
@@ -448,7 +481,7 @@ in
     # Icon themes
     papirus-icon-theme  # Primary icon theme (Papirus-Dark variant)
     adwaita-icon-theme  # Fallback icon theme
-  ]) 
+  ])
   # x86_64-only packages (GPU tools and packages not available on aarch64)
   ++ (with pkgs; lib.optionals isX86_64 [
     # GPU & Graphics tools (x86_64-specific)
