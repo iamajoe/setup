@@ -18,7 +18,7 @@ in
     ./programs/dunst.nix
     ./programs/picom.nix
     ./programs/firefox.nix
-    ./programs/rustdesk.nix
+    # ./programs/rustdesk.nix
   ];
 
   home.username = buildEnv.username;
@@ -112,6 +112,9 @@ in
 
     matchBlocks."*" = {
       identityFile = "~/.ssh/id_rsa";
+      extraOptions = {
+        AddKeysToAgent = "yes";
+      };
     };
 
     matchBlocks."github.com" = {
