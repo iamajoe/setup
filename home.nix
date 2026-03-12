@@ -310,8 +310,7 @@ in
         echo "Warning: Failed to update Neovim config, keeping existing version"
       fi
     else
-      echo "Cloning Neovim config..."
-      "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR" || echo "Warning: Failed to clone Neovim config"
+      echo "Cloning Neovim config..." "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR" || echo "Warning: Failed to clone Neovim config"
     fi
   '';
 
@@ -403,6 +402,8 @@ in
     lua-language-server
     nodejs
     typescript-language-server
+    eslint
+    prettier
     vscode-langservers-extracted  # includes eslint, html, css, json language servers
     zig
     zola
