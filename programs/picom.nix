@@ -37,8 +37,6 @@
 
       # Additional performance settings
       unredir-if-possible = true;  # Disable compositor for fullscreen windows
-      glx-no-stencil = true;
-      glx-no-rebind-pixmap = true;
     };
   };
 }
