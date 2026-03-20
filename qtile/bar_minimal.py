@@ -4,6 +4,7 @@ A sleek, centered bar with only essential widgets
 """
 
 from libqtile import bar, widget
+from libqtile.lazy import lazy
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
 import subprocess
@@ -12,7 +13,7 @@ import os
 
 def create_bar(colors, terminal=None, browser=None):
     # Semantic color mappings
-    BG_COLOR = colors["bg"] 
+    BG_COLOR = colors["bg"]
     FG_COLOR = colors["fg"]
     ACTIVE_COLOR = colors["magenta"]  # Active workspace
     INACTIVE_COLOR = colors["gray"]   # Inactive workspaces
@@ -193,6 +194,20 @@ def create_bar(colors, terminal=None, browser=None):
             icon_size=ICON_SIZE,
             padding=10,
             background=BG_COLOR,
+        ),
+
+        spacer(12),
+
+        # Keyboard / locale switcher
+        widget.KeyboardLayout(
+            font=FONT,
+            fontsize=FONT_SIZE,
+            foreground=FG_COLOR,
+            background=BG_COLOR,
+            configured_keyboards=["us", "pt"],
+            mouse_callbacks={
+                "Button1": lazy.widget["keyboardlayout"].next_keyboard(),
+            },
         ),
 
         spacer(12),

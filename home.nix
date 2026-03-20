@@ -326,6 +326,7 @@ in
   programs.yazi = {
     enable = true;
     enableZshIntegration = true; # or Bash/Fish/Nushell
+    shellWrapperName = "y";
     settings = {
       opener = {
         open = [
@@ -374,8 +375,6 @@ in
   home.file.".config/qtile/shortcuts.txt".source = ./qtile/shortcuts.txt;
   home.file.".config/qtile/keyboard-layout.txt".source = ./qtile/keyboard-layout.txt;
   # Modular bar configurations
-  home.file.".config/qtile/bar_default.py".source = ./qtile/bar_default.py;
-  home.file.".config/qtile/bar_rounded.py".source = ./qtile/bar_rounded.py;
   home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
   #
