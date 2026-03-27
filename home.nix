@@ -78,6 +78,7 @@ in
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;
     };
+
     # OLD ICON THEME (Adwaita)
     # iconTheme = {
     #   name = "Adwaita";
@@ -96,6 +97,7 @@ in
       # gtk-xft-dpi = 147456;  # 144 * 1024
       # gtk-xft-dpi = 196608;  # 192 * 1024 (commented out - was too large)
     };
+    gtk4.theme = null;
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
       gtk-fallback-icon-theme = "Adwaita";  # Fallback if icon not found in Papirus
@@ -466,7 +468,7 @@ in
     freecad # 3d cad program
     kicad # electronics cad program
     orca-slicer # 3d printer slicer
-    transmission # bittorrent client
+    transmission_4-gtk # bittorrent client
 
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
