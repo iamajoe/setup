@@ -465,6 +465,8 @@ in
     rpi-imager # raspberry pi sd card installer
     freecad # 3d cad program
     kicad # electronics cad program
+    orca-slicer # 3d printer slicer
+    transmission # bittorrent client
 
     # Additional editors (not default, but available when needed)
     sublime4 # Sublime Text editor
