@@ -365,8 +365,10 @@ in
   };
 
   #
-  # ─── GUI ────────────────────────────────────────────────────────────────
+  # ─── DE ────────────────────────────────────────────────────────────────
   #
+
+  home.file.".xinitrc".source = ./x/xinitrc;
 
   # Qtile configuration
   home.file.".config/qtile/config.py".source = ./qtile/config.py;

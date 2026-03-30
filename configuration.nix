@@ -67,11 +67,6 @@ in
     # dpi = 144;  # 1.5x scaling for HiDPI displays
     # dpi = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
 
-    # GPU drivers
-    videoDrivers =
-      if isParallels then [ "modesetting" ]
-      else lib.optionals isX86_64 [ "nvidia" ];
-
     # Configure keymap in X11
     xkb = {
       layout = "us,pt";  # Multiple layouts: US English and Portuguese
@@ -98,26 +93,23 @@ in
     ];
   };
 
-  services.displayManager = {
-    ly.enable = false; # auto login going in
-    defaultSession = "qtile";
-    ly.settings = {
-      save = true;               # Save last session/user choice
-      save_file = "/var/cache/ly/save";
-    };
-  };
-
-  # code to run startx automatically
-  environment.loginShellInit = ''
-    if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-      exec startx
-    fi
-  '';
+  # auto login going in
+  services.displayManager.ly.enable = false;
+  # services.displayManager = {
+  #   ly.enable = true;
+  #   defaultSession = "qtile";
+  #   ly.settings = {
+  #     save = true;               # Save last session/user choice
+  #     save_file = "/var/cache/ly/save";
+  #   };
+  # };
 
   # Ensure ly save directory exists
   systemd.tmpfiles.rules = [
     "d /var/cache/ly 0755 root root -"
   ];
+
+  services.getty.autologinUser = buildEnv.username;
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support
@@ -141,14 +133,14 @@ in
   ];
 
   # NVIDIA-specific configuration (x86_64 only)
-  hardware.nvidia = lib.mkIf isX86_64 {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false; # proprietary driver (set to true for open-source)
-    nvidiaSettings = true; # nvidia-settings tool
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
+  # hardware.nvidia = lib.mkIf isX86_64 {
+  #   modesetting.enable = true;
+  #   powerManagement.enable = false;
+  #   powerManagement.finegrained = false;
+  #   open = false; # proprietary driver (set to true for open-source)
+  #   nvidiaSettings = true; # nvidia-settings tool
+  #   package = config.boot.kernelPackages.nvidiaPackages.stable;
+  # };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.${buildEnv.username} = {
@@ -158,7 +150,6 @@ in
     packages = with pkgs; [];
     shell = pkgs.zsh;  # Set zsh as default shell
   };
-  services.getty.autologinUser = buildEnv.username;
 
   # ─── AUDIO ───────────────────────────────────────────────────────────
   # PipeWire (modern audio, replaces PulseAudio + JACK)
