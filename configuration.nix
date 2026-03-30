@@ -11,12 +11,12 @@ in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  
+
   # Reduce USB error spam on console (hide info/debug messages)
   boot.consoleLogLevel = 3;
-  
+
   # Try to fix USB timeout issues
-  boot.kernelParams = [ 
+  boot.kernelParams = [
     "usbcore.autosuspend=-1"  # Disable USB autosuspend
   ];
 
@@ -41,8 +41,8 @@ in
   # ─── CLI ───────────────────────────────────────────────────────────
 
   programs.zsh.enable = true;
-  programs.neovim.enable = true;
-  
+  # programs.neovim.enable = true;
+
   # Create /bin/sh and /bin/zsh symlinks for compatibility
   environment.binsh = "${pkgs.bash}/bin/sh";
   environment.pathsToLink = [ "/bin" ];
@@ -68,7 +68,7 @@ in
     # dpi = 192;  # 2x scaling for HiDPI displays (commented out - was too large)
 
     # GPU drivers
-    videoDrivers = 
+    videoDrivers =
       if isParallels then [ "modesetting" ]
       else lib.optionals isX86_64 [ "nvidia" ];
 
@@ -183,7 +183,7 @@ in
   security.polkit.enable = true;
 
   # Filesystem support for various storage types
-  boot.supportedFilesystems = [ 
+  boot.supportedFilesystems = [
     "ntfs"      # Windows NTFS
     "exfat"     # exFAT (USB drives, SD cards)
     "vfat"      # FAT32
@@ -196,7 +196,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
-  
+
   # Allow insecure packages (required for some Electron apps like Discord/Slack)
   nixpkgs.config.permittedInsecurePackages = [
     "openssl-1.1.1w"
@@ -270,7 +270,7 @@ in
   '';
 
   # ─── FIREWALL ──────────────────────────────────────────────
-  networking.firewall.allowedTCPPorts = [ 
+  networking.firewall.allowedTCPPorts = [
     8384 # syncthing web gui
     21115 21116 21117 21118 21119 # rustdesk
   ];
@@ -288,8 +288,8 @@ in
 
   # ─── PRINTING ────────────────────────────────────────────────────────
   services.printing.enable = true;
-  services.printing.drivers = with pkgs; [ 
-    gutenprint 
+  services.printing.drivers = with pkgs; [
+    gutenprint
     hplip # HP printers
     epson-escpr # Epson printers
   ];
@@ -309,7 +309,7 @@ in
     autoMountShares = true;
   };
 
-  # Disable Parallels printing service 
+  # Disable Parallels printing service
   systemd.services.prlshprint = {
     enable = false;
   };
@@ -346,12 +346,12 @@ in
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports for Steam Local Network Game Transfers
-    
+
     # Additional gaming features
     gamescopeSession.enable = true; # GameScope compositor for better gaming performance
     protontricks.enable = true; # Tools for managing Proton prefixes
   };
-  
+
   # Enable gamemode for better game performance
   programs.gamemode.enable = lib.mkIf isX86_64 true;
 

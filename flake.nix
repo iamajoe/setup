@@ -29,16 +29,16 @@
 
     # Neovim: use "nightly" for prerelease from GitHub releases, or "master" for tip of master.
     # Update: nix flake lock --update-input neovim-src
-    neovim-src = {
-      url = "github:neovim/neovim/nightly";
-      flake = false;
-    };
+    # neovim-src = {
+    #   url = "github:neovim/neovim/nightly";
+    #   flake = false;
+    # };
   };
 
   outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
   let
     overlays = [
-      (import ./nix/overlays/neovim-nightly.nix { neovim-src = inputs.neovim-src; })
+      # (import ./nix/overlays/neovim-nightly.nix { neovim-src = inputs.neovim-src; })
     ];
     buildEnv =
       let
@@ -52,12 +52,12 @@
     nixosConfigurations = {
       nixos-conf-x86_64 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { 
-          inherit buildEnv; 
+        specialArgs = {
+          inherit buildEnv;
           qtile-flake = inputs.qtile-flake;
         };
 
-        modules = [ 
+        modules = [
           { nixpkgs.overlays = overlays; }
           "${hardware}"
           ./configuration.nix
@@ -66,7 +66,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = { 
+              extraSpecialArgs = {
                 inherit inputs usersecrets;
                 buildEnv = buildEnv // {
                   system = "x86_64-linux";
@@ -81,12 +81,12 @@
 
       nixos-conf-aarch64 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
-        specialArgs = { 
-          inherit buildEnv; 
+        specialArgs = {
+          inherit buildEnv;
           qtile-flake = inputs.qtile-flake;
         };
 
-        modules = [ 
+        modules = [
           { nixpkgs.overlays = overlays; }
           "${hardware}"
           ./configuration.nix
@@ -95,7 +95,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = { 
+              extraSpecialArgs = {
                 inherit inputs usersecrets;
                 buildEnv = buildEnv // {
                   system = "aarch64-linux";
