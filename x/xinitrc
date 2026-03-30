@@ -30,4 +30,6 @@ fi
 # Load Xresources if present
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 
+lxqt-policykit-agent &
+
 exec qtile start

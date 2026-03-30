@@ -110,6 +110,10 @@ in
   ];
 
   services.getty.autologinUser = buildEnv.username;
+  services.gnome.gnome-keyring.enable = true;
+
+    # ─── Input ────────────────────────────────────────────────────────────────
+  services.input-remapper.enable = true;
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support
@@ -226,6 +230,9 @@ in
     lshw
     pciutils # lspci
     usbutils # lsusb
+
+    input-remapper # input remapper (for kensington trackball for example)
+    lxqt.lxqt-policykit
   ] ++ lib.optionals isParallels [
     # Parallels Tools & utilities
     xorg.xf86videomodesetting  # modesetting driver
