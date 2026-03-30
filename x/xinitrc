@@ -1,9 +1,33 @@
-if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+#!/bin/sh
+
+export XDG_SESSION_TYPE=x11
+export XDG_CURRENT_DESKTOP=qtile
+export XDG_SESSION_DESKTOP=qtile
+export DESKTOP_SESSION=qtile
+
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
   eval "$(dbus-launch --exit-with-session --sh-syntax)"
 fi
-systemctl --user import-environment DISPLAY XAUTHORITY
+
+systemctl --user import-environment \
+  DISPLAY \
+  XAUTHORITY \
+  XDG_CURRENT_DESKTOP \
+  XDG_SESSION_DESKTOP \
+  XDG_SESSION_TYPE \
+  DESKTOP_SESSION
+
 if command -v dbus-update-activation-environment >/dev/null 2>&1; then
-  dbus-update-activation-environment DISPLAY XAUTHORITY
+  dbus-update-activation-environment --systemd \
+    DISPLAY \
+    XAUTHORITY \
+    XDG_CURRENT_DESKTOP \
+    XDG_SESSION_DESKTOP \
+    XDG_SESSION_TYPE \
+    DESKTOP_SESSION
 fi
+
+# Load Xresources if present
+[ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 
 exec qtile start
