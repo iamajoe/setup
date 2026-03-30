@@ -88,6 +88,8 @@ in
       ];
     };
 
+    displayManager.startx.enable = true;
+
     # Parallels-specific X11 configuration for proper resolution
     resolutions = lib.mkIf isParallels [
       { x = 1920; y = 1080; }
@@ -97,15 +99,20 @@ in
   };
 
   services.displayManager = {
-    ly.enable = true;
+    ly.enable = false; # auto login going in
     defaultSession = "qtile";
-
-    # ly configuration - save session choice
     ly.settings = {
       save = true;               # Save last session/user choice
       save_file = "/var/cache/ly/save";
     };
   };
+
+  # code to run startx automatically
+  environment.loginShellInit = ''
+    if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+      exec startx
+    fi
+  '';
 
   # Ensure ly save directory exists
   systemd.tmpfiles.rules = [
