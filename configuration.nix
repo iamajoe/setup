@@ -11,6 +11,7 @@ in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernel.sysctl."vm.overcommit_memory" = 1; # fixes memory warning on docker redis
 
   # Reduce USB error spam on console (hide info/debug messages)
   boot.consoleLogLevel = 3;
@@ -111,9 +112,6 @@ in
 
   services.getty.autologinUser = buildEnv.username;
   services.gnome.gnome-keyring.enable = true;
-
-    # ─── Input ────────────────────────────────────────────────────────────────
-  services.input-remapper.enable = true;
 
   # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
   # OpenGL/graphics support
@@ -231,7 +229,6 @@ in
     pciutils # lspci
     usbutils # lsusb
 
-    input-remapper # input remapper (for kensington trackball for example)
     lxqt.lxqt-policykit
   ] ++ lib.optionals isParallels [
     # Parallels Tools & utilities

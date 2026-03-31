@@ -32,4 +32,7 @@ fi
 
 lxqt-policykit-agent &
 
+# changes left-right on the kensington mouse
+xinput set-button-map "Kensington Expert Wireless TB Mouse" 3 8 1 4 5 6 7 2
+
 exec qtile start
