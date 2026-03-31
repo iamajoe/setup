@@ -204,6 +204,7 @@ in
     git
     curl
     wget
+    gnumake
 
     # GTK/dconf support
     dconf
