@@ -7,12 +7,6 @@ let
   isX86_64 = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
   # isAarch64 = pkgs.stdenv.hostPlatform.system == "aarch64-linux";
   # isParallels = builtins.pathExists /dev/prl_fs;
-
-  # there is an issue where 1060 might not be supported directly and
-  # where the gpu might not be ready when service is up
-  myOllama = pkgs.ollama-cuda.override {
-    cudaArches = [ "61" ];
-  };
 in
 {
   boot.loader.systemd-boot.enable = true;
@@ -243,7 +237,6 @@ in
 
     # AI
     # ollama-cuda
-    myOllama
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -366,19 +359,17 @@ in
   programs.gamemode.enable = lib.mkIf isX86_64 true;
 
   # ─── AI ────────────────────────────────────────────────────────────────
-  # Enable Ollama service
-  services.ollama = {
-    enable = true;
-    host = "0.0.0.0";
-    port = 11434;
-    loadModels = [ "gemma4:e2b" "gemma4:e4b"];
-    # TODO: these are failing need to investigate
-    # acceleration = "cuda"; # or "rocm" for AMD, or null for CPU
-    # package = pkgs.ollama-cuda;
-    package = myOllama;
-  };
+  # Ollama, because of cudas, needs to be done differently, installed manually
+  # services.ollama = {
+  #   enable = true;
+  #   host = "0.0.0.0";
+  #   port = 11434;
+  #   loadModels = [ "gemma4:e2b" "gemma4:e4b"];
+  #   # acceleration = "cuda"; # or "rocm" for AMD, or null for CPU
+  #   # package = pkgs.ollama-cuda;
+  # };
 
-  # Enable Open WebUI (optional)
+  # Enable Open WebUI
   services.open-webui = {
     enable = true;
     port = 3300;

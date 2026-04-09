@@ -20,6 +20,7 @@ in
 
   home.username = buildEnv.username;
   home.homeDirectory = "/home/${buildEnv.username}";
+  home.sessionPath = [ "/home/${buildEnv.username}/.local/bin"];
   home.stateVersion = "25.05";
 
   # ─── HiDPI Support ────────────────────────────────────────────────────────────────
@@ -342,11 +343,39 @@ in
   };
   home.file.".config/qtile/shortcuts.txt".source = ./qtile/shortcuts.txt;
   home.file.".config/qtile/keyboard-layout.txt".source = ./qtile/keyboard-layout.txt;
-  # Modular bar configurations
   home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
   # ─── AI ────────────────────────────────────────────────────────────────
   home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
+  home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "/home/${buildEnv.username}/.local/bin"
+    mkdir -p "/home/${buildEnv.username}/.local/share/ollama"
+
+    if [ ! -x "/home/${buildEnv.username}/.local/bin/ollama" ]; then
+      ${pkgs.bash}/bin/bash -lc \
+        'curl -fsSL https://ollama.com/install.sh | OLLAMA_INSTALL_DIR="/home/${buildEnv.username}/.local" sh'
+    fi
+  '';
+  systemd.user.services.ollama = {
+    Unit = {
+      Description = "Ollama (user)";
+      After = [ "default.target" ];
+    };
+
+    Service = {
+      ExecStart = "/home/${buildEnv.username}/.local/bin/ollama serve";
+      Restart = "on-failure";
+      RestartSec = 3;
+      Environment = [
+        "OLLAMA_HOST=0.0.0.0:11434"
+        "OLLAMA_MODELS=/home/${buildEnv.username}/.local/share/ollama/models"
+        "CUDA_VISIBLE_DEVICES=0"
+      ];
+      WorkingDirectory = "/home/${buildEnv.username}/.local/share/ollama";
+    };
+
+    Install.WantedBy = [ "default.target" ];
+  };
 
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   # $ nix search wget
