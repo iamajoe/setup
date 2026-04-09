@@ -137,7 +137,7 @@ in
     modesetting.enable = true;
     open = false; # GTX 1060 is too old for NVIDIA's open kernel module path
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # ─── USER ──────────────────────────────────────
