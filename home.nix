@@ -355,13 +355,10 @@ in
 
     if [ ! -x "$HOME/.local/share/ollama/bin/ollama" ]; then
       ${pkgs.curl}/bin/curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst \
-        | ${pkgs.gnutar}/bin/tar --zstd -x -C "$HOME/.local/share/ollama"
+        | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.zstd}/bin/zstd -x -C "$HOME/.local/share/ollama"
     fi
 
-    if [ -e "$HOME/.local/bin/ollama" ] && [ ! -L "$HOME/.local/bin/ollama" ]; then
-      rm -f "$HOME/.local/bin/ollama"
-    fi
-
+    rm -f "$HOME/.local/bin/ollama"
     ln -sf "$HOME/.local/share/ollama/bin/ollama" "$HOME/.local/bin/ollama"
   '';
   systemd.user.services.ollama = {
@@ -426,6 +423,7 @@ in
     unzip # tool for handling .zip files
     p7zip # 7z archive support
     zip   # create zip files
+    zstd
 
     appimage-run # runs AppImage
 
