@@ -374,7 +374,7 @@ in
       Environment = [
         "OLLAMA_HOST=0.0.0.0:11434"
         "OLLAMA_MODELS=${config.home.homeDirectory}/.local/share/ollama/models"
-        "CUDA_VISIBLE_DEVICES=0"
+        "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
       ];
       WorkingDirectory = "${config.home.homeDirectory}/.local/share/ollama";
     };
