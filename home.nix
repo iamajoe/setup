@@ -345,6 +345,9 @@ in
   # Modular bar configurations
   home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
+  # ─── AI ────────────────────────────────────────────────────────────────
+  home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
+
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   # $ nix search wget
   home.packages = (with pkgs; [

@@ -263,10 +263,12 @@ in
   # ─── FIREWALL ──────────────────────────────────────────────
   networking.firewall.allowedTCPPorts = [
     8384 # syncthing web gui
-    21115 21116 21117 21118 21119 # rustdesk
+    4096 # opencode
+    3300 # open-webui
+    # 21115 21116 21117 21118 21119 # rustdesk
   ];
   networking.firewall.allowedUDPPorts = [
-    21116 # rustdesk
+    # 21116 # rustdesk
   ];
 
   # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
@@ -361,7 +363,7 @@ in
     enable = true;
     port = 3300;
     host = "0.0.0.0";
-    openFirewall = true;
+    # openFirewall = true;
     environment = {
       # OLLAMA_BASE_URL = "http://127.0.0.1:11434";
       WEBUI_AUTH = "True";
