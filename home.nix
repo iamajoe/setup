@@ -23,16 +23,6 @@ in
   home.sessionPath = [ "/home/${buildEnv.username}/.local/bin"];
   home.stateVersion = "25.05";
 
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      stdenv.cc.cc
-      zlib
-      openssl
-      curl
-    ];
-  };
-
   # ─── HiDPI Support ────────────────────────────────────────────────────────────────
   # X11 DPI settings for HiDPI displays
   xresources.properties = {

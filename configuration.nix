@@ -268,6 +268,16 @@ in
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"
   '';
 
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      zlib
+      openssl
+      curl
+    ];
+  };
+
   # ─── FIREWALL ──────────────────────────────────────────────
   networking.firewall.allowedTCPPorts = [
     8384 # syncthing web gui
