@@ -6,10 +6,7 @@ assert buildEnv.userEmail != "" && buildEnv.userEmail != null;
 assert buildEnv.nixosConfig != "" && buildEnv.nixosConfig != null;
 
 let
-  # Detect architecture
-  isX86_64 = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
-  isAarch64 = pkgs.stdenv.hostPlatform.system == "aarch64-linux";
-  isParallels = builtins.pathExists /dev/prl_fs;
+  # isX86_64 = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
 in
 {
   imports = [
@@ -25,10 +22,7 @@ in
   home.homeDirectory = "/home/${buildEnv.username}";
   home.stateVersion = "25.05";
 
-  #
   # ─── HiDPI Support ────────────────────────────────────────────────────────────────
-  #
-
   # X11 DPI settings for HiDPI displays
   xresources.properties = {
     "Xft.dpi" = 144;  # 1.5x scaling for HiDPI displays
@@ -105,9 +99,7 @@ in
     };
   };
 
-  #
   # ─── SSH ────────────────────────────────────────────────────────────────
-  #
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
@@ -130,9 +122,7 @@ in
   home.file.".ssh/id_rsa.pub".source = "${usersecrets}/id_rsa.pub";
   services.ssh-agent.enable = true;
 
-  #
   # ─── Shell ────────────────────────────────────────────────────────────────
-  #
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -237,9 +227,7 @@ in
     };
   };
 
-  #
   # ─── Terminal software ────────────────────────────────────────────────────────────
-  #
   programs.tmux = {
     enable = true;
     extraConfig = ''
@@ -295,27 +283,6 @@ in
     enableGitIntegration = true;
   };
 
-  # Neovim
-  # home.activation.ensureNvimConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-  #   set -eu
-
-  #   export GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
-  #   GIT_BIN=${pkgs.git}/bin/git
-  #   NVIM_DIR="$HOME/.config/nvim"
-
-  #   if [ -d "$NVIM_DIR/.git" ]; then
-  #     echo "Updating Neovim config..."
-  #     cd "$NVIM_DIR"
-  #     if "$GIT_BIN" fetch origin barebones 2>/dev/null; then
-  #       "$GIT_BIN" reset --hard origin/barebones
-  #     else
-  #       echo "Warning: Failed to update Neovim config, keeping existing version"
-  #     fi
-  #   else
-  #     echo "Cloning Neovim config..." "$GIT_BIN" clone --branch barebones --depth 1 https://github.com/iamajoe/nvim.git "$NVIM_DIR" || echo "Warning: Failed to clone Neovim config"
-  #   fi
-  # '';
-
   programs.fzf.enable = true; # Fuzzy finder (Ctrl+R for history)
   programs.bat.enable = true; # Better cat with syntax highlighting
   programs.eza = {
@@ -364,10 +331,7 @@ in
     };
   };
 
-  #
   # ─── DE ────────────────────────────────────────────────────────────────
-  #
-
   home.file.".xinitrc".source = ./x/xinitrc;
 
   # Qtile configuration
@@ -381,10 +345,7 @@ in
   # Modular bar configurations
   home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
-  #
   # ─── Dependencies ────────────────────────────────────────────────────────────────
-  #
-
   # $ nix search wget
   home.packages = (with pkgs; [
     home-manager # cli tool for home manager
@@ -490,9 +451,10 @@ in
     # Icon themes
     papirus-icon-theme  # Primary icon theme (Papirus-Dark variant)
     adwaita-icon-theme  # Fallback icon theme
-  ])
-  # x86_64-only packages (GPU tools and packages not available on aarch64)
-  ++ (with pkgs; lib.optionals isX86_64 [
+
+    # AI
+    opencode
+
     # GPU & Graphics tools (x86_64-specific)
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
     mesa-demos      # OpenGL info (includes glxinfo, glxgears, etc.)

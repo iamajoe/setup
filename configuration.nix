@@ -40,7 +40,6 @@ in
   };
 
   # ─── CLI ───────────────────────────────────────────────────────────
-
   programs.zsh.enable = true;
   # programs.neovim.enable = true;
 
@@ -113,37 +112,33 @@ in
   services.getty.autologinUser = buildEnv.username;
   services.gnome.gnome-keyring.enable = true;
 
-  # ─── GPU DRIVERS (x86_64 only) ──────────────────────────────────────
+  # ─── GPU DRIVERS ──────────────────────────────────────
   # OpenGL/graphics support
-  hardware.graphics = lib.mkMerge [
-    {
-      enable = true;
-    }
-    (lib.mkIf isX86_64 {
-      enable32Bit = true; # 32-bit app support (x86_64 only, required for Steam)
-      extraPackages = with pkgs; [
-        # Intel
-        intel-media-driver # LIBVA_DRIVER_NAME=iHD
-        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
-        libva-vdpau-driver # VDPAU backend for VA-API (renamed from vaapiVdpau)
-        libvdpau-va-gl
-        # Note: ROCm packages commented out due to build issues
-        # rocmPackages.clr.icd # AMD OpenCL
-        # amdvlk # AMD Vulkan
-      ];
-    })
-  ];
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true; # 32-bit app support (x86_64 only, required for Steam)
+    extraPackages = with pkgs; [
+      # Intel
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
+      libva-vdpau-driver # VDPAU backend for VA-API (renamed from vaapiVdpau)
+      libvdpau-va-gl
+      # Note: ROCm packages commented out due to build issues
+      # rocmPackages.clr.icd # AMD OpenCL
+      # amdvlk # AMD Vulkan
+    ];
+  };
 
   # NVIDIA-specific configuration (x86_64 only)
-  # hardware.nvidia = lib.mkIf isX86_64 {
-  #   modesetting.enable = true;
-  #   powerManagement.enable = false;
-  #   powerManagement.finegrained = false;
-  #   open = false; # proprietary driver (set to true for open-source)
-  #   nvidiaSettings = true; # nvidia-settings tool
-  #   package = config.boot.kernelPackages.nvidiaPackages.stable;
-  # };
+  services.xserver.videoDrivers = ["nvidia"];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false; # GTX 1060 is too old for NVIDIA's open kernel module path
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+  };
 
+  # ─── USER ──────────────────────────────────────
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.${buildEnv.username} = {
     isNormalUser = true;
@@ -300,28 +295,29 @@ in
   # virtualisation.libvirtd.enable = true; # for VMs (QEMU/KVM)
 
   # ─── PARALLELS GUEST CONFIGURATION ──────────────────────────────────
-  hardware.parallels = lib.mkIf isParallels {
-    enable = true;
-    autoMountShares = true;
-  };
+  # hardware.parallels = lib.mkIf isParallels {
+  #   enable = true;
+  #   autoMountShares = true;
+  # };
 
-  # Disable Parallels printing service
-  systemd.services.prlshprint = {
-    enable = false;
-  };
+  # # Disable Parallels printing service
+  # systemd.services.prlshprint = {
+  #   enable = false;
+  # };
 
-  # Enable clipboard sharing service for Parallels (this is important!)
-  systemd.services.parallels-clipboard = lib.mkIf isParallels {
-    description = "Parallels clipboard service";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do sleep 3600; done'";
-      Restart = "on-failure";
-    };
-  };
+  # # Enable clipboard sharing service for Parallels (this is important!)
+  # systemd.services.parallels-clipboard = lib.mkIf isParallels {
+  #   description = "Parallels clipboard service";
+  #   wantedBy = [ "multi-user.target" ];
+  #   after = [ "network.target" ];
+  #   serviceConfig = {
+  #     Type = "simple";
+  #     ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do sleep 3600; done'";
+  #     Restart = "on-failure";
+  #   };
+  # };
 
+  # ───────────────────────────────────────────────────────────────────────────────
   # ─── NEXT CODE IS VERY home.nix
   # NOTE: we set these here because we don't have all of the operations
   #       and options within home.nix
@@ -351,6 +347,29 @@ in
   # Enable gamemode for better game performance
   programs.gamemode.enable = lib.mkIf isX86_64 true;
 
+  # ─── AI ────────────────────────────────────────────────────────────────
+  # Enable Ollama service
+  services.ollama = {
+    enable = true;
+    # acceleration = "cuda"; # or "rocm" for AMD, or null for CPU
+    # listenAddress = "127.0.0.1:11434";
+    loadModels = [ "gemma4:e2b" "gemma4:e4b"];
+  };
+
+  # Enable Open WebUI (optional)
+  services.open-webui = {
+    enable = true;
+    port = 3300;
+    host = "0.0.0.0";
+    openFirewall = true;
+    environment = {
+      # OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+      WEBUI_AUTH = "True";
+    };
+  };
+
+  # ───────────────────────────────────────────────────────────────────────────────
+  # ─── DONT TOUCH ────────────────────────────────────────────────────────────────
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
