@@ -119,16 +119,16 @@ in
   hardware.graphics = {
     enable = true;
     enable32Bit = true; # 32-bit app support (x86_64 only, required for Steam)
-    extraPackages = with pkgs; [
-      # Intel
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
-      libva-vdpau-driver # VDPAU backend for VA-API (renamed from vaapiVdpau)
-      libvdpau-va-gl
-      # Note: ROCm packages commented out due to build issues
-      # rocmPackages.clr.icd # AMD OpenCL
-      # amdvlk # AMD Vulkan
-    ];
+    # extraPackages = with pkgs; [
+    #   # Intel
+    #   intel-media-driver # LIBVA_DRIVER_NAME=iHD
+    #   intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for some)
+    #   libva-vdpau-driver # VDPAU backend for VA-API (renamed from vaapiVdpau)
+    #   libvdpau-va-gl
+    #   # Note: ROCm packages commented out due to build issues
+    #   # rocmPackages.clr.icd # AMD OpenCL
+    #   # amdvlk # AMD Vulkan
+    # ];
   };
 
   # NVIDIA-specific configuration (x86_64 only)
@@ -137,7 +137,8 @@ in
     modesetting.enable = true;
     open = false; # GTX 1060 is too old for NVIDIA's open kernel module path
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+    # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # ─── USER ──────────────────────────────────────
