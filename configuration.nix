@@ -7,6 +7,12 @@ let
   isX86_64 = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
   # isAarch64 = pkgs.stdenv.hostPlatform.system == "aarch64-linux";
   # isParallels = builtins.pathExists /dev/prl_fs;
+
+  # there is an issue where 1060 might not be supported directly and
+  # where the gpu might not be ready when service is up
+  myOllama = pkgs.ollama-cuda.override {
+    cudaArches = [ "61" ];
+  };
 in
 {
   boot.loader.systemd-boot.enable = true;
@@ -234,6 +240,10 @@ in
     usbutils # lsusb
 
     lxqt.lxqt-policykit
+
+    # AI
+    # ollama-cuda
+    myOllama
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -365,6 +375,7 @@ in
     # TODO: these are failing need to investigate
     # acceleration = "cuda"; # or "rocm" for AMD, or null for CPU
     # package = pkgs.ollama-cuda;
+    package = myOllama;
   };
 
   # Enable Open WebUI (optional)
