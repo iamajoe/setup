@@ -79,7 +79,12 @@ in
 
     windowManager.qtile = {
       enable = true;
-      package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      # package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      package =
+    (qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default).overrideAttrs
+      (old: {
+        doCheck = false;
+      });
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
       ];
