@@ -5,8 +5,8 @@ assert buildEnv.username != "" && buildEnv.username != null;
 let
   # Detect architecture
   isX86_64 = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
-  isAarch64 = pkgs.stdenv.hostPlatform.system == "aarch64-linux";
-  isParallels = builtins.pathExists /dev/prl_fs;
+  # isAarch64 = pkgs.stdenv.hostPlatform.system == "aarch64-linux";
+  # isParallels = builtins.pathExists /dev/prl_fs;
 in
 {
   boot.loader.systemd-boot.enable = true;
@@ -38,6 +38,8 @@ in
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
+
+  nix.settings.download-buffer-size = 268435456; # 256 MiB
 
   # ─── CLI ───────────────────────────────────────────────────────────
   programs.zsh.enable = true;
@@ -86,11 +88,11 @@ in
     displayManager.startx.enable = true;
 
     # Parallels-specific X11 configuration for proper resolution
-    resolutions = lib.mkIf isParallels [
-      { x = 1920; y = 1080; }
-      { x = 2560; y = 1440; }
-      { x = 3840; y = 2160; }
-    ];
+    # resolutions = lib.mkIf isParallels [
+    #   { x = 1920; y = 1080; }
+    #   { x = 2560; y = 1440; }
+    #   { x = 3840; y = 2160; }
+    # ];
   };
 
   # auto login going in
@@ -226,9 +228,6 @@ in
     usbutils # lsusb
 
     lxqt.lxqt-policykit
-  ] ++ lib.optionals isParallels [
-    # Parallels Tools & utilities
-    xorg.xf86videomodesetting  # modesetting driver
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -265,6 +264,7 @@ in
     8384 # syncthing web gui
     4096 # opencode
     3300 # open-webui
+    11434 # ollama
     # 21115 21116 21117 21118 21119 # rustdesk
   ];
   networking.firewall.allowedUDPPorts = [
@@ -353,9 +353,12 @@ in
   # Enable Ollama service
   services.ollama = {
     enable = true;
-    # acceleration = "cuda"; # or "rocm" for AMD, or null for CPU
-    # listenAddress = "127.0.0.1:11434";
+    host = "0.0.0.0";
+    port = 11434;
     loadModels = [ "gemma4:e2b" "gemma4:e4b"];
+    # TODO: these are failing need to investigate
+    # acceleration = "cuda"; # or "rocm" for AMD, or null for CPU
+    # package = pkgs.ollama-cuda;
   };
 
   # Enable Open WebUI (optional)
