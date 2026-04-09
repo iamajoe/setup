@@ -348,16 +348,21 @@ in
   # ─── AI ────────────────────────────────────────────────────────────────
   home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
   home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "/home/${buildEnv.username}/.local/share/ollama"
-    if [ ! -x "/home/${buildEnv.username}/.local/share/ollama" ]; then
-      curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst \
-        | tar --zstd -x -C /home/${buildEnv.username}/.local/share/ollama
+    set -eu
+
+    mkdir -p "$HOME/.local/share/ollama"
+    mkdir -p "$HOME/.local/bin"
+
+    if [ ! -x "$HOME/.local/share/ollama/bin/ollama" ]; then
+      ${pkgs.curl}/bin/curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst \
+        | ${pkgs.gnutar}/bin/tar --zstd -x -C "$HOME/.local/share/ollama"
     fi
 
-    mkdir -p "/home/${buildEnv.username}/.local/bin/ollama"
-    if [ ! -x "/home/${buildEnv.username}/.local/bin/ollama" ]; then
-      ln -s ~/.local/share/ollama/bin/ollama ~/.local/bin/ollama
+    if [ -e "$HOME/.local/bin/ollama" ] && [ ! -L "$HOME/.local/bin/ollama" ]; then
+      rm -f "$HOME/.local/bin/ollama"
     fi
+
+    ln -sf "$HOME/.local/share/ollama/bin/ollama" "$HOME/.local/bin/ollama"
   '';
   systemd.user.services.ollama = {
     Unit = {
@@ -366,15 +371,15 @@ in
     };
 
     Service = {
-      ExecStart = "/home/${buildEnv.username}/.local/bin/ollama serve";
+      ExecStart = "${config.home.homeDirectory}/.local/bin/ollama serve";
       Restart = "on-failure";
       RestartSec = 3;
       Environment = [
         "OLLAMA_HOST=0.0.0.0:11434"
-        "OLLAMA_MODELS=/home/${buildEnv.username}/.local/share/ollama/models"
+        "OLLAMA_MODELS=${config.home.homeDirectory}/.local/share/ollama/models"
         "CUDA_VISIBLE_DEVICES=0"
       ];
-      WorkingDirectory = "/home/${buildEnv.username}/.local/share/ollama";
+      WorkingDirectory = "${config.home.homeDirectory}/.local/share/ollama";
     };
 
     Install.WantedBy = [ "default.target" ];
