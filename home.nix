@@ -348,12 +348,15 @@ in
   # ─── AI ────────────────────────────────────────────────────────────────
   home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
   home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "/home/${buildEnv.username}/.local/bin"
     mkdir -p "/home/${buildEnv.username}/.local/share/ollama"
+    if [ ! -x "/home/${buildEnv.username}/.local/share/ollama" ]; then
+      curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst \
+        | tar --zstd -x -C /home/${buildEnv.username}/.local/share/ollama
+    fi
 
+    mkdir -p "/home/${buildEnv.username}/.local/bin/ollama"
     if [ ! -x "/home/${buildEnv.username}/.local/bin/ollama" ]; then
-      ${pkgs.bash}/bin/bash -lc \
-        'curl -fsSL https://ollama.com/install.sh | OLLAMA_INSTALL_DIR="/home/${buildEnv.username}/.local" sh'
+      ln -s ~/.local/share/ollama/bin/ollama ~/.local/bin/ollama
     fi
   '';
   systemd.user.services.ollama = {
