@@ -346,41 +346,41 @@ in
   home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
   # ─── AI ────────────────────────────────────────────────────────────────
-  home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
-  home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    set -eu
+  # home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
+  # home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  #   set -eu
 
-    mkdir -p "$HOME/.local/share/ollama"
-    mkdir -p "$HOME/.local/bin"
+  #   mkdir -p "$HOME/.local/share/ollama"
+  #   mkdir -p "$HOME/.local/bin"
 
-    if [ ! -x "$HOME/.local/share/ollama/bin/ollama" ]; then
-      ${pkgs.curl}/bin/curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst \
-        | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.zstd}/bin/zstd -x -C "$HOME/.local/share/ollama"
-    fi
+  #   if [ ! -x "$HOME/.local/share/ollama/bin/ollama" ]; then
+  #     ${pkgs.curl}/bin/curl -fsSL https://ollama.com/download/ollama-linux-amd64.tar.zst \
+  #       | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.zstd}/bin/zstd -x -C "$HOME/.local/share/ollama"
+  #   fi
 
-    rm -f "$HOME/.local/bin/ollama"
-    ln -sf "$HOME/.local/share/ollama/bin/ollama" "$HOME/.local/bin/ollama"
-  '';
-  systemd.user.services.ollama = {
-    Unit = {
-      Description = "Ollama (user)";
-      After = [ "default.target" ];
-    };
+  #   rm -f "$HOME/.local/bin/ollama"
+  #   ln -sf "$HOME/.local/share/ollama/bin/ollama" "$HOME/.local/bin/ollama"
+  # '';
+  # systemd.user.services.ollama = {
+  #   Unit = {
+  #     Description = "Ollama (user)";
+  #     After = [ "default.target" ];
+  #   };
 
-    Service = {
-      ExecStart = "${config.home.homeDirectory}/.local/bin/ollama serve";
-      Restart = "on-failure";
-      RestartSec = 3;
-      Environment = [
-        "OLLAMA_HOST=0.0.0.0:11434"
-        "OLLAMA_MODELS=${config.home.homeDirectory}/.local/share/ollama/models"
-        "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
-      ];
-      WorkingDirectory = "${config.home.homeDirectory}/.local/share/ollama";
-    };
+  #   Service = {
+  #     ExecStart = "${config.home.homeDirectory}/.local/bin/ollama serve";
+  #     Restart = "on-failure";
+  #     RestartSec = 3;
+  #     Environment = [
+  #       "OLLAMA_HOST=0.0.0.0:11434"
+  #       "OLLAMA_MODELS=${config.home.homeDirectory}/.local/share/ollama/models"
+  #       "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
+  #     ];
+  #     WorkingDirectory = "${config.home.homeDirectory}/.local/share/ollama";
+  #   };
 
-    Install.WantedBy = [ "default.target" ];
-  };
+  #   Install.WantedBy = [ "default.target" ];
+  # };
 
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   # $ nix search wget

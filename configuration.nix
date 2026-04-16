@@ -380,16 +380,16 @@ in
   # };
 
   # Enable Open WebUI
-  services.open-webui = {
-    enable = true;
-    port = 3300;
-    host = "0.0.0.0";
-    # openFirewall = true;
-    environment = {
-      # OLLAMA_BASE_URL = "http://127.0.0.1:11434";
-      WEBUI_AUTH = "True";
-    };
-  };
+  # services.open-webui = {
+  #   enable = true;
+  #   port = 3300;
+  #   host = "0.0.0.0";
+  #   # openFirewall = true;
+  #   environment = {
+  #     # OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+  #     WEBUI_AUTH = "True";
+  #   };
+  # };
 
   # ───────────────────────────────────────────────────────────────────────────────
   # ─── DONT TOUCH ────────────────────────────────────────────────────────────────
