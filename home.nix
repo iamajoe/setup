@@ -345,6 +345,27 @@ in
   home.file.".config/qtile/keyboard-layout.txt".source = ./qtile/keyboard-layout.txt;
   home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
 
+  # ─── Local services ────────────────────────────────────────────────────────────────
+  systemd.user.services.services-compose = {
+    Unit = {
+      Description = "Docker compose stack in ~/services";
+      After = [ "default.target" ];
+    };
+
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      WorkingDirectory = "%h/services";
+      ExecStart = "${pkgs.docker}/bin/docker compose up -d";
+      ExecStop = "${pkgs.docker}/bin/docker compose down";
+      TimeoutStartSec = "0";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
   # ─── AI ────────────────────────────────────────────────────────────────
   # home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
   # home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

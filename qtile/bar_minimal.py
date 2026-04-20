@@ -15,7 +15,7 @@ def create_bar(colors, terminal=None, browser=None):
     # Semantic color mappings
     BG_COLOR = colors["bg"]
     FG_COLOR = colors["fg"]
-    ACTIVE_COLOR = colors["magenta"]  # Active workspace
+    ACTIVE_COLOR = colors["cyan"] # colors["magenta"]  # Active workspace
     INACTIVE_COLOR = colors["gray"]   # Inactive workspaces
     HIGHLIGHT_COLOR = colors["magenta"]
     SUCCESS_COLOR = colors["green"]
