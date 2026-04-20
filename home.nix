@@ -237,17 +237,17 @@ in
   };
 
   # Tmux configuration files
-  home.file.".config/tmux/main.conf".source = ./tmux/main.conf;
-  home.file.".config/tmux/catppuccin.theme".source = ./tmux/catppuccin.theme;
+  home.file.".config/tmux/main.conf".source = ./templates/tmux/main.conf;
+  home.file.".config/tmux/catppuccin.theme".source = ./templates/tmux/catppuccin.theme;
 
   programs.helix = {
     enable = true;
   };
 
   # Helix configuration files
-  home.file.".config/helix/config.toml".source = ./helix/config.toml;
-  home.file.".config/helix/languages.toml".source = ./helix/languages.toml;
-  home.file.".config/helix/themes".source = ./helix/themes;
+  home.file.".config/helix/config.toml".source = ./templates/helix/config.toml;
+  home.file.".config/helix/languages.toml".source = ./templates/helix/languages.toml;
+  home.file.".config/helix/themes".source = ./templates/helix/themes;
 
   programs.git = {
     enable = true;
@@ -333,19 +333,20 @@ in
   };
 
   # ─── DE ────────────────────────────────────────────────────────────────
-  home.file.".xinitrc".source = ./x/xinitrc;
+  home.file.".xinitrc".source = ./templates/x/xinitrc;
 
   # Qtile configuration
-  home.file.".config/qtile/config.py".source = ./qtile/config.py;
+  home.file.".config/qtile/config.py".source = ./templates/qtile/config.py;
   home.file.".config/qtile/autostart.sh" = {
     source = ./qtile/autostart.sh;
     executable = true;
   };
-  home.file.".config/qtile/shortcuts.txt".source = ./qtile/shortcuts.txt;
-  home.file.".config/qtile/keyboard-layout.txt".source = ./qtile/keyboard-layout.txt;
-  home.file.".config/qtile/bar_minimal.py".source = ./qtile/bar_minimal.py;
+  home.file.".config/qtile/shortcuts.txt".source = ./templates/qtile/shortcuts.txt;
+  home.file.".config/qtile/keyboard-layout.txt".source = ./templates/qtile/keyboard-layout.txt;
+  home.file.".config/qtile/bar_minimal.py".source = ./templates/qtile/bar_minimal.py;
 
   # ─── Local services ────────────────────────────────────────────────────────────────
+  home.file."services/docker-compose.yml".source = ./templates/services/docker-compose.yml;
   systemd.user.services.services-compose = {
     Unit = {
       Description = "Docker compose stack in ~/services";
@@ -367,7 +368,7 @@ in
   };
 
   # ─── AI ────────────────────────────────────────────────────────────────
-  # home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
+  # home.file.".config/opencode/opencode.json".source = ./templates/opencode/opencode.json;
   # home.activation.installOllama = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
   #   set -eu
 
