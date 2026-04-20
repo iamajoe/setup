@@ -20,7 +20,7 @@ browser = "firefox"
 # Catppuccin Mocha colors
 colors = {
     # "bg": "#1e1e2e",
-    "bg": "#121312"
+    "bg": "#121312",
     "fg": "#cdd6f4",
     "blue": "#89b4fa",
     "red": "#f38ba8",
