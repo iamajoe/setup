@@ -338,7 +338,7 @@ in
   # Qtile configuration
   home.file.".config/qtile/config.py".source = ./templates/qtile/config.py;
   home.file.".config/qtile/autostart.sh" = {
-    source = ./qtile/autostart.sh;
+    source = ./templates/qtile/autostart.sh;
     executable = true;
   };
   home.file.".config/qtile/shortcuts.txt".source = ./templates/qtile/shortcuts.txt;
