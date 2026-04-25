@@ -364,6 +364,7 @@ in
     gamescopeSession.enable = true; # GameScope compositor for better gaming performance
     protontricks.enable = true; # Tools for managing Proton prefixes
   };
+  hardware.uinput.enable = true;
 
   # Enable gamemode for better game performance
   programs.gamemode.enable = lib.mkIf isX86_64 true;
