@@ -285,6 +285,12 @@ in
     3300 # open-webui
     11434 # ollama
     # 21115 21116 21117 21118 21119 # rustdesk
+
+    # used in development
+    8083  # web
+    8084  # api
+    8085  # wordpress
+    27017 # mongodb
   ];
   networking.firewall.allowedUDPPorts = [
     # 21116 # rustdesk
