@@ -404,6 +404,8 @@ in
   #   Install.WantedBy = [ "default.target" ];
   # };
 
+  home.file.".config/zed/settings.json".source = ./templates/zed/settings.json;
+
   # ─── Dependencies ────────────────────────────────────────────────────────────────
   # $ nix search wget
   home.packages = (with pkgs; [
@@ -513,7 +515,8 @@ in
     adwaita-icon-theme  # Fallback icon theme
 
     # AI
-    opencode
+    # opencode
+    zed
 
     # GPU & Graphics tools (x86_64-specific)
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
