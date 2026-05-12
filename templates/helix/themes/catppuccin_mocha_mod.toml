@@ -1,8 +1,8 @@
 inherits = "catppuccin_mocha"
 
-"ui.background" = { fg = "surface1", bg = "#121312" }
-"ui.bufferline.active" = { fg = "mauve", bg = "base" }
-"ui.popup" = { fg = "surface1", bg = "surface0" }
+# "ui.background" = { fg = "surface1", bg = "#121312" }
+# "ui.bufferline.active" = { fg = "mauve", bg = "base" }
+# "ui.popup" = { fg = "surface1", bg = "surface0" }
 
-[palette]
-surface0 = "#1c1c1c"
+# [palette]
+# surface0 = "#1c1c1c"

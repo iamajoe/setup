@@ -13,7 +13,8 @@
         draw_bold_text_with_bright_colors = true;
 
         primary = {
-          background = "#121312";
+          background = "#1e1e2e";
+          # background = "#121312";
           foreground = "#cdd6f4";
           dim_foreground = "#7f849c";
           bright_foreground = "#cdd6f4";
