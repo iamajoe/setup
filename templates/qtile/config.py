@@ -5,6 +5,7 @@ from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
 import os
 import subprocess
+import time
 
 # Import bar configuration
 from bar_minimal import create_bar  # Minimal bar - centered, rounded, essential widgets only
@@ -268,9 +269,9 @@ def autostart():
         ("3", [terminal]),
         ("9", [browser]),
         ("7", ["spotify"]),
-        ("8", ["discord"]),
         ("1", ["slack"]),
         # ("6", ["steam"]),
+        ("8", ["discord"]),
         ("2", ["google-chrome"]),
     ]
 
