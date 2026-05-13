@@ -516,7 +516,7 @@ in
 
     # AI
     # opencode
-    zed
+    zed-editor
 
     # GPU & Graphics tools (x86_64-specific)
     vulkan-tools    # vulkaninfo, vkcube (GPU testing)
