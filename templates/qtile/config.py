@@ -136,12 +136,12 @@ for i in groups:
     ])
 
 dgroups_app_rules = [
-#     Rule(Match(wm_class=terminal), group="3"),
-#     Rule(Match(wm_class=browser), group="9"),
-#     Rule(Match(wm_class="google-chrome"), group="2"),
-#     Rule(Match(wm_class="spotify"), group="7"),
-#     Rule(Match(wm_class="discord"), group="8"),
-#     Rule(Match(wm_class="slack"), group="1"),
+    Rule(Match(wm_class=terminal), group="3"),
+    Rule(Match(wm_class=browser), group="9"),
+    Rule(Match(wm_class="google-chrome"), group="2"),
+    Rule(Match(wm_class="spotify"), group="7"),
+    Rule(Match(wm_class="discord"), group="8"),
+    Rule(Match(wm_class="slack"), group="1"),
     Rule(Match(wm_class="steam"), group="6"),
 ]
 
@@ -232,7 +232,6 @@ floating_layout = layout.Floating(
 ########################
 
 dgroups_key_binder = None
-dgroups_app_rules = []
 follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
@@ -263,19 +262,3 @@ wmname = "LG3D"
 def autostart():
     home = os.path.expanduser("~/.config/qtile/autostart.sh")
     subprocess.Popen([home])
-
-    # Setup auto open
-    startup_apps = [
-        ("3", [terminal]),
-        ("9", [browser]),
-        ("7", ["spotify"]),
-        ("1", ["slack"]),
-        # ("6", ["steam"]),
-        ("8", ["discord"]),
-        ("2", ["google-chrome"]),
-    ]
-
-    for group, command in startup_apps:
-        qtile.groups_map[group].toscreen()
-        subprocess.Popen(command)
-        time.sleep(4)
