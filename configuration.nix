@@ -55,9 +55,17 @@ in
   # ─── DE / WM ──────────────────────────────────────
   # Enable dconf for GTK settings (required for GTK dark mode and theme settings)
   programs.dconf.enable = true;
+  services.dbus.enable = true;
   services.dbus.packages = [ pkgs.dconf ];
 
   services.libinput.enable = true; # required by calibre
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
+  };
 
   services.xserver = {
     enable = true;
