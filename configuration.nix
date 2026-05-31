@@ -392,6 +392,16 @@ in
     autoStart = true;
     openFirewall = true;
     capSysAdmin = true;
+
+    apps = [
+      {
+        name = "Steam Big Picture";
+        detached = [ "steam -gamepadui" ];
+      }
+      {
+        name = "Desktop";
+      }
+    ];
   };
 
   # ─── AI ────────────────────────────────────────────────────────────────
