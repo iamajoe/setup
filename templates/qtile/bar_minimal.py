@@ -212,6 +212,19 @@ def create_bar(colors, terminal=None, browser=None):
             },
         ),
 
+        # Display resolution change
+        widget.TextBox(
+            text="🖥",
+            fontsize=FONT_SIZE,
+            padding=10,
+            foreground=FG_COLOR,
+            background=BG_COLOR,
+            mouse_callbacks={
+                "Button1": lazy.spawn("toggle-resolution"),
+                "Button3": lazy.spawn("alacritty -e sh -c 'xrandr; read -p \"Press enter to close\"'"),
+            },
+        ),
+
         spacer(12),
 
         # Clock + Date

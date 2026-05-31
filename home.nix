@@ -346,6 +346,9 @@ in
   home.file.".config/qtile/keyboard-layout.txt".source = ./templates/qtile/keyboard-layout.txt;
   home.file.".config/qtile/bar_minimal.py".source = ./templates/qtile/bar_minimal.py;
 
+  # Scripts
+  home.file.".local/bin/toggle-resolution".source = ./templates/scripts/toggle-resolution.sh;
+
   # ─── Local services ────────────────────────────────────────────────────────────────
   home.file."services/docker-compose.yml".source = ./templates/services/docker-compose.yml;
   systemd.user.services.services-compose = {
