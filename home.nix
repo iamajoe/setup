@@ -15,6 +15,7 @@ in
     ./programs/dunst.nix
     ./programs/picom.nix
     ./programs/firefox.nix
+    ./programs/sunshine.nix
     # ./programs/rustdesk.nix
   ];
 

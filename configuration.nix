@@ -246,9 +246,6 @@ in
 
     # AI
     # ollama-cuda
-
-    # Gaming
-    sunshine
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -386,17 +383,6 @@ in
 
   # Enable gamemode for better game performance
   programs.gamemode.enable = lib.mkIf isX86_64 true;
-
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    openFirewall = true;
-    capSysAdmin = true;
-
-    settings = {
-      file_apps = "/home/iamajoe/.config/sunshine/apps.json";
-    };
-  };
 
   # ─── AI ────────────────────────────────────────────────────────────────
   # Ollama, because of cudas, needs to be done differently, installed manually
