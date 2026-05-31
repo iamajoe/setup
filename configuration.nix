@@ -159,7 +159,7 @@ in
   users.users.${buildEnv.username} = {
     isNormalUser = true;
     description = buildEnv.username;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "input" "uinput" ];
     packages = with pkgs; [];
     shell = pkgs.zsh;  # Set zsh as default shell
   };
@@ -245,6 +245,9 @@ in
 
     # AI
     # ollama-cuda
+
+    # Gaming
+    sunshine
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -382,6 +385,13 @@ in
 
   # Enable gamemode for better game performance
   programs.gamemode.enable = lib.mkIf isX86_64 true;
+
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    openFirewall = true;
+    capSysAdmin = true;
+  };
 
   # ─── AI ────────────────────────────────────────────────────────────────
   # Ollama, because of cudas, needs to be done differently, installed manually
