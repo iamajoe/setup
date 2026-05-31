@@ -347,7 +347,10 @@ in
   home.file.".config/qtile/bar_minimal.py".source = ./templates/qtile/bar_minimal.py;
 
   # Scripts
-  home.file.".local/bin/toggle-resolution".source = ./templates/scripts/toggle-resolution.sh;
+  home.file.".local/bin/toggle-resolution" = {
+    source = ./templates/scripts/toggle-resolution.sh;
+    executable = true;
+  };
 
   # ─── Local services ────────────────────────────────────────────────────────────────
   home.file."services/docker-compose.yml".source = ./templates/services/docker-compose.yml;
