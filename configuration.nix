@@ -230,6 +230,7 @@ in
     xfsprogs        # XFS utilities
     f2fs-tools      # F2FS utilities
     parted          # CLI partition editor
+    ncdu            # utility for tree disk dimensions
 
     # Disk management & monitoring (CLI)
     smartmontools   # S.M.A.R.T. monitoring for drives
