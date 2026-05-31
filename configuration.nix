@@ -393,15 +393,9 @@ in
     openFirewall = true;
     capSysAdmin = true;
 
-    apps = [
-      {
-        name = "Steam Big Picture";
-        detached = [ "steam -gamepadui" ];
-      }
-      {
-        name = "Desktop";
-      }
-    ];
+    settings = {
+      file_apps = "/home/iamajoe/.config/sunshine/apps.json";
+    };
   };
 
   # ─── AI ────────────────────────────────────────────────────────────────
