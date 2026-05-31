@@ -320,10 +320,10 @@ in
         rules = [
           { mime = "application/json"; use = "edit"; }
           { mime = "text/*"; use = "edit"; }
-          { name = "*.md"; use = "edit"; }
-          { name = "*.yml"; use = "edit"; }
-          { name = "*.txt"; use = "edit"; }
-          { name = "*.json"; use = "edit"; }
+          { url = "*.md"; use = "edit"; }
+          { url = "*.yml"; use = "edit"; }
+          { url = "*.txt"; use = "edit"; }
+          { url = "*.json"; use = "edit"; }
         ];
       };
       mgr = {

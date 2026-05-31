@@ -27,6 +27,10 @@ XDG_SESSION_TYPE \
 DESKTOP_SESSION
 fi
 
+# Change resolution
+# xrandr --output DP-2 --mode 2560x1440 --rate 60
+# xrandr --output DP-2 --mode 1920x1080 --rate 60
+
 # Load Xresources if present
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 

@@ -23,13 +23,14 @@ let
         cmd = "";
 
         detached = [
+          "xrandr --output DP-2 --mode 1920x1080 --rate 60"
           "setsid steam steam://open/bigpicture"
         ];
 
         prep-cmd = [
           {
             do = "qtile cmd-obj -o group 6 -f toscreen";
-            undo = "setsid steam steam://close/bigpicture";
+            undo = "setsid steam steam://close/bigpicture; xrandr --output DP-2 --auto";
           }
         ];
 
@@ -63,9 +64,9 @@ in
       RestartSec = 5;
 
       Environment = [
-        # "DISPLAY=:0"
-        # "XAUTHORITY=${homeDir}/.Xauthority"
-        # "XDG_RUNTIME_DIR=/run/user/%U"
+        "DISPLAY=:0"
+        "XAUTHORITY=${homeDir}/.Xauthority"
+        "XDG_RUNTIME_DIR=/run/user/%U"
         # "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
         # "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
         "PATH=${homeDir}/.local/bin:/run/current-system/sw/bin:${config.home.profileDirectory}/bin"

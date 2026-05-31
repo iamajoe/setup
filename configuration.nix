@@ -337,6 +337,11 @@ in
     enable = true;
     nssmdns4 = true;
     openFirewall = true; # for network printer discovery
+
+    publish = {
+      enable = true;
+      userServices = true;
+    };
   };
 
   # ─── VIRTUALIZATION (optional, but useful) ──────────────────────────
