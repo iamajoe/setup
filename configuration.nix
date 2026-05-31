@@ -295,6 +295,12 @@ in
     11434 # ollama
     # 21115 21116 21117 21118 21119 # rustdesk
 
+    # sunshine / gaming
+    47984
+    47989
+    47990
+    48010
+
     # used in development
     8083  # web
     8084  # api
@@ -303,6 +309,13 @@ in
   ];
   networking.firewall.allowedUDPPorts = [
     # 21116 # rustdesk
+
+    # sunshine / gaming
+    47998
+    47999
+    48000
+    48002
+    48010
   ];
 
   # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
