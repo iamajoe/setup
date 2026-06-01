@@ -23,7 +23,17 @@ in
 
   networking.hostName = "nixos-${buildEnv.username}";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
   networking.networkmanager.enable = true;
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
+  };
+  networking.networkmanager.dns = "systemd-resolved";
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
 
   time.timeZone = "Europe/Lisbon";
   i18n.defaultLocale = "en_US.UTF-8";
