@@ -254,6 +254,11 @@ in
 
     lxqt.lxqt-policykit
 
+    # Secret handling
+    libsecret
+    seahorse
+    gnome-keyring
+
     # AI
     # ollama-cuda
   ];

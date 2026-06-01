@@ -40,6 +40,9 @@ in
 
   # Qt scaling and dark mode (for Qt apps)
   home.sessionVariables = {
+    # solves some issues with electron applications
+    XDG_CURRENT_DESKTOP = "GNOME";
+
     # QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     # QT_SCALE_FACTOR = "1";  # Normal scaling for Qt apps (Flameshot dialogs)
     # QT_SCALE_FACTOR = "2";  # 2x scaling for HiDPI displays (commented out - was too large for some apps)
