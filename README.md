@@ -31,8 +31,8 @@ In case you want to run under ssh, do this first:
 
 ### Backup syncing
 Proton drive is supported.
-1. Run `rclone config`
-2. Test with `rclone ls proton: --max-depth 1`
+1. Create a new remote with `rclone config` (name the remote `proton`)
+2. Test with `rclone tree proton: --max-depth 1`
 
 ### Parallels
 TODO: still need to actually build this
