@@ -1,15 +1,11 @@
 { config, pkgs, lib, ... }:
 
 let
-  env = builtins.fromJSON (builtins.readFile /etc/nixos/env.json);
-
-  syncdriveEnv = env.syncdrive or { };
-
-  rcloneRemote = syncdriveEnv.rcloneRemote or "proton";
-  encryptionKey = syncdriveEnv.encryptionKey;
-
   homeDir = config.home.homeDirectory;
 
+  envJson = "/etc/nixos/env.json";
+
+  rcloneRemote = "proton";
   protonLocal = "${homeDir}/proton_drive";
   rcloneConfig = "${homeDir}/.config/rclone/rclone.conf";
 
@@ -31,6 +27,7 @@ in
     gzip
     coreutils
     findutils
+    jq
   ];
 
   home.activation.createSyncDriveFolders = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -112,13 +109,28 @@ in
         src="${dockerDataDir}"
         tmp="${tempBackupDir}/$name.tmp"
         final="${dockerBackupDir}/$name"
+        key_file="${tempBackupDir}/encryption-key"
+
+        if [ ! -f "${envJson}" ]; then
+          echo "Missing env file: ${envJson}" >&2
+          exit 1
+        fi
+
+        ${pkgs.coreutils}/bin/mkdir -p "${tempBackupDir}" "${dockerBackupDir}"
+        ${pkgs.coreutils}/bin/chmod 700 "${tempBackupDir}"
+
+        ${pkgs.jq}/bin/jq -r '.syncdrive.encryptionKey' "${envJson}" > "$key_file"
+        ${pkgs.coreutils}/bin/chmod 600 "$key_file"
+
+        if [ ! -s "$key_file" ] || [ "$(${pkgs.coreutils}/bin/cat "$key_file")" = "null" ]; then
+          echo "Missing .syncdrive.encryptionKey in ${envJson}" >&2
+          exit 1
+        fi
 
         if [ ! -d "$src" ]; then
           echo "Source directory does not exist: $src" >&2
           exit 1
         fi
-
-        ${pkgs.coreutils}/bin/mkdir -p "${tempBackupDir}" "${dockerBackupDir}"
 
         echo "Creating encrypted backup: $final"
 
@@ -133,13 +145,15 @@ in
               -aes-256-cbc \
               -pbkdf2 \
               -salt \
-              -pass pass:'${encryptionKey}' \
+              -pass file:"$key_file" \
               -out "$tmp"
 
         ${pkgs.coreutils}/bin/chmod 600 "$tmp"
         ${pkgs.coreutils}/bin/mv "$tmp" "$final"
 
-        # Keep only the newest 14 local encrypted docker-data backups.
+        ${pkgs.coreutils}/bin/rm -f "$key_file"
+
+        # Keep only the newest 14 local encrypted backups.
         ${pkgs.coreutils}/bin/ls -1t "${dockerBackupDir}"/docker-data-*.tar.gz.enc 2>/dev/null \
           | ${pkgs.coreutils}/bin/tail -n +15 \
           | ${pkgs.findutils}/bin/xargs -r ${pkgs.coreutils}/bin/rm -f
@@ -160,7 +174,8 @@ in
     };
 
     Timer = {
-      OnCalendar = "monthly";
+      OnBootSec = "5m";
+      OnCalendar = "daily";
       Persistent = true;
       RandomizedDelaySec = "30m";
       Unit = "syncdrive-backup-docker-data.service";
