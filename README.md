@@ -29,5 +29,10 @@ In case you want to run under ssh, do this first:
 10. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
 11. for nix garbage collection: `nixclean`
 
+### Backup syncing
+Proton drive is supported.
+1. Run `rclone config`
+2. Test with `rclone ls proton: --max-depth 1`
+
 ### Parallels
 TODO: still need to actually build this

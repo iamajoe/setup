@@ -16,6 +16,7 @@ in
     ./programs/picom.nix
     ./programs/firefox.nix
     ./programs/sunshine.nix
+    ./programs/syncdrive.nix
     # ./programs/rustdesk.nix
   ];
 
