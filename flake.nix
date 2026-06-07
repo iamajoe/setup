@@ -1,74 +1,46 @@
 {
-  description = "dev_machine";
+  description = "dev_macos";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hardware = {
-      url = "path:/etc/nixos/hardware-configuration.nix";
-      flake = false;
-    };
-
-    userenv = {
-      url = "path:/etc/nixos/env.json";
-      flake = false;
-    };
-    usersecrets = {
-      url = "path:/etc/nixos/secrets";
-      flake = false;
-    };
-
-    qtile-flake = {
-      url = "github:qtile/qtile";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
+  outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
-    overlays = [];
-    buildEnv =
-      let
-        raw = builtins.readFile "${userenv}";
-        clean = builtins.replaceStrings
-          [ "\u00A0" "\u202F" "\u2009" "\u00AD" "\uFEFF" "\r" ]  # NBSP, NNBSP, thin space, soft hyphen, BOM, CR
-          [ " "      " "      " "      ""       ""      "" ]
-          raw;
-      in builtins.fromJSON clean;
-  in {
-    nixosConfigurations = {
-      nixos-conf-x86_64 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit buildEnv;
-          qtile-flake = inputs.qtile-flake;
-        };
-
-        modules = [
-          { nixpkgs.overlays = overlays; }
-          "${hardware}"
-          ./configuration.nix
-          home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = {
-                inherit inputs usersecrets;
-                buildEnv = buildEnv // {
-                  system = "x86_64-linux";
-                  nixosConfig = "nixos-conf-x86_64";
-                };
-              };
-              users.${buildEnv.username} = import ./home.nix;
-            };
-          }
+    configuration = { pkgs, ... }: {
+      # List packages installed in system profile. To search by name, run:
+      # $ nix-env -qaP | grep wget
+      environment.systemPackages =
+        [ pkgs.vim
         ];
-      };
+
+      # Necessary for using flakes on this system.
+      nix.settings.experimental-features = "nix-command flakes";
+
+      # Enable alternative shell support in nix-darwin.
+      # programs.fish.enable = true;
+
+      # Set Git commit hash for darwin-version.
+      system.configurationRevision = self.rev or self.dirtyRev or null;
+
+      # Used for backwards compatibility, please read the changelog before changing.
+      # $ darwin-rebuild changelog
+      system.stateVersion = 6;
+
+      # The platform the configuration will be used on.
+      nixpkgs.hostPlatform = "aarch64-darwin";
+    };
+  in
+  {
+    # Build darwin flake using:
+    # $ darwin-rebuild build --flake .#Joels-MacBook-Pro
+    darwinConfigurations."dev_mac" = nix-darwin.lib.darwinSystem {
+      modules = [
+        configuration
+        ./programs/alacritty.nix
+      ];
     };
   };
 }
