@@ -1,38 +1,108 @@
-# Setup (nixos)
+# Setup (nix-darwin)
 
-Nixos setup machine
+macOS setup machine.
 
 ## Requirements
 
-- [NixOs](https://nixos.org/download/#nix-install-linux)
+- macOS
+- [Lix](https://lix.systems/install/)
+- Git
 
 ## Run
-In case you want to run under ssh, do this first:
-1. `sudo nano /etc/nixos/configuration.nix`
-    - Uncomment `services.openssh.enable = true;`
-2. `ip address` (to know the ip to ssh to)
-3. `sudo nixos-rebuild switch`
-
 ### Steps
-1. `sudo nano /etc/nixos/configuration.nix`
-    - Add packages: `git, wget, curl, vim`
-2. `sudo nixos-rebuild switch`
-3. `mkdir -p /etc/nixos/secrets`
-4. copy ssh key manually to: `/etc/nixos/secrets/id_rsa` and `/etc/nixos/secrets/id_rsa.pub`
-5. `git clone --branch nixos --depth 1 https://github.com/iamajoe/setup.git $HOME/nixos_config`
-6. `sudo cp $HOME/nixos_config/.env.json.dist /etc/nixos/env.json`
-7. `sudo vim /etc/nixos/env.json` (modify acccordingly to your data)
-8. build
-    - For x86: `sudo nixos-rebuild switch --flake $HOME/nixos_config/#nixos-conf-x86_64`
-    - For arm64: `sudo nixos-rebuild switch --flake $HOME/nixos_config/#nixos-conf-aarch64`
-9. `sudo reboot`
-10. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
-11. for nix garbage collection: `nixclean`
 
-### Backup syncing
-Proton drive is supported.
-1. Create a new remote with `rclone config` (name the remote `proton`)
-2. Test with `rclone tree proton: --max-depth 1`
+1. Install Lix:
 
-### Parallels
-TODO: still need to actually build this
+   ```sh
+   curl -sSf -L https://install.lix.systems/lix | sh -s -- install
+   ```
+
+2. Restart shell or source Nix:
+
+   ```sh
+   . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+   ```
+
+3. Clone config:
+
+   ```sh
+   sudo mkdir -p /etc/nix-darwin
+   sudo chown -R "$USER":staff /etc/nix-darwin
+   git clone --branch nixos_mac --depth 1 https://github.com/iamajoe/setup.git /etc/nix-darwin
+   ```
+
+4. Create local env file:
+
+   ```sh
+   cp /etc/nix-darwin/.env.json.mac.dist /etc/nix-darwin/.env.json
+   vim /etc/nix-darwin/.env.json
+   ```
+
+5. Build:
+
+   ```sh
+   sudo nix run github:nix-darwin/nix-darwin#darwin-rebuild -- switch --flake /etc/nix-darwin#dev_mac
+   ```
+
+6. Reboot:
+
+   ```sh
+   sudo reboot
+   ```
+
+7. Rebuild later:
+
+   ```sh
+   nixrebuild
+   ```
+
+8. Garbage collect:
+
+   ```sh
+   nixclean
+   ```
+
+## Env file
+
+Use:
+
+```sh
+.env.json
+```
+
+Do not commit it.
+Use the dist file as a template:
+
+```sh
+.env.json.mac.dist
+```
+
+Example:
+
+```json
+{
+  "system": "aarch64-darwin",
+  "platform": "darwin",
+  "username": "your-macos-username",
+  "homeDir": "/Users/your-macos-username",
+  "flakePath": "/etc/nix-darwin",
+  "flakeName": "dev_mac",
+  "userFullname": "Your Name",
+  "userEmail": "you@example.com"
+}
+```
+
+## Notes
+
+If `darwin-rebuild` is not available yet, use:
+
+```sh
+sudo nix run github:nix-darwin/nix-darwin#darwin-rebuild -- switch --flake /etc/nix-darwin#dev_mac
+```
+
+After the first successful build, use:
+
+```sh
+nixrebuild
+```
+

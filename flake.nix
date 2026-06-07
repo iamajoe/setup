@@ -1,5 +1,5 @@
 {
-  description = "dev_macos";
+  description = "dev";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
@@ -9,39 +9,38 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
+    userConfig = builtins.fromJSON (builtins.readFile "/etc/nix-darwin/.env.json");
+
     configuration = { pkgs, ... }: {
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ pkgs.vim
-        ];
+      environment.systemPackages = [
+        pkgs.vim
+      ];
 
-      # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
-
-      # Enable alternative shell support in nix-darwin.
-      # programs.fish.enable = true;
-
-      # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
       system.stateVersion = 6;
 
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
+      nixpkgs.hostPlatform = userConfig.system;
     };
   in
   {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#Joels-MacBook-Pro
-    darwinConfigurations."dev_mac" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations.${userConfig.flakeName} = nix-darwin.lib.darwinSystem {
+      specialArgs = {
+        inherit userConfig;
+      };
+
       modules = [
         configuration
         ./programs/alacritty.nix
+        ./programs/helix.nix
+        ./programs/bash.nix
+        ./programs/zsh.nix
+        ./programs/tmux.nix
+        ./programs/yazi.nix
+        ./programs/dev.nix
+        ./programs/zed.nix
+        ./programs/general.nix
       ];
     };
   };
 }
-
