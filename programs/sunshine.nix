@@ -16,7 +16,7 @@ let
       }
 
       {
-        name = "Steam Big Picture";
+        name = "Steam";
         image-path = "steam.png";
 
         # Keep this empty because Steam relaunches / detaches itself.
