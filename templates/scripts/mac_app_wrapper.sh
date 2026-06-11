@@ -2,7 +2,7 @@
 set -euo pipefail
 
 srcApps="$1"
-dstApps="${2:-/Applications/Nix Apps}"
+dstApps="${2:-/Applications/NixApps}"
 
 echo "setting up $dstApps..." >&2
 
