@@ -34,14 +34,14 @@ macOS setup machine.
 4. Create local env file:
 
    ```sh
-   cp /etc/nix-darwin/.env.json.mac.dist /etc/nix-darwin/.env.json
-   vim /etc/nix-darwin/.env.json
+   cp /etc/nix-darwin/local.nix.mac.dist /etc/nix-darwin/local.nix
+   vim /etc/nix-darwin/local.nix
    ```
 
 5. Build:
 
    ```sh
-   sudo nix run github:nix-darwin/nix-darwin#darwin-rebuild -- switch --flake /etc/nix-darwin#dev_mac
+   sudo nix run github:nix-darwin/nix-darwin#darwin-rebuild -- switch --flake /etc/nix-darwin#dev_machine
    ```
 
 6. Reboot:
@@ -62,42 +62,12 @@ macOS setup machine.
    nixclean
    ```
 
-## Env file
-
-Use:
-
-```sh
-.env.json
-```
-
-Do not commit it.
-Use the dist file as a template:
-
-```sh
-.env.json.mac.dist
-```
-
-Example:
-
-```json
-{
-  "system": "aarch64-darwin",
-  "platform": "darwin",
-  "username": "your-macos-username",
-  "homeDir": "/Users/your-macos-username",
-  "flakePath": "/etc/nix-darwin",
-  "flakeName": "dev_mac",
-  "userFullname": "Your Name",
-  "userEmail": "you@example.com"
-}
-```
-
 ## Notes
 
 If `darwin-rebuild` is not available yet, use:
 
 ```sh
-sudo nix run github:nix-darwin/nix-darwin#darwin-rebuild -- switch --flake /etc/nix-darwin#dev_mac
+sudo nix run github:nix-darwin/nix-darwin#darwin-rebuild -- switch --flake /etc/nix-darwin#dev_machine
 ```
 
 After the first successful build, use:

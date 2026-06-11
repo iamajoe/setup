@@ -1,0 +1,19 @@
+{
+  description = "Local config";
+
+  outputs = { self }: {
+    userConfig = {
+      system = "x86_64-linux";
+      platform = "linux";
+
+      flakePath = "/home/your-username/nixos_config";
+      flakeName = "dev_machine";
+
+      username = "joe";
+      homeDir = "/home/your-username";
+      userFullname = "Your Name";
+      userEmail = "you@example.com";
+    };
+  };
+}
+

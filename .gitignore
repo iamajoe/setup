@@ -2,8 +2,8 @@ tmp*
 *_old*
 hardware-configuration.nix
 
-.env*.json
-!.env.json.dist
+local.nix
+!local.nix*.dist
 
 flake.lock
 
