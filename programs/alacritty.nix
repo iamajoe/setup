@@ -13,6 +13,6 @@ in
     mkdir -p ${homeDir}/.config/alacritty
     rm -f ${homeDir}/.config/alacritty/alacritty.toml
     ln -sfn ${../templates/alacritty/alacritty.toml} ${homeDir}/.config/alacritty/alacritty.toml
-    chown -h ${username}:staff ${homeDir}/.onfig/alacritty
+    chown -h ${username}:staff ${homeDir}/.config/alacritty
   '';
 }

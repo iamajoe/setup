@@ -16,17 +16,7 @@ in
 
       # Miscellaneous
       obsidian
-      gimp
-      sublime-merge
       spotify
-      vlc
-      stripe-cli
-      kicad
-      orca-slicer
-
-      # Additional editors
-      sublime4
-      code-cursor
 
       # Fonts
       nerd-fonts.noto
@@ -34,21 +24,25 @@ in
       # Communication
       discord
       slack
-
-      # Database tools
-      mongodb-compass
+      zoom-us
     ]
 
     # Linux-specific packages
     ++ lib.optionals isLinux [
       transmission_4-gtk
       google-chrome
-      zoom-us
+      gimp
+      vlc
+      kicad
+      orca-slicer
     ]
 
     # macOS-specific packages
     ++ lib.optionals isDarwin [
       transmission_4
-      zoom-us
+      # TODO: missing these
+      # - vlc
+      # - kicad
+      # - orca slicer
     ];
 }
