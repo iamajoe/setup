@@ -34,8 +34,8 @@ macOS setup machine.
 4. Create local env file:
 
    ```sh
-   cp /etc/nix-darwin/local.nix.mac.dist /etc/nix-darwin/local.nix
-   vim /etc/nix-darwin/local.nix
+   cp /etc/nix-darwin/local-config/flake.nix.mac.dist /etc/nix-darwin/local-config/flake.nix
+   vim /etc/nix-darwin/local-config/flake.nix
    ```
 
 5. Build:
