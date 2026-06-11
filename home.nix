@@ -25,6 +25,11 @@ in
   home.sessionPath = [ "/home/${buildEnv.username}/.local/bin"];
   home.stateVersion = "25.05";
 
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" "pkcs11" ];
+  };
+
   # ─── HiDPI Support ────────────────────────────────────────────────────────────────
   # X11 DPI settings for HiDPI displays
   xresources.properties = {

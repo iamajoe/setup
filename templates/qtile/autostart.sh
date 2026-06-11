@@ -3,6 +3,9 @@
 # Qtile autostart script
 # This script runs once when Qtile starts
 
+eval "$(/run/current-system/sw/bin/gnome-keyring-daemon --start --components=secrets,pkcs11)"
+export SSH_AUTH_SOCK
+
 # Set root window background color
 xsetroot -solid "#121312" &
 
