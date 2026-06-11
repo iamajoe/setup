@@ -3,8 +3,26 @@
 let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
+  macAppWrapper = ../templates/scripts/mac_app_wrapper.sh;
 in
 {
+  { config, pkgs, lib, ... }:
+
+{
+  # Setups applications as mac wrappers
+  system.activationScripts.nixApps.text = lib.mkIf isDarwin ''
+    tmpScript="$(mktemp /tmp/mac_app_wrapper.XXXXXX.sh)"
+
+    cp ${macAppWrapper} "$tmpScript"
+    chmod +x "$tmpScript"
+
+    "$tmpScript" \
+      "${config.system.build.applications}/Applications" \
+      "/Applications/Nix Apps"
+
+    rm -f "$tmpScript"
+  '';
+
   environment.systemPackages =
     with pkgs;
     [
