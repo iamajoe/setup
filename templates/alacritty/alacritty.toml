@@ -109,7 +109,8 @@ bold.family = "NotoSansM Nerd Font"
 bold.style = "SemiBold"
 
 [terminal.shell]
-program = "/bin/zsh"
+# program = "/bin/zsh"
+program = "/run/current-system/sw/bin/zsh"
 # program = "/bin/bash"
 # program = "/opt/homebrew/bin/fish"
 args = ["--login"]

@@ -11,8 +11,7 @@ in
 
   system.activationScripts.alacrittyConfig.text = ''
     mkdir -p ${homeDir}/.config/alacritty
-    rm -f ${homeDir}/.config/alacritty/alacritty.toml
     ln -sfn ${../templates/alacritty/alacritty.toml} ${homeDir}/.config/alacritty/alacritty.toml
-    chown -h ${username}:staff ${homeDir}/.config/alacritty
+    chown -R ${username}:staff ${homeDir}/.config/alacritty
   '';
 }
