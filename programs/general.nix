@@ -49,13 +49,13 @@ in
       nerd-fonts.noto
 
       # Communication
-      discord
       slack
       zoom-us
     ]
 
     # Linux-specific packages
     ++ lib.optionals isLinux [
+      discord # goes crazy with the updates on mac
       transmission_4-gtk
       google-chrome
       gimp

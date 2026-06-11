@@ -4,7 +4,13 @@ set -euo pipefail
 srcApps="$1"
 dstApps="${2:-/Applications/NixApps}"
 
-echo "setting up $dstApps..." >&2
+# Apps that should be wrapped instead of symlinked.
+# Keep this list small. Complex GUI apps like Cursor/Zed should usually be symlinked.
+wrapApps=" Alacritty.app "
+
+echo "CUSTOM mac_app_wrapper.sh is running" >&2
+echo "source apps: $srcApps" >&2
+echo "destination apps: $dstApps" >&2
 
 rm -rf "$dstApps"
 mkdir -p "$dstApps"
@@ -20,24 +26,41 @@ while IFS= read -r -d "" srcApp; do
   appBase="${appName%.app}"
   dstApp="$dstApps/$appName"
 
-  echo "wrapping $appName" >&2
+  echo "processing $appName" >&2
 
   realApp="$(readlink "$srcApp" || true)"
   if [ -z "$realApp" ]; then
     realApp="$srcApp"
   fi
 
+  if [ ! -d "$realApp" ]; then
+    echo "  skipping $appName: resolved app does not exist: $realApp" >&2
+    continue
+  fi
+
+  case "$wrapApps" in
+    *" $appName "*)
+      echo "  mode: wrapper" >&2
+      ;;
+    *)
+      echo "  mode: symlink to real app" >&2
+      rm -rf "$dstApp"
+      ln -s "$realApp" "$dstApp"
+      continue
+      ;;
+  esac
+
   infoPlist="$realApp/Contents/Info.plist"
 
   if [ ! -f "$infoPlist" ]; then
-    echo "skipping $appName: no Info.plist" >&2
+    echo "  skipping $appName: no Info.plist" >&2
     continue
   fi
 
   executableName="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$infoPlist" 2>/dev/null || true)"
 
   if [ -z "$executableName" ]; then
-    echo "skipping $appName: no CFBundleExecutable" >&2
+    echo "  skipping $appName: no CFBundleExecutable" >&2
     continue
   fi
 
@@ -51,9 +74,9 @@ while IFS= read -r -d "" srcApp; do
     launchExecutable="$realExecutable"
     echo "  using app executable: $launchExecutable" >&2
   else
-    echo "skipping $appName: no executable found" >&2
-    echo "  tried $binCandidate" >&2
-    echo "  tried $realExecutable" >&2
+    echo "  skipping $appName: no executable found" >&2
+    echo "    tried $binCandidate" >&2
+    echo "    tried $realExecutable" >&2
     continue
   fi
 
@@ -80,7 +103,7 @@ while IFS= read -r -d "" srcApp; do
     <string>$appBase</string>
 
     <key>CFBundleIdentifier</key>
-    <string>org.nixos.nix-apps.$appBase</string>
+    <string>org.nixos.nixapps.$appBase</string>
 
     <key>CFBundleExecutable</key>
     <string>wrapper</string>
@@ -117,11 +140,23 @@ exec "$launchExecutable" "\$@"
 EOF
 
   chmod +x "$dstApp/Contents/MacOS/wrapper"
+
+  echo "  created wrapper: $dstApp/Contents/MacOS/wrapper" >&2
+  echo "  bundle executable:" >&2
+  /usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$dstApp/Contents/Info.plist" >&2 || true
 done
 
-chown -R root:wheel "$dstApps"
+chown -h root:wheel "$dstApps" || true
+chown -R root:wheel "$dstApps" 2>/dev/null || true
 
 find "$dstApps" -maxdepth 1 -name "*.app" -print0 |
 while IFS= read -r -d "" app; do
-  /usr/bin/touch "$app"
+  if [ -L "$app" ]; then
+    echo "skipping touch for symlink: $app" >&2
+    continue
+  fi
+
+  /usr/bin/touch "$app" 2>/dev/null || true
 done
+
+echo "finished setting up $dstApps" >&2
