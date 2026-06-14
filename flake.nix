@@ -19,7 +19,7 @@
       };
 
       modules = [
-        ./hardware-configuration.nix
+        userConfig.hardwareModule
         ./configuration.nix
         # ./programs/audio.nix
         # ./programs/desktop_graphics.nix
