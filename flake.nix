@@ -22,9 +22,9 @@
         ./hardware-configuration.nix
         ./configuration.nix
         configuration
-        ./programs/audio.nix
-        ./programs/desktop_graphics.nix
-        ./programs/gaming.nix
+        # ./programs/audio.nix
+        # ./programs/desktop_graphics.nix
+        # ./programs/gaming.nix
       ];
     };
   };
