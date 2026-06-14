@@ -2,8 +2,8 @@ tmp*
 *_old*
 hardware-configuration.nix
 
-local.nix
-!local.nix*.dist
+local-config/flake.nix
+!local-config/flake.nix*.dist
 
 flake.lock
 
