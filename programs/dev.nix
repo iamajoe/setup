@@ -1,8 +1,8 @@
 { config, pkgs, lib, userConfig, ... }:
 
 let
-  isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
+  isDarwin = userConfig.platform == "darwin";
+  isLinux = userConfig.platform == "linux";
 in
 {
   environment.systemPackages = with pkgs; [
@@ -54,16 +54,19 @@ in
     stripe-cli
 
     # Additional editors
-    code-cursor
+    # TODO: requires DE and should come as variable
+    # code-cursor
 
     # Database tools
-    mongodb-compass
+    # TODO: requires DE and should come as variable
+    # mongodb-compass
   ]
 
   # Linux-specific packages
   ++ lib.optionals isLinux [
-    sublime-merge
-    sublime4
+    # TODO: requires DE and should come as variable
+    # sublime-merge
+    # sublime4
   ]
 
   # macOS-specific packages
