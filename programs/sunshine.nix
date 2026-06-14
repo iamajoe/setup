@@ -1,80 +1,82 @@
-{ config, pkgs, buildEnv, lib, ... }:
+# TODO: this is the old home-manager
 
-let
-  username = buildEnv.username;
-  homeDir = config.home.homeDirectory;
+# { config, pkgs, buildEnv, lib, ... }:
 
-  sunshineApps = {
-    env = {
-      PATH = "$(PATH):$(HOME)/.local/bin";
-    };
+# let
+#   username = buildEnv.username;
+#   homeDir = config.home.homeDirectory;
 
-    apps = [
-      {
-        name = "Desktop";
-        image-path = "desktop.png";
-      }
+#   sunshineApps = {
+#     env = {
+#       PATH = "$(PATH):$(HOME)/.local/bin";
+#     };
 
-      {
-        name = "Steam";
-        image-path = "steam.png";
+#     apps = [
+#       {
+#         name = "Desktop";
+#         image-path = "desktop.png";
+#       }
 
-        # Keep this empty because Steam relaunches / detaches itself.
-        cmd = "";
+#       {
+#         name = "Steam";
+#         image-path = "steam.png";
 
-        detached = [
-          "xrandr --output DP-2 --mode 1920x1080 --rate 60"
-          "setsid steam steam://open/bigpicture"
-        ];
+#         # Keep this empty because Steam relaunches / detaches itself.
+#         cmd = "";
 
-        prep-cmd = [
-          {
-            do = "qtile cmd-obj -o group 6 -f toscreen";
-            undo = "setsid steam steam://close/bigpicture; xrandr --output DP-2 --auto";
-          }
-        ];
+#         detached = [
+#           "xrandr --output DP-2 --mode 1920x1080 --rate 60"
+#           "setsid steam steam://open/bigpicture"
+#         ];
 
-        auto-detach = true;
-        wait-all = true;
-        exit-timeout = 5;
-        exclude-global-prep-cmd = false;
-      }
-    ];
-  };
+#         prep-cmd = [
+#           {
+#             do = "qtile cmd-obj -o group 6 -f toscreen";
+#             undo = "setsid steam steam://close/bigpicture; xrandr --output DP-2 --auto";
+#           }
+#         ];
 
-in
-{
-  home.packages = with pkgs; [
-    sunshine
-  ];
+#         auto-detach = true;
+#         wait-all = true;
+#         exit-timeout = 5;
+#         exclude-global-prep-cmd = false;
+#       }
+#     ];
+#   };
 
-  home.file.".config/sunshine/apps.json".text =
-    builtins.toJSON sunshineApps;
+# in
+# {
+#   home.packages = with pkgs; [
+#     sunshine
+#   ];
 
-  systemd.user.services.sunshine = {
-    Unit = {
-      Description = "Sunshine Game Streaming Host";
-      After = [ "graphical-session.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
+#   home.file.".config/sunshine/apps.json".text =
+#     builtins.toJSON sunshineApps;
 
-    Service = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
-      RestartSec = 5;
+#   systemd.user.services.sunshine = {
+#     Unit = {
+#       Description = "Sunshine Game Streaming Host";
+#       After = [ "graphical-session.target" ];
+#       PartOf = [ "graphical-session.target" ];
+#     };
 
-      Environment = [
-        "DISPLAY=:0"
-        "XAUTHORITY=${homeDir}/.Xauthority"
-        "XDG_RUNTIME_DIR=/run/user/%U"
-        # "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
-        # "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
-        "PATH=${homeDir}/.local/bin:/run/current-system/sw/bin:${config.home.profileDirectory}/bin"
-      ];
-    };
+#     Service = {
+#       ExecStart = "${pkgs.sunshine}/bin/sunshine";
+#       Restart = "on-failure";
+#       RestartSec = 5;
 
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-  };
-}
+#       Environment = [
+#         "DISPLAY=:0"
+#         "XAUTHORITY=${homeDir}/.Xauthority"
+#         "XDG_RUNTIME_DIR=/run/user/%U"
+#         # "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+#         # "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
+#         "PATH=${homeDir}/.local/bin:/run/current-system/sw/bin:${config.home.profileDirectory}/bin"
+#       ];
+#     };
+
+#     Install = {
+#       WantedBy = [ "graphical-session.target" ];
+#     };
+#   };
+# }

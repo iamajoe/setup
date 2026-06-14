@@ -1,188 +1,190 @@
-{ config, pkgs, lib, ... }:
+# TODO: this is the old home-manager
 
-let
-  homeDir = config.home.homeDirectory;
+# { config, pkgs, lib, ... }:
 
-  envJson = "/etc/nixos/env.json";
+# let
+#   homeDir = config.home.homeDirectory;
 
-  rcloneRemote = "proton";
-  protonLocal = "${homeDir}/proton_drive";
-  rcloneConfig = "${homeDir}/.config/rclone/rclone.conf";
+#   envJson = "/etc/nixos/env.json";
 
-  dockerDataDir = "${homeDir}/services/docker-data";
-  dockerBackupDir = "${protonLocal}/backups/docker-data";
-  tempBackupDir = "${homeDir}/.cache/syncdrive/backups";
+#   rcloneRemote = "proton";
+#   protonLocal = "${homeDir}/proton_drive";
+#   rcloneConfig = "${homeDir}/.config/rclone/rclone.conf";
 
-  bisyncLog = "${homeDir}/.local/state/rclone-protondrive-bisync.log";
-  backupLog = "${homeDir}/.local/state/syncdrive-docker-data-backup.log";
-in
-{
-  # Automatically start/restart user systemd units managed by Home Manager.
-  systemd.user.startServices = "sd-switch";
+#   dockerDataDir = "${homeDir}/services/docker-data";
+#   dockerBackupDir = "${protonLocal}/backups/docker-data";
+#   tempBackupDir = "${homeDir}/.cache/syncdrive/backups";
 
-  home.packages = with pkgs; [
-    rclone
-    openssl
-    gnutar
-    gzip
-    coreutils
-    findutils
-    jq
-  ];
+#   bisyncLog = "${homeDir}/.local/state/rclone-protondrive-bisync.log";
+#   backupLog = "${homeDir}/.local/state/syncdrive-docker-data-backup.log";
+# in
+# {
+#   # Automatically start/restart user systemd units managed by Home Manager.
+#   systemd.user.startServices = "sd-switch";
 
-  home.activation.createSyncDriveFolders = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "${protonLocal}"
-    mkdir -p "${dockerBackupDir}"
-    mkdir -p "${tempBackupDir}"
-    mkdir -p "${homeDir}/.local/state"
+#   home.packages = with pkgs; [
+#     rclone
+#     openssl
+#     gnutar
+#     gzip
+#     coreutils
+#     findutils
+#     jq
+#   ];
 
-    chmod 755 "${protonLocal}"
-    chmod 755 "${dockerBackupDir}"
-    chmod 700 "${tempBackupDir}"
-  '';
+#   home.activation.createSyncDriveFolders = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+#     mkdir -p "${protonLocal}"
+#     mkdir -p "${dockerBackupDir}"
+#     mkdir -p "${tempBackupDir}"
+#     mkdir -p "${homeDir}/.local/state"
 
-  # ─── Proton Drive bidirectional sync ─────────────────────────────────────
+#     chmod 755 "${protonLocal}"
+#     chmod 755 "${dockerBackupDir}"
+#     chmod 700 "${tempBackupDir}"
+#   '';
 
-  systemd.user.services.rclone-protondrive-bisync = {
-    Unit = {
-      Description = "Bidirectional sync Proton Drive with local folder";
-      Wants = [ "network-online.target" ];
-      After = [ "network-online.target" ];
-    };
+#   # ─── Proton Drive bidirectional sync ─────────────────────────────────────
 
-    Service = {
-      Type = "oneshot";
+#   systemd.user.services.rclone-protondrive-bisync = {
+#     Unit = {
+#       Description = "Bidirectional sync Proton Drive with local folder";
+#       Wants = [ "network-online.target" ];
+#       After = [ "network-online.target" ];
+#     };
 
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${protonLocal}";
+#     Service = {
+#       Type = "oneshot";
 
-      ExecStart = ''
-        ${pkgs.rclone}/bin/rclone bisync ${protonLocal} ${rcloneRemote}: \
-          --config=${rcloneConfig} \
-          --create-empty-src-dirs \
-          --compare size,modtime \
-          --conflict-resolve newer \
-          --conflict-loser pathname \
-          --backup-dir1 ${homeDir}/.local/share/rclone/protondrive-conflicts/local \
-          --backup-dir2 ${rcloneRemote}:rclone-conflicts \
-          --log-file ${bisyncLog} \
-          --log-level INFO
-      '';
-    };
-  };
+#       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${protonLocal}";
 
-  systemd.user.timers.rclone-protondrive-bisync = {
-    Unit = {
-      Description = "Run Proton Drive bidirectional sync periodically";
-    };
+#       ExecStart = ''
+#         ${pkgs.rclone}/bin/rclone bisync ${protonLocal} ${rcloneRemote}: \
+#           --config=${rcloneConfig} \
+#           --create-empty-src-dirs \
+#           --compare size,modtime \
+#           --conflict-resolve newer \
+#           --conflict-loser pathname \
+#           --backup-dir1 ${homeDir}/.local/share/rclone/protondrive-conflicts/local \
+#           --backup-dir2 ${rcloneRemote}:rclone-conflicts \
+#           --log-file ${bisyncLog} \
+#           --log-level INFO
+#       '';
+#     };
+#   };
 
-    Timer = {
-      OnBootSec = "2m";
-      OnUnitActiveSec = "5m";
-      Persistent = true;
-      Unit = "rclone-protondrive-bisync.service";
-    };
+#   systemd.user.timers.rclone-protondrive-bisync = {
+#     Unit = {
+#       Description = "Run Proton Drive bidirectional sync periodically";
+#     };
 
-    Install = {
-      WantedBy = [ "timers.target" ];
-    };
-  };
+#     Timer = {
+#       OnBootSec = "2m";
+#       OnUnitActiveSec = "5m";
+#       Persistent = true;
+#       Unit = "rclone-protondrive-bisync.service";
+#     };
 
-  # ─── Encrypted docker-data backup into ProtonDrive ───────────────────────
+#     Install = {
+#       WantedBy = [ "timers.target" ];
+#     };
+#   };
 
-  systemd.user.services.syncdrive-backup-docker-data = {
-    Unit = {
-      Description = "Create encrypted docker-data backup in Proton Drive";
-      Wants = [ "network-online.target" ];
-      After = [ "network-online.target" ];
-    };
+#   # ─── Encrypted docker-data backup into ProtonDrive ───────────────────────
 
-    Service = {
-      Type = "oneshot";
+#   systemd.user.services.syncdrive-backup-docker-data = {
+#     Unit = {
+#       Description = "Create encrypted docker-data backup in Proton Drive";
+#       Wants = [ "network-online.target" ];
+#       After = [ "network-online.target" ];
+#     };
 
-      ExecStart = pkgs.writeShellScript "syncdrive-backup-docker-data" ''
-        set -euo pipefail
+#     Service = {
+#       Type = "oneshot";
 
-        timestamp="$(${pkgs.coreutils}/bin/date +%Y-%m-%d_%H-%M-%S)"
-        hostname="$(${pkgs.coreutils}/bin/hostname)"
-        name="docker-data-$hostname-$timestamp.tar.gz.enc"
+#       ExecStart = pkgs.writeShellScript "syncdrive-backup-docker-data" ''
+#         set -euo pipefail
 
-        src="${dockerDataDir}"
-        tmp="${tempBackupDir}/$name.tmp"
-        final="${dockerBackupDir}/$name"
-        key_file="${tempBackupDir}/encryption-key"
+#         timestamp="$(${pkgs.coreutils}/bin/date +%Y-%m-%d_%H-%M-%S)"
+#         hostname="$(${pkgs.coreutils}/bin/hostname)"
+#         name="docker-data-$hostname-$timestamp.tar.gz.enc"
 
-        if [ ! -f "${envJson}" ]; then
-          echo "Missing env file: ${envJson}" >&2
-          exit 1
-        fi
+#         src="${dockerDataDir}"
+#         tmp="${tempBackupDir}/$name.tmp"
+#         final="${dockerBackupDir}/$name"
+#         key_file="${tempBackupDir}/encryption-key"
 
-        ${pkgs.coreutils}/bin/mkdir -p "${tempBackupDir}" "${dockerBackupDir}"
-        ${pkgs.coreutils}/bin/chmod 700 "${tempBackupDir}"
+#         if [ ! -f "${envJson}" ]; then
+#           echo "Missing env file: ${envJson}" >&2
+#           exit 1
+#         fi
 
-        ${pkgs.jq}/bin/jq -r '.syncdrive.encryptionKey' "${envJson}" > "$key_file"
-        ${pkgs.coreutils}/bin/chmod 600 "$key_file"
+#         ${pkgs.coreutils}/bin/mkdir -p "${tempBackupDir}" "${dockerBackupDir}"
+#         ${pkgs.coreutils}/bin/chmod 700 "${tempBackupDir}"
 
-        if [ ! -s "$key_file" ] || [ "$(${pkgs.coreutils}/bin/cat "$key_file")" = "null" ]; then
-          echo "Missing .syncdrive.encryptionKey in ${envJson}" >&2
-          exit 1
-        fi
+#         ${pkgs.jq}/bin/jq -r '.syncdrive.encryptionKey' "${envJson}" > "$key_file"
+#         ${pkgs.coreutils}/bin/chmod 600 "$key_file"
 
-        if [ ! -d "$src" ]; then
-          echo "Source directory does not exist: $src" >&2
-          exit 1
-        fi
+#         if [ ! -s "$key_file" ] || [ "$(${pkgs.coreutils}/bin/cat "$key_file")" = "null" ]; then
+#           echo "Missing .syncdrive.encryptionKey in ${envJson}" >&2
+#           exit 1
+#         fi
 
-        echo "Creating encrypted backup: $final"
+#         if [ ! -d "$src" ]; then
+#           echo "Source directory does not exist: $src" >&2
+#           exit 1
+#         fi
 
-        ${pkgs.gnutar}/bin/tar \
-          --xattrs \
-          --acls \
-          --one-file-system \
-          -C "${homeDir}/services" \
-          -czf - \
-          docker-data \
-          | ${pkgs.openssl}/bin/openssl enc \
-              -aes-256-cbc \
-              -pbkdf2 \
-              -salt \
-              -pass file:"$key_file" \
-              -out "$tmp"
+#         echo "Creating encrypted backup: $final"
 
-        ${pkgs.coreutils}/bin/chmod 600 "$tmp"
-        ${pkgs.coreutils}/bin/mv "$tmp" "$final"
+#         ${pkgs.gnutar}/bin/tar \
+#           --xattrs \
+#           --acls \
+#           --one-file-system \
+#           -C "${homeDir}/services" \
+#           -czf - \
+#           docker-data \
+#           | ${pkgs.openssl}/bin/openssl enc \
+#               -aes-256-cbc \
+#               -pbkdf2 \
+#               -salt \
+#               -pass file:"$key_file" \
+#               -out "$tmp"
 
-        ${pkgs.coreutils}/bin/rm -f "$key_file"
+#         ${pkgs.coreutils}/bin/chmod 600 "$tmp"
+#         ${pkgs.coreutils}/bin/mv "$tmp" "$final"
 
-        # Keep only the newest 14 local encrypted backups.
-        ${pkgs.coreutils}/bin/ls -1t "${dockerBackupDir}"/docker-data-*.tar.gz.enc 2>/dev/null \
-          | ${pkgs.coreutils}/bin/tail -n +15 \
-          | ${pkgs.findutils}/bin/xargs -r ${pkgs.coreutils}/bin/rm -f
+#         ${pkgs.coreutils}/bin/rm -f "$key_file"
 
-        echo "Backup complete: $final"
-      '';
+#         # Keep only the newest 14 local encrypted backups.
+#         ${pkgs.coreutils}/bin/ls -1t "${dockerBackupDir}"/docker-data-*.tar.gz.enc 2>/dev/null \
+#           | ${pkgs.coreutils}/bin/tail -n +15 \
+#           | ${pkgs.findutils}/bin/xargs -r ${pkgs.coreutils}/bin/rm -f
 
-      ExecStartPost = "${pkgs.systemd}/bin/systemctl --user start rclone-protondrive-bisync.service";
+#         echo "Backup complete: $final"
+#       '';
 
-      StandardOutput = "append:${backupLog}";
-      StandardError = "append:${backupLog}";
-    };
-  };
+#       ExecStartPost = "${pkgs.systemd}/bin/systemctl --user start rclone-protondrive-bisync.service";
 
-  systemd.user.timers.syncdrive-backup-docker-data = {
-    Unit = {
-      Description = "Run encrypted docker-data backup daily";
-    };
+#       StandardOutput = "append:${backupLog}";
+#       StandardError = "append:${backupLog}";
+#     };
+#   };
 
-    Timer = {
-      OnBootSec = "5m";
-      OnCalendar = "daily";
-      Persistent = true;
-      RandomizedDelaySec = "30m";
-      Unit = "syncdrive-backup-docker-data.service";
-    };
+#   systemd.user.timers.syncdrive-backup-docker-data = {
+#     Unit = {
+#       Description = "Run encrypted docker-data backup daily";
+#     };
 
-    Install = {
-      WantedBy = [ "timers.target" ];
-    };
-  };
-}
+#     Timer = {
+#       OnBootSec = "5m";
+#       OnCalendar = "daily";
+#       Persistent = true;
+#       RandomizedDelaySec = "30m";
+#       Unit = "syncdrive-backup-docker-data.service";
+#     };
+
+#     Install = {
+#       WantedBy = [ "timers.target" ];
+#     };
+#   };
+# }

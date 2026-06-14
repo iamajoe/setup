@@ -15,24 +15,15 @@ In case you want to run under ssh, do this first:
 
 ### Steps
 1. `sudo nano /etc/nixos/configuration.nix`
-    - Add packages: `git, wget, curl, vim`
+    - Add packages: `git, wget, curl, vim, helix`
 2. `sudo nixos-rebuild switch`
-3. `mkdir -p /etc/nixos/secrets`
-4. copy ssh key manually to: `/etc/nixos/secrets/id_rsa` and `/etc/nixos/secrets/id_rsa.pub`
-5. `git clone --branch nixos --depth 1 https://github.com/iamajoe/setup.git $HOME/nixos_config`
-6. `sudo cp $HOME/nixos_config/.env.json.dist /etc/nixos/env.json`
-7. `sudo vim /etc/nixos/env.json` (modify acccordingly to your data)
-8. build
-    - For x86: `sudo nixos-rebuild switch --flake $HOME/nixos_config/#nixos-conf-x86_64`
-    - For arm64: `sudo nixos-rebuild switch --flake $HOME/nixos_config/#nixos-conf-aarch64`
-9. `sudo reboot`
-10. for nix rebuild: `nixrebuild`, or for home manager rebuild: `hmrebuild`
-11. for nix garbage collection: `nixclean`
-
-### Backup syncing
-Proton drive is supported.
-1. Create a new remote with `rclone config` (name the remote `proton`)
-2. Test with `rclone tree proton: --max-depth 1`
-
-### Parallels
-TODO: still need to actually build this
+3. `sudo mv /etc/nixos /etc/nixos.bak`
+4. `git clone --branch nixos_v2 --depth 1 https://github.com/iamajoe/setup.git /etc/nixos`
+5. `sudo chown -R "$USER":users /etc/nixos`
+6. copy ssh key manually to: `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`
+7. `cp /etc/nixos/local-config/flake.nix.dist /etc/nixos/local-config/flake.nix`
+8. `sudo vim /etc/nixos/local-config/flake.nix` (modify acccordingly to your data)
+9. build: `sudo nixos-rebuild switch --flake /etc/nixos/#<flakeName>`
+10. `sudo reboot`
+11. for nix rebuild: `nixrebuild`
+12. for nix garbage collection: `nixclean`
