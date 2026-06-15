@@ -31,7 +31,7 @@
         ./programs/yazi.nix
         ./programs/dev.nix
       ]
-      ++ lib.optionals userConfig.addDesktop [
+      # ++ lib.optionals userConfig.addDesktop [
         # ./programs/audio.nix
         # ./programs/desktop_graphics.nix
         # ./programs/dunst.nix
@@ -41,7 +41,7 @@
         # ./programs/sunshine.nix
         # ./programs/alacritty.nix
         # ./programs/zed.nix
-      ];
+      # ];
     };
   };
 }
