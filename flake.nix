@@ -22,7 +22,7 @@
         userConfig.hardwareModule
         ./configuration.nix
 
-        ./programs/general.nix
+        ./programs/basic.nix
         ./programs/git.nix
         ./programs/bash.nix
         ./programs/zsh.nix
@@ -34,6 +34,7 @@
       # ++ lib.optionals userConfig.addDesktop [
         # ./programs/audio.nix
         # ./programs/desktop_graphics.nix
+        # ./programs/desktop_apps.nix
         # ./programs/dunst.nix
         # ./programs/picom.nix
         # ./programs/rofi.nix

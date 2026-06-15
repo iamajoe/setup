@@ -181,9 +181,8 @@ in
   # Note: Blueman GUI installed per-user in home.nix
 
   # ─── PRINTING ────────────────────────────────────────────────────────
-  services.printing.enable = true;
-  services.printing.drivers = with pkgs; []
-  ++ lib.optionals isX86_64 [
+  services.printing.enable = lib.mkIf isX86_64 true;
+  services.printing.drivers = with pkgs; [
     gutenprint
     hplip # HP printers
     epson-escpr # Epson printers
