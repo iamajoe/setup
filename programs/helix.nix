@@ -1,7 +1,9 @@
 { config, pkgs, lib, userConfig, ... }:
 
 let
-  inherit (userConfig) username homeDir flakePath flakeName;
+  inherit (userConfig) username homeDir;
+
+  helixTemplate = ../templates/helix;
 in
 {
   environment.systemPackages = [
@@ -9,19 +11,14 @@ in
   ];
 
   system.activationScripts.helixConfig.text = ''
-    mkdir -p ${homeDir}/.config/helix
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config
 
-    rm -f ${homeDir}/.config/helix/config.toml
-    rm -f ${homeDir}/.config/helix/languages.toml
-    rm -rf ${homeDir}/.config/helix/themes
+    rm -rf ${homeDir}/.config/helix
 
-    ln -sfn ${../templates/helix/config.toml} ${homeDir}/.config/helix/config.toml
-    ln -sfn ${../templates/helix/languages.toml} ${homeDir}/.config/helix/languages.toml
-    ln -sfn ${../templates/helix/themes} ${homeDir}/.config/helix/themes
+    cp -r ${helixTemplate} ${homeDir}/.config/helix
 
-    chown -h ${username}:staff ${homeDir}/.config/helix/config.toml
-    chown -h ${username}:staff ${homeDir}/.config/helix/languages.toml
-    chown -h ${username}:staff ${homeDir}/.config/helix/themes
-    chown ${username}:staff ${homeDir}/.config/helix
+    chown -R ${username}:users ${homeDir}/.config/helix
+    find ${homeDir}/.config/helix -type d -exec chmod 0755 {} \;
+    find ${homeDir}/.config/helix -type f -exec chmod 0644 {} \;
   '';
 }

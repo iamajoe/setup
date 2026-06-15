@@ -2,6 +2,8 @@
 
 let
   inherit (userConfig) username homeDir;
+
+  tmuxTemplate = ../templates/tmux;
 in
 {
   environment.systemPackages = [
@@ -9,22 +11,21 @@ in
   ];
 
   system.activationScripts.tmuxConfig.text = ''
-    mkdir -p ${homeDir}/.config/tmux
+    install -d -m 0755 -o ${username} -g users ${homeDir}
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config
 
     rm -f ${homeDir}/.tmux.conf
-    rm -f ${homeDir}/.config/tmux/main.conf
-    rm -f ${homeDir}/.config/tmux/catppuccin.theme
+    rm -rf ${homeDir}/.config/tmux
 
-    # Minimal tmux entrypoint.
-    # tmux reads ~/.tmux.conf by default, then this loads your real config.
     printf '%s\n' 'run-shell "tmux source-file ~/.config/tmux/main.conf"' > ${homeDir}/.tmux.conf
 
-    ln -sfn ${../templates/tmux/main.conf} ${homeDir}/.config/tmux/main.conf
-    ln -sfn ${../templates/tmux/catppuccin.theme} ${homeDir}/.config/tmux/catppuccin.theme
+    cp -r ${tmuxTemplate} ${homeDir}/.config/tmux
 
-    chown -h ${username}:staff ${homeDir}/.tmux.conf
-    chown -h ${username}:staff ${homeDir}/.config/tmux/main.conf
-    chown -h ${username}:staff ${homeDir}/.config/tmux/catppuccin.theme
-    chown ${username}:staff ${homeDir}/.config/tmux
+    chown ${username}:users ${homeDir}/.tmux.conf
+    chmod 0644 ${homeDir}/.tmux.conf
+
+    chown -R ${username}:users ${homeDir}/.config/tmux
+    find ${homeDir}/.config/tmux -type d -exec chmod 0755 {} \;
+    find ${homeDir}/.config/tmux -type f -exec chmod 0644 {} \;
   '';
 }
