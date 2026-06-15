@@ -3,20 +3,20 @@
 let
   inherit (userConfig) username homeDir flakePath flakeName;
 
-  zshrc = pkgs.substituteAll {
-    src = ../templates/shell/zshrc.sh;
+  zprofile = ../templates/shell/zprofile.sh;
+  toolIntegrations = ../templates/shell/tool_integrations.sh;
+
+  zshrc = pkgs.replaceVars ../templates/shell/zshrc.sh {
     ohMyZsh = pkgs.oh-my-zsh;
     zshAutosuggestions = pkgs.zsh-autosuggestions;
     zshSyntaxHighlighting = pkgs.zsh-syntax-highlighting;
   };
 
-  aliasSh = pkgs.substituteAll {
-    src = ../templates/shell/alias.sh;
+  aliasSh = pkgs.replaceVars ../templates/shell/alias.sh {
     inherit flakePath flakeName;
   };
 
-  devEnv = pkgs.substituteAll {
-    src = ../templates/shell/dev_env.sh;
+  devEnv = pkgs.replaceVars ../templates/shell/dev_env.sh {
     jdk = pkgs.jdk;
   };
 in
@@ -37,26 +37,22 @@ in
   ];
 
   system.activationScripts.zshConfig.text = ''
-    mkdir -p ${homeDir}
-    mkdir -p ${homeDir}/.local/share/zsh
-    mkdir -p ${homeDir}/.config/shell
+    install -d -m 0755 -o ${username} -g users ${homeDir}
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.local/share/zsh
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config/shell
 
     rm -f ${homeDir}/.zshrc
     rm -f ${homeDir}/.zprofile
+    rm -f ${homeDir}/.config/shell/alias.sh
+    rm -f ${homeDir}/.config/shell/dev_env.sh
+    rm -f ${homeDir}/.config/shell/tool_integrations.sh
 
-    ln -sfn ${zshrc} ${homeDir}/.zshrc
-    ln -sfn ${../templates/shell/zprofile.sh} ${homeDir}/.zprofile
+    install -m 0644 -o ${username} -g users ${zshrc} ${homeDir}/.zshrc
+    install -m 0644 -o ${username} -g users ${zprofile} ${homeDir}/.zprofile
+    install -m 0644 -o ${username} -g users ${aliasSh} ${homeDir}/.config/shell/alias.sh
+    install -m 0644 -o ${username} -g users ${devEnv} ${homeDir}/.config/shell/dev_env.sh
+    install -m 0644 -o ${username} -g users ${toolIntegrations} ${homeDir}/.config/shell/tool_integrations.sh
 
-    ln -sfn ${aliasSh} ${homeDir}/.config/shell/alias.sh
-    ln -sfn ${devEnv} ${homeDir}/.config/shell/dev_env.sh
-    ln -sfn ${../templates/shell/tool_integrations.sh} ${homeDir}/.config/shell/tool_integrations.sh
-
-    chown -h ${username}:staff ${homeDir}/.zshrc
-    chown -h ${username}:staff ${homeDir}/.zprofile
-    chown -h ${username}:staff ${homeDir}/.config/shell/alias.sh
-    chown -h ${username}:staff ${homeDir}/.config/shell/dev_env.sh
-    chown -h ${username}:staff ${homeDir}/.config/shell/tool_integrations.sh
-    chown -R ${username}:staff ${homeDir}/.local
-    chown ${username}:staff ${homeDir}/.config/shell
+    chown -R ${username}:users ${homeDir}/.local
   '';
 }
