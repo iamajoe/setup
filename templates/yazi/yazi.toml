@@ -57,4 +57,7 @@ use = "edit"
 
 [mgr]
 show_hidden = true
-sort_by = "mtime"
+sort_by = "alphabetical"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
