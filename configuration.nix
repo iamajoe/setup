@@ -48,13 +48,11 @@ in
 
   # ─── USER ──────────────────────────────────────
   # Define a user account. Don't forget to set a password with 'passwd'.
-  programs.zsh.enable = true;
   users.users.${userConfig.username} = {
     isNormalUser = true;
     description = userConfig.username;
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "input" "uinput" ];
     packages = with pkgs; [];
-    shell = pkgs.zsh;  # Set zsh as default shell
   };
 
   # ─── HARDWARE & FIRMWARE ─────────────────────────────────────────────
