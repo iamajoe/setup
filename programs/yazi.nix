@@ -4,20 +4,11 @@ let
   inherit (userConfig) username homeDir;
 
   yaziTemplate = ../templates/yazi;
-  yWrapper = pkgs.writeShellScriptBin "y" ''
-    tmp="$(mktemp -t yazi-cwd.XXXXXX)"
-    yazi "$@" --cwd-file="$tmp"
-    if cwd="$(cat "$tmp" 2>/dev/null)" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-      printf '%s\n' "$cwd"
-    fi
-    rm -f "$tmp"
-  '';
 in
 {
   environment.systemPackages = [
     pkgs.yazi
     pkgs.xdg-utils
-    yWrapper
   ];
 
   system.activationScripts.yaziConfig.text = ''

@@ -16,6 +16,9 @@
       userFullname = "Your Name";
       userEmail = "you@example.com";
 
+      syncBackupEncryptionKey = "<setup_sync_key>";
+
+      addSyncBackup = false;
       addDesktop = false;
     };
   };

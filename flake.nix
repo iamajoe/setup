@@ -9,6 +9,7 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, local-config }:
   let
+    lib = nixpkgs.lib;
     userConfig = local-config.userConfig;
   in
   {
@@ -31,18 +32,21 @@
         ./programs/yazi.nix
         ./programs/dev.nix
       ]
-      # ++ lib.optionals userConfig.addDesktop [
-        # ./programs/audio.nix
-        # ./programs/desktop_graphics.nix
-        # ./programs/desktop_apps.nix
-        # ./programs/dunst.nix
-        # ./programs/picom.nix
-        # ./programs/rofi.nix
-        # ./programs/gaming.nix
-        # ./programs/sunshine.nix
-        # ./programs/alacritty.nix
-        # ./programs/zed.nix
-      # ]
+      ++ lib.optionals userConfig.addSyncBackup [
+        ./programs/syncdrive.nix
+      ]
+      ++ lib.optionals userConfig.addDesktop [
+        ./programs/audio.nix
+        ./programs/desktop_graphics.nix
+        ./programs/desktop_apps.nix
+        ./programs/dunst.nix
+        ./programs/picom.nix
+        ./programs/rofi.nix
+        ./programs/gaming.nix
+        ./programs/sunshine.nix
+        ./programs/alacritty.nix
+        ./programs/zed.nix
+      ]
       ;
     };
   };

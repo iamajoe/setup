@@ -1,0 +1,12 @@
+[Unit]
+Description=Run encrypted docker-data backup daily
+
+[Timer]
+OnBootSec=5m
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=30m
+Unit=syncdrive-backup-docker-data.service
+
+[Install]
+WantedBy=timers.target

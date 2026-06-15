@@ -1,43 +1,24 @@
-# TODO: this is the old home-manager
-# { config, pkgs, ... }:
+{ config, pkgs, lib, userConfig, ... }:
 
-# {
-#   services.picom = {
-#     enable = true;
-#     # backend = "glx";
-#     backend = "xrender";
-#     vSync = true;  # Prevent screen tearing
+let
+  inherit (userConfig) username homeDir;
 
-#     # Disable all animations and effects
-#     fade = false;
-#     shadow = false;
+  picomTemplate = ../templates/picom;
+in
+{
+  environment.systemPackages = [
+    pkgs.picom
+  ];
 
-#     settings = {
-#       corner-radius = 5;
-#       rounded-corners-exclude = [
-#         "window_type = 'dock'"
-#         "window_type = 'desktop'"
-#       ];
+  system.activationScripts.picomConfig.text = ''
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config
 
-#       # Disable opacity for better performance
-#       # Steam and other GPU-intensive apps are very slow with opacity
-#       inactive-opacity = 1.0;   # No transparency for better performance
-#       active-opacity = 1.0;     # No transparency
-#       frame-opacity = 1.0;      # No transparency for borders
+    rm -rf ${homeDir}/.config/picom
 
-#       blur-background = false;
+    cp -r ${picomTemplate} ${homeDir}/.config/picom
 
-#       # Performance optimizations
-#       mark-wmwin-focused = true;
-#       mark-ovredir-focused = true;
-#       detect-rounded-corners = true;
-#       detect-client-opacity = true;
-#       detect-transient = true;
-#       use-damage = true;
-#       log-level = "warn";
-
-#       # Additional performance settings
-#       unredir-if-possible = true;  # Disable compositor for fullscreen windows
-#     };
-#   };
-# }
+    chown -R ${username}:users ${homeDir}/.config/picom
+    find ${homeDir}/.config/picom -type d -exec chmod 0755 {} \;
+    find ${homeDir}/.config/picom -type f -exec chmod 0644 {} \;
+  '';
+}

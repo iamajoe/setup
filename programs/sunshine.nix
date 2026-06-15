@@ -1,82 +1,29 @@
-# TODO: this is the old home-manager
+{ config, pkgs, lib, userConfig, ... }:
 
-# { config, pkgs, buildEnv, lib, ... }:
+let
+  inherit (userConfig) username homeDir;
 
-# let
-#   username = buildEnv.username;
-#   homeDir = config.home.homeDirectory;
+  sunshineTemplate = ../templates/sunshine;
+in
+{
+  environment.systemPackages = [
+    pkgs.sunshine
+  ];
 
-#   sunshineApps = {
-#     env = {
-#       PATH = "$(PATH):$(HOME)/.local/bin";
-#     };
+  system.activationScripts.sunshineConfig.text = ''
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config/sunshine
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config/systemd/user
 
-#     apps = [
-#       {
-#         name = "Desktop";
-#         image-path = "desktop.png";
-#       }
+    rm -f ${homeDir}/.config/sunshine/apps.json
+    rm -f ${homeDir}/.config/systemd/user/sunshine.service
 
-#       {
-#         name = "Steam";
-#         image-path = "steam.png";
+    install -m 0644 -o ${username} -g users ${sunshineTemplate}/apps.json ${homeDir}/.config/sunshine/apps.json
+    install -m 0644 -o ${username} -g users ${sunshineTemplate}/sunshine.service ${homeDir}/.config/systemd/user/sunshine.service
 
-#         # Keep this empty because Steam relaunches / detaches itself.
-#         cmd = "";
+    chown -R ${username}:users ${homeDir}/.config/sunshine
+    chown -R ${username}:users ${homeDir}/.config/systemd/user
 
-#         detached = [
-#           "xrandr --output DP-2 --mode 1920x1080 --rate 60"
-#           "setsid steam steam://open/bigpicture"
-#         ];
-
-#         prep-cmd = [
-#           {
-#             do = "qtile cmd-obj -o group 6 -f toscreen";
-#             undo = "setsid steam steam://close/bigpicture; xrandr --output DP-2 --auto";
-#           }
-#         ];
-
-#         auto-detach = true;
-#         wait-all = true;
-#         exit-timeout = 5;
-#         exclude-global-prep-cmd = false;
-#       }
-#     ];
-#   };
-
-# in
-# {
-#   home.packages = with pkgs; [
-#     sunshine
-#   ];
-
-#   home.file.".config/sunshine/apps.json".text =
-#     builtins.toJSON sunshineApps;
-
-#   systemd.user.services.sunshine = {
-#     Unit = {
-#       Description = "Sunshine Game Streaming Host";
-#       After = [ "graphical-session.target" ];
-#       PartOf = [ "graphical-session.target" ];
-#     };
-
-#     Service = {
-#       ExecStart = "${pkgs.sunshine}/bin/sunshine";
-#       Restart = "on-failure";
-#       RestartSec = 5;
-
-#       Environment = [
-#         "DISPLAY=:0"
-#         "XAUTHORITY=${homeDir}/.Xauthority"
-#         "XDG_RUNTIME_DIR=/run/user/%U"
-#         # "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
-#         # "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
-#         "PATH=${homeDir}/.local/bin:/run/current-system/sw/bin:${config.home.profileDirectory}/bin"
-#       ];
-#     };
-
-#     Install = {
-#       WantedBy = [ "graphical-session.target" ];
-#     };
-#   };
-# }
+    systemctl --user -M ${username}@ daemon-reload || true
+  '';
+}
