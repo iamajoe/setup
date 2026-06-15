@@ -30,7 +30,8 @@
         ./programs/tmux.nix
         ./programs/yazi.nix
         ./programs/dev.nix
-
+      ]
+      ++ lib.optionals userConfig.addDesktop [
         # ./programs/audio.nix
         # ./programs/desktop_graphics.nix
         # ./programs/dunst.nix

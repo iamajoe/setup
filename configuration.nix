@@ -22,7 +22,9 @@ in
   networking.networkmanager.enable = true;
   services.resolved = {
     enable = true;
-    fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
+    settings.Resolve = {
+      FallbackDNS = [ "1.1.1.1" "8.8.8.8" ];
+    };
   };
   networking.networkmanager.dns = "systemd-resolved";
   networking.nameservers = [
@@ -180,7 +182,8 @@ in
 
   # ─── PRINTING ────────────────────────────────────────────────────────
   services.printing.enable = true;
-  services.printing.drivers = with pkgs; [
+  services.printing.drivers = with pkgs; []
+  ++ lib.optionals isX86_64 [
     gutenprint
     hplip # HP printers
     epson-escpr # Epson printers
