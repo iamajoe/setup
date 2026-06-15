@@ -3,82 +3,7 @@
 let
   inherit (userConfig) username homeDir;
 
-  yaziConfig = pkgs.formats.toml { }.generate "yazi.toml" {
-    opener = {
-      open = [
-        {
-          run = "open \"$1\"";
-          orphan = true;
-          desc = "Open default app";
-        }
-      ];
-
-      edit = [
-        {
-          run = "hx \"$@\"";
-          block = true;
-        }
-      ];
-    };
-
-    open = {
-      prepend_rules = [
-        {
-          mime = "image/*";
-          use = "open";
-        }
-        {
-          mime = "application/pdf";
-          use = "open";
-        }
-        {
-          mime = "video/*";
-          use = "open";
-        }
-        {
-          mime = "audio/*";
-          use = "open";
-        }
-        {
-          mime = "application/zip";
-          use = "open";
-        }
-      ];
-
-      rules = [
-        {
-          mime = "application/json";
-          use = "edit";
-        }
-        {
-          mime = "text/*";
-          use = "edit";
-        }
-        {
-          url = "*.md";
-          use = "edit";
-        }
-        {
-          url = "*.yml";
-          use = "edit";
-        }
-        {
-          url = "*.txt";
-          use = "edit";
-        }
-        {
-          url = "*.json";
-          use = "edit";
-        }
-      ];
-    };
-
-    mgr = {
-      show_hidden = true;
-      sort_by = "mtime";
-    };
-  };
-
+  yaziTemplate = ../templates/yazi;
   yWrapper = pkgs.writeShellScriptBin "y" ''
     tmp="$(mktemp -t yazi-cwd.XXXXXX)"
     yazi "$@" --cwd-file="$tmp"
@@ -91,16 +16,19 @@ in
 {
   environment.systemPackages = [
     pkgs.yazi
+    pkgs.xdg-utils
     yWrapper
   ];
 
   system.activationScripts.yaziConfig.text = ''
-    mkdir -p ${homeDir}/.config/yazi
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config
 
-    rm -f ${homeDir}/.config/yazi/yazi.toml
-    ln -sfn ${yaziConfig} ${homeDir}/.config/yazi/yazi.toml
+    rm -rf ${homeDir}/.config/yazi
 
-    chown ${username}:staff ${homeDir}/.config/yazi
-    chown -h ${username}:staff ${homeDir}/.config/yazi/yazi.toml
+    cp -r ${yaziTemplate} ${homeDir}/.config/yazi
+
+    chown -R ${username}:users ${homeDir}/.config/yazi
+    find ${homeDir}/.config/yazi -type d -exec chmod 0755 {} \;
+    find ${homeDir}/.config/yazi -type f -exec chmod 0644 {} \;
   '';
 }
