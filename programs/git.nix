@@ -3,7 +3,7 @@
 let
   inherit (userConfig) username homeDir userFullname userEmail;
 
-  gitConfig = pkgs.writeText "gitconfig" ''
+  gitConfigText = ''
     [user]
       name = ${userFullname}
       email = ${userEmail}
@@ -46,8 +46,11 @@ in
   ];
 
   system.activationScripts.gitConfig.text = ''
+    mkdir -p ${homeDir}
     rm -f ${homeDir}/.gitconfig
-    ln -sfn ${gitConfig} ${homeDir}/.gitconfig
-    chown -h ${username}:staff ${homeDir}/.gitconfig
+    cat > ${homeDir}/.gitconfig <<'EOF'
+${gitConfigText}
+EOF
+    chown -h ${username}:users ${homeDir}/.gitconfig
   '';
 }
