@@ -41,7 +41,8 @@
         # ./programs/sunshine.nix
         # ./programs/alacritty.nix
         # ./programs/zed.nix
-      # ];
+      # ]
+      ;
     };
   };
 }
