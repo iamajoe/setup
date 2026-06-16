@@ -1,215 +1,254 @@
 { config, pkgs, lib, userConfig, ... }:
 
 let
-  isX86_64 = userConfig.system == "x86_64-linux";
+  inherit (userConfig) hostname username homeDir initialPassword networkInterface enableWakeOnLan enableCEC moonlightHost moonlightApp;
 in
 {
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernel.sysctl."vm.overcommit_memory" = 1; # fixes memory warning on docker redis
-
-  # Reduce USB error spam on console (hide info/debug messages)
-  boot.consoleLogLevel = 3;
-
-  # Try to fix USB timeout issues
-  boot.kernelParams = [
-    "usbcore.autosuspend=-1"  # Disable USB autosuspend
-  ];
-
-  networking.hostName = "${userConfig.hostname}";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  networking.networkmanager.enable = true;
-  services.resolved = {
-    enable = true;
-    settings.Resolve = {
-      FallbackDNS = [ "1.1.1.1" "8.8.8.8" ];
-    };
-  };
-  networking.networkmanager.dns = "systemd-resolved";
-  networking.nameservers = [
-    "1.1.1.1"
-    "8.8.8.8"
-  ];
-
-  time.timeZone = "Europe/Lisbon";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-  nix.settings.download-buffer-size = 268435456; # 256 MiB
-
-  # ─── USER ──────────────────────────────────────
-  # Define a user account. Don't forget to set a password with 'passwd'.
-  users.users.${userConfig.username} = {
-    isNormalUser = true;
-    description = userConfig.username;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "input" "uinput" ];
-    packages = with pkgs; [];
-  };
-
-  # ─── HARDWARE & FIRMWARE ─────────────────────────────────────────────
-  hardware.enableAllFirmware = true; # enable all firmware (includes non-free)
-  # CPU microcode updates (architecture-specific)
-  hardware.cpu.amd.updateMicrocode = lib.mkIf isX86_64 true;
-  hardware.cpu.intel.updateMicrocode = lib.mkIf isX86_64 true;
-
-  # ─── USB & STORAGE ───────────────────────────────────────────────────
-  services.udisks2.enable = true; # disk management service
-  services.gvfs.enable = true; # virtual filesystem (for USB automount in file managers)
-  security.polkit.enable = true;
-
-  # Filesystem support for various storage types
-  boot.supportedFilesystems = [
-    "ntfs"      # Windows NTFS
-    "exfat"     # exFAT (USB drives, SD cards)
-    "vfat"      # FAT32
-    "ext4"      # Linux ext4
-    "btrfs"     # Linux btrfs
-    "xfs"       # Linux XFS
-    "f2fs"      # Flash-friendly filesystem (SSDs, SD cards)
-  ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   nixpkgs.config.allowUnfree = true;
-
-  # Allow insecure packages (required for some Electron apps like Discord/Slack)
-  nixpkgs.config.permittedInsecurePackages = [
-    "openssl-1.1.1w"
-  ];
-
-  # NOTE: required for zoom for example under aarch64
-  nixpkgs.config.allowUnsupportedSystem = true;
-
-  environment.systemPackages = with pkgs; [
-    # Core CLI tools
-    vim
-    git
-    curl
-    wget
-    helix
-    gnumake
-
-    # GTK/dconf support
-    dconf
-    glib
-
-    # Filesystem utilities (CLI)
-    ntfs3g          # NTFS read/write support
-    exfatprogs      # exFAT utilities (mkfs, fsck)
-    dosfstools      # FAT32 utilities (mkfs.vfat, fsck.vfat)
-    e2fsprogs       # ext2/3/4 utilities
-    btrfs-progs     # btrfs utilities
-    xfsprogs        # XFS utilities
-    f2fs-tools      # F2FS utilities
-    parted          # CLI partition editor
-    ncdu            # utility for tree disk dimensions
-
-    # Disk management & monitoring (CLI)
-    smartmontools   # S.M.A.R.T. monitoring for drives
-    hdparm          # Hard disk parameters
-    sdparm          # SCSI/SATA disk parameters
-
-    # Hardware info (CLI)
-    lshw
-    pciutils # lspci
-    usbutils # lsusb
-
-    lxqt.lxqt-policykit
-
-    # Secret handling
-    libsecret
-    seahorse
-    gnome-keyring
-  ];
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # auto upgrade packages
-  system.autoUpgrade.enable = false;
-  system.autoUpgrade.dates = "weekly";
+  networking.hostName = hostname;
 
-  # automatic cleanup
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+  # Timezone and local
+  time.timeZone = "Europe/Lisbon";
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  console = {
+    useXkbConfig = true;
+    earlySetup = true;
   };
-  nix.settings.auto-optimise-store = true;
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  services.xserver = {
+    enable = true;
 
-  services.openssh.enable = true;
+    desktopManager.xfce = {
+      enable = true;
+      noDesktop = true;
+      enableXfwm = true;
+    };
 
-  # try to fix audio mic shutting down disabling the usb autosuspend
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"
+    displayManager = {
+      lightdm = {
+        enable = true;
+        greeters.gtk.enable = true;
+      };
+
+      autoLogin = {
+        enable = true;
+        user = username;
+      };
+      defaultSession = "xfce";
+    };
+    displayManager.sessionCommands = ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-2 --mode 1280x720 --rate 60 --primary || true
+
+	   # Disable X11 screen blanking, screensaver, and DPMS power saving.
+      ${pkgs.xorg.xset}/bin/xset s off || true
+      ${pkgs.xorg.xset}/bin/xset -dpms || true
+      ${pkgs.xorg.xset}/bin/xset s noblank || true
+    '';
+  };
+
+  # start steam automatically
+  environment.etc."xdg/autostart/steam.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Steam
+    Comment=Start Steam automatically
+    Exec=${pkgs.bash}/bin/bash -lc 'sleep 1; exec steam -gamepadui'
+    Terminal=false
+    X-GNOME-Autostart-enabled=true
+    Hidden=false
   '';
 
-  programs.nix-ld = {
+  services.seatd.enable = true;
+
+  users.users.${username} = {
+    isNormalUser = true;
+    description = "steam tv";
+    home = "${homeDir}";
+    createHome = true;
+    initialPassword = initialPassword;
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "seat" ];
+  };
+
+  networking.networkmanager.enable = true;
+
+  networking.interfaces.${networkInterface}.wakeOnLan.enable = enableWakeOnLan;
+  networking.firewall.allowedUDPPorts = lib.optionals enableWakeOnLan [ 9 ];
+
+  security.rtkit.enable = true;
+
+  hardware.alsa.enablePersistence = true;
+  services.pipewire = {
     enable = true;
-    libraries = with pkgs; [
-      stdenv.cc.cc
-      zlib
-      openssl
-      curl
+    pulse.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+  };
+  systemd.user.services.force-hdmi-audio = {
+    description = "Force HDMI audio profile";
+    wantedBy = [ "default.target" ];
+    after = [ "pipewire.service" "wireplumber.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = let
+        script = pkgs.writeShellScript "force-hdmi-audio" ''
+          CARD="$( ${pkgs.pulseaudio}/bin/pactl list cards short | ${pkgs.gnugrep}/bin/grep 'alsa_card.pci-0000_00_1f.3' | ${pkgs.coreutils}/bin/cut -f1 )"
+          [ -n "$CARD" ] && exec ${pkgs.pulseaudio}/bin/pactl set-card-profile "$CARD" output:hdmi-stereo
+        '';
+      in "${script}";
+    };
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = false;
+
+    # Disable this for the XFCE path.
+    gamescopeSession.enable = false;
+  };
+
+  programs.gamescope = {
+    enable = true;
+    capSysNice = true;
+  };
+
+  programs.gamemode.enable = true;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt
+      intel-vaapi-driver
+    ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      intel-vaapi-driver
     ];
   };
 
-  # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
-  services.fstrim.enable = true; # Automatic SSD TRIM (weekly)
-
-  # ─── BLUETOOTH ───────────────────────────────────────────────────────
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  # Note: Blueman GUI installed per-user in home.nix
-
-  # ─── PRINTING ────────────────────────────────────────────────────────
-  services.printing.enable = lib.mkIf isX86_64 true;
-  services.printing.drivers = with pkgs; [
-    gutenprint
-    hplip # HP printers
-    epson-escpr # Epson printers
-  ];
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true; # for network printer discovery
-
-    publish = {
-      enable = true;
-      userServices = true;
-    };
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
   };
 
-  # ─── VIRTUALIZATION (optional, but useful) ──────────────────────────
-  virtualisation.docker.enable = true;
-  # virtualisation.libvirtd.enable = true; # for VMs (QEMU/KVM)
+  hardware.enableRedistributableFirmware = true;
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
-  # ───────────────────────────────────────────────────────────────────────────────
-  # ─── DONT TOUCH ────────────────────────────────────────────────────────────────
+  services.fwupd.enable = true;
+
+  services.openssh.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 ];
+
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "0 1 * * * root /run/current-system/sw/bin/systemctl poweroff"
+    ];
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+
+  nix.settings.auto-optimise-store = true;
+
+  services.logind.settings.Login = {
+    HandlePowerKey = "poweroff";
+    HandlePowerKeyLongPress = "poweroff";
+    HandleRebootKey = "reboot";
+  };
+
+  services.greetd.enable = false;
+  # services.greetd = {
+  #   enable = true;
+  #   settings = rec {
+  #     initial_session = {
+  #       user = userName;
+  #       # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -f -e --xwayland-count 2 -- steam -pipewire-dmabuf -gamepadui -steamdeck -steamos3";
+	 #      # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -f -e --xwayland-count 2 -- steam -pipewire-dmabuf -gamepadui";
+	 #      # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -r 60 -f -e --xwayland-count 2 -- steam -gamepadui";
+  #     	# command = "${lib.getExe pkgs.gamescope} -W 1280 -H 720 -w 1280 -h 720 -f -r 60 --disable-color-management -- env ENABLE_GAMESCOPE_WSI=0 steam -gamepadui";
+  #     	command = "${pkgs.xfce.xfce4-session}/bin/startxfce4";
+  #     };
+  #     default_session = initial_session;
+  #   };
+  # };
+
+  services.getty.autologinUser = username;
+  # services.getty.autologinUser = lib.mkForce null;
+
+  programs.xwayland.enable = true;
+
+  system.activationScripts.moonlightSteamShortcut = ''
+    mkdir -p ${homeDir}/SteamShortcuts
+    cat > ${homeDir}/SteamShortcuts/moonlight-steam-big-picture.sh <<'EOF'
+#!/bin/bash
+LOG=${homeDir}/SteamShortcuts/moonlight.log
+echo "Launching Moonlight" > "$LOG"
+exec /run/current-system/sw/bin/moonlight stream ${moonlightHost} "${moonlightApp}" >> "$LOG" 2>&1
+EOF
+
+    chmod +x ${homeDir}/SteamShortcuts/moonlight-steam-big-picture.sh
+    chown -R ${username}:users ${homeDir}/SteamShortcuts
+  '';
+
+  environment.systemPackages =
+    with pkgs;
+    [
+      vim
+      helix
+      git
+      wget
+      curl
+      pciutils
+      usbutils
+      mangohud
+      gamescope
+      steam
+      steam-run
+      firefox
+      alsa-utils
+      pavucontrol
+      pulseaudio
+      wireplumber
+      xorg.xrandr
+
+	  moonlight-embedded
+	  moonlight-qt
+    ]
+    ++ lib.optionals enableCEC [
+      libcec
+      # (writeShellScriptBin "tv-on" ''
+      #   echo "on 0" | ${libcec}/bin/cec-client -s -d 1
+      # '')
+      (writeShellScriptBin "tv-off" ''
+        echo "standby 0" | ${libcec}/bin/cec-client -s -d 1
+      '')
+    ];
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.plymouth.enable = true;
+  boot.kernelParams = [
+    "quiet"
+    "splash"
+    "i915.enable_psr=0"
+    "i915.enable_fbc=0"
+  ];
+
+  # DONT TOUCH
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "26.05"; # Did you read the comment?
-
+  system.stateVersion = "25.11";
 }

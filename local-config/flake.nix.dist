@@ -8,18 +8,23 @@
       platform = "linux"; # darwin, linux
 
       flakePath = "/etc/nixos";
-      flakeName = "dev_machine";
-      hostname = "dev_machine";
+      flakeName = "steamtv";
+      hostname = "steamtv";
 
       username = "your-username";
       homeDir = "/home/your-username";
       userFullname = "Your Name";
-      userEmail = "you@example.com";
+      initialPassword = "changeme";
 
-      syncBackupEncryptionKey = "<setup_sync_key>";
+      networkInterface = "enp1s0";
 
-      addSyncBackup = false;
-      addDesktop = false;
+      enableWakeOnLan = true;
+      enableCEC = true;
+
+      moonlightHost = "192.168.0.252";
+      moonlightApp = "Steam";
+
+      nasHost = "192.168.0.64";
     };
   };
 }

@@ -1,9 +1,0 @@
-[Unit]
-Description=Bidirectional sync Proton Drive with local folder
-Wants=network-online.target
-After=network-online.target
-
-[Service]
-Type=oneshot
-ExecStartPre=mkdir -p %h/proton_drive
-ExecStart=rclone bisync %h/proton_drive proton: --config=%h/.config/rclone/rclone.conf --create-empty-src-dirs --compare size,modtime --conflict-resolve newer --conflict-loser pathname --backup-dir1 %h/.local/share/rclone/protondrive-conflicts/local --backup-dir2 proton:rclone-conflicts --log-file %h/.local/state/rclone-protondrive-bisync.log --log-level INFO
