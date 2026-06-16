@@ -9,10 +9,7 @@ let
 
     src = pkgs.fetchurl {
       url = "https://github.com/clonehero-game/releases/releases/download/v1.1.0.6142-final/Linux.x86_64-Standalone.tar";
-
-      # First rebuild will fail with the real hash.
-      # Replace this with the `got:` hash.
-      hash = lib.fakeHash;
+      hash = "sha256-Vylx2TCSKDxdDVIAaia1Krjo+xKNz7QqNJbeJsiqIx0=";
     };
 
     nativeBuildInputs = [
@@ -36,24 +33,21 @@ let
 
       mkdir -p "$out/bin"
 
-      if [ -f "$out/opt/clone-hero/clonehero" ]; then
-        chmod +x "$out/opt/clone-hero/clonehero"
+      CLONE_HERO_BIN="$out/opt/clone-hero/Linux - Standalone/clonehero"
 
-        makeWrapper ${pkgs.steam-run}/bin/steam-run "$out/bin/clone-hero" \
-          --add-flags "$out/opt/clone-hero/clonehero"
-
-      elif [ -f "$out/opt/clone-hero/Clone Hero" ]; then
-        chmod +x "$out/opt/clone-hero/Clone Hero"
-
-        makeWrapper ${pkgs.steam-run}/bin/steam-run "$out/bin/clone-hero" \
-          --add-flags "$out/opt/clone-hero/Clone Hero"
-
-      else
-        echo "Could not find Clone Hero executable."
+      if [ ! -f "$CLONE_HERO_BIN" ]; then
+        echo "Could not find Clone Hero executable at expected path:"
+        echo "$CLONE_HERO_BIN"
+        echo
         echo "Files found:"
-        find "$out/opt/clone-hero" -maxdepth 3 -type f
+        find "$out/opt/clone-hero" -maxdepth 4 -type f
         exit 1
       fi
+
+      chmod +x "$CLONE_HERO_BIN"
+
+      makeWrapper ${pkgs.steam-run}/bin/steam-run "$out/bin/clone-hero" \
+        --add-flags "$CLONE_HERO_BIN"
 
       runHook postInstall
     '';
