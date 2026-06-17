@@ -46,8 +46,13 @@ let
 
       chmod +x "$CLONE_HERO_BIN"
 
-      makeWrapper ${pkgs.steam-run}/bin/steam-run "$out/bin/clone-hero" \
-        --add-flags "$CLONE_HERO_BIN"
+      cat > "$out/bin/clone-hero" <<EOF
+#!${pkgs.bash}/bin/bash
+unset LD_PRELOAD
+exec ${pkgs.steam-run}/bin/steam-run "$CLONE_HERO_BIN" "\$@"
+EOF
+
+      chmod +x "$out/bin/clone-hero"
 
       runHook postInstall
     '';
