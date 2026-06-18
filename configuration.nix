@@ -42,24 +42,12 @@ in
     displayManager.sessionCommands = ''
       ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-2 --mode 1280x720 --rate 60 --primary || true
 
-	   # Disable X11 screen blanking, screensaver, and DPMS power saving.
+      # Disable X11 screen blanking, screensaver, and DPMS power saving.
       ${pkgs.xorg.xset}/bin/xset s off || true
       ${pkgs.xorg.xset}/bin/xset -dpms || true
       ${pkgs.xorg.xset}/bin/xset s noblank || true
     '';
   };
-
-  # start steam automatically
-  environment.etc."xdg/autostart/steam.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=Steam
-    Comment=Start Steam automatically
-    Exec=${pkgs.bash}/bin/bash -lc 'sleep 1; exec steam -gamepadui'
-    Terminal=false
-    X-GNOME-Autostart-enabled=true
-    Hidden=false
-  '';
 
   services.seatd.enable = true;
 
@@ -86,6 +74,7 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
   };
+
   systemd.user.services.force-hdmi-audio = {
     description = "Force HDMI audio profile";
     wantedBy = [ "default.target" ];
@@ -99,39 +88,6 @@ in
         '';
       in "${script}";
     };
-  };
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = false;
-
-    # Disable this for the XFCE path.
-    gamescopeSession.enable = false;
-  };
-
-  programs.gamescope = {
-    enable = true;
-    capSysNice = true;
-  };
-
-  programs.gamemode.enable = true;
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      intel-media-driver
-      vpl-gpu-rt
-      intel-vaapi-driver
-    ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [
-      intel-vaapi-driver
-    ];
-  };
-
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "iHD";
   };
 
   hardware.enableRedistributableFirmware = true;
@@ -153,7 +109,7 @@ in
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 14d";
+    options = "--delete-older-than 7d";
   };
 
   nix.settings.auto-optimise-store = true;
@@ -171,10 +127,10 @@ in
   #     initial_session = {
   #       user = userName;
   #       # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -f -e --xwayland-count 2 -- steam -pipewire-dmabuf -gamepadui -steamdeck -steamos3";
-	 #      # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -f -e --xwayland-count 2 -- steam -pipewire-dmabuf -gamepadui";
-	 #      # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -r 60 -f -e --xwayland-count 2 -- steam -gamepadui";
-  #     	# command = "${lib.getExe pkgs.gamescope} -W 1280 -H 720 -w 1280 -h 720 -f -r 60 --disable-color-management -- env ENABLE_GAMESCOPE_WSI=0 steam -gamepadui";
-  #     	command = "${pkgs.xfce.xfce4-session}/bin/startxfce4";
+  #       # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -f -e --xwayland-count 2 -- steam -pipewire-dmabuf -gamepadui";
+  #       # command = "${lib.getExe pkgs.gamescope} -W ${toString steamWidth} -H ${toString steamHeight} -r 60 -f -e --xwayland-count 2 -- steam -gamepadui";
+  #       # command = "${lib.getExe pkgs.gamescope} -W 1280 -H 720 -w 1280 -h 720 -f -r 60 --disable-color-management -- env ENABLE_GAMESCOPE_WSI=0 steam -gamepadui";
+  #       command = "${pkgs.xfce.xfce4-session}/bin/startxfce4";
   #     };
   #     default_session = initial_session;
   #   };
@@ -183,53 +139,21 @@ in
   services.getty.autologinUser = username;
   # services.getty.autologinUser = lib.mkForce null;
 
-  programs.xwayland.enable = true;
-
-  system.activationScripts.moonlightSteamShortcut = ''
-    mkdir -p ${homeDir}/SteamShortcuts
-    cat > ${homeDir}/SteamShortcuts/moonlight-steam-big-picture.sh <<'EOF'
-#!/bin/bash
-LOG=${homeDir}/SteamShortcuts/moonlight.log
-echo "Launching Moonlight" > "$LOG"
-exec /run/current-system/sw/bin/moonlight stream ${moonlightHost} "${moonlightApp}" >> "$LOG" 2>&1
-EOF
-
-    chmod +x ${homeDir}/SteamShortcuts/moonlight-steam-big-picture.sh
-    chown -R ${username}:users ${homeDir}/SteamShortcuts
-  '';
-
-  environment.systemPackages =
-    with pkgs;
-    [
-      vim
-      helix
-      git
-      wget
-      curl
-      pciutils
-      usbutils
-      mangohud
-      gamescope
-      steam
-      steam-run
-      firefox
-      alsa-utils
-      pavucontrol
-      pulseaudio
-      wireplumber
-      xorg.xrandr
-  	  moonlight-embedded
-  	  moonlight-qt
-    ]
-    ++ lib.optionals enableCEC [
-      libcec
-      # (writeShellScriptBin "tv-on" ''
-      #   echo "on 0" | ${libcec}/bin/cec-client -s -d 1
-      # '')
-      (writeShellScriptBin "tv-off" ''
-        echo "standby 0" | ${libcec}/bin/cec-client -s -d 1
-      '')
-    ];
+  environment.systemPackages = with pkgs; [
+    vim
+    helix
+    git
+    wget
+    curl
+    pciutils
+    usbutils
+    firefox
+    alsa-utils
+    pavucontrol
+    pulseaudio
+    wireplumber
+    xorg.xrandr
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
