@@ -46,6 +46,14 @@ in
       ${pkgs.xorg.xset}/bin/xset s off || true
       ${pkgs.xorg.xset}/bin/xset -dpms || true
       ${pkgs.xorg.xset}/bin/xset s noblank || true
+
+      # Disable XFCE screensaver / locker behavior.
+      ${pkgs.xfce.xfconf}/bin/xfconf-query -c xfce4-screensaver -p /lock/enabled -n -t bool -s false || true
+      ${pkgs.xfce.xfconf}/bin/xfconf-query -c xfce4-screensaver -p /saver/enabled -n -t bool -s false || true
+      ${pkgs.xfce.xfconf}/bin/xfconf-query -c xfce4-screensaver -p /lock/saver-activation/enabled -n -t bool -s false || true
+
+      # Disable XFCE session lock command, so xflock4 has nothing useful to call.
+      ${pkgs.xfce.xfconf}/bin/xfconf-query -c xfce4-session -p /general/LockCommand -n -t string -s "" || true
     '';
   };
 
@@ -118,6 +126,13 @@ in
     HandlePowerKey = "poweroff";
     HandlePowerKeyLongPress = "poweroff";
     HandleRebootKey = "reboot";
+
+    IdleAction = "ignore";
+    HandleSuspendKey = "ignore";
+    HandleHibernateKey = "ignore";
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
   };
 
   services.greetd.enable = false;
