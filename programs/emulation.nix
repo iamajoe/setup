@@ -110,6 +110,8 @@ in
 
       # PC Engine / TurboGrafx-16
       beetle-pce-fast
+
+      pcsx2
     ]))
 
     # Standalone emulators
@@ -160,6 +162,9 @@ in
     # Install ES-DE
     # PATH="${pkgs.curl}/bin:${pkgs.python3}/bin:${pkgs.coreutils}/bin:${pkgs.findutils}/bin:${pkgs.gnugrep}/bin:${pkgs.gnused}/bin" \
     # "${steamShortcutsDir}/install-es-de.sh"
+
+    # PS2 is a special case for the bios
+    mkdir -p ${homeDir}/.config/PCSX2/bios
 
     ${mkdirRomFolders}
 
