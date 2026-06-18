@@ -21,7 +21,7 @@
       modules = [
         userConfig.hardwareModule
         ./configuration.nix
-        ./programs/drives.nix
+        # ./programs/drives.nix
         ./programs/clonehero.nix
         ./programs/emulation.nix
         ./programs/steam.nix
