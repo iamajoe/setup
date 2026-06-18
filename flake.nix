@@ -25,6 +25,7 @@
         ./programs/clonehero.nix
         ./programs/emulation.nix
         ./programs/steam.nix
+        ./programs/icons.nix
       ];
     };
   };
