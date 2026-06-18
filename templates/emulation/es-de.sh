@@ -10,11 +10,6 @@ echo "Launching ES-DE" > "\$LOG"
 echo "Date: \$(date)" >> "\$LOG"
 unset LD_PRELOAD
 
-if [ ! -x "\$ESDE_APPIMAGE" ]; then
-  echo "ES-DE AppImage not found. Installing..." >> "\$LOG"
-  "@steamShortcutsDir@/install-es-de.sh" >> "\$LOG" 2>&1
-fi
-
 exec @appImageRun@ "\$ESDE_APPIMAGE" \
   --home "$HOME" \
   --roms "@romsDir@" \

@@ -77,8 +77,10 @@ in
 {
 
   environment.systemPackages = with pkgs; [
-    # ES-DE AppImage support
+    # AppImage support (for example for ES-DE)
     appimage-run
+    fuse
+    fuse3
     curl
     cacert
     python3
@@ -125,6 +127,11 @@ in
     p7zip
     xdg-utils
   ];
+
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
 
   # Helpful for many gamepads.
   hardware.xpadneo.enable = true;
