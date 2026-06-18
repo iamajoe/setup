@@ -72,6 +72,7 @@ let
   '') romFolders;
 in
 {
+
   environment.systemPackages = with pkgs; [
     # ES-DE AppImage support
     appimage-run
@@ -79,11 +80,34 @@ in
     cacert
     python3
 
-    # Multi-system emulator backend.
-    # Good for NES, SNES, GB, GBC, GBA, Mega Drive, arcade, etc.
-    retroarch-full
+    # RetroArch with selected cores only.
+    # Avoid retroarch-full because it currently pulls broken libretro-fbalpha2012.
+    (retroarch.withCores (cores: with cores; [
+      # Nintendo
+      fceumm
+      snes9x
+      gambatte
+      mgba
+      mupen64plus
+      melonds
 
-    # Standalone emulators for systems where standalone is usually nicer.
+      # Sega
+      genesis-plus-gx
+      flycast
+
+      # Sony
+      beetle-psx-hw
+      ppsspp
+
+      # Arcade / Neo Geo
+      fbneo
+      mame
+
+      # PC Engine / TurboGrafx-16
+      beetle-pce-fast
+    ]))
+
+    # Standalone emulators
     dosbox-staging
     duckstation
     pcsx2
