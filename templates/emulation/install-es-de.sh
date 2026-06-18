@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!@bash@
 set -euo pipefail
 
 ESDE_APPIMAGE="@esDeAppImage@"

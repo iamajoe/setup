@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!@bash@
 set -euo pipefail
 
 LOG="@steamShortcutsDir@/es-de.log"

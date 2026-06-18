@@ -15,6 +15,7 @@ let
 
   retroarchSh = pkgs.replaceVars ../templates/emulation/retroarch.sh {
     steamShortcutsDir = steamShortcutsDir;
+    bash = "${pkgs.bash}/bin/bash";
   };
   retroarchCfg = pkgs.replaceVars ../templates/emulation/retroarch.cfg {
     savesDir = savesDir;
@@ -24,6 +25,7 @@ let
 
   installEsDeSh = pkgs.replaceVars ../templates/emulation/install-es-de.sh {
     esDeAppImage = esDeAppImage;
+    bash = "${pkgs.bash}/bin/bash";
   };
   esDeSh = pkgs.replaceVars ../templates/emulation/es-de.sh {
     steamShortcutsDir = steamShortcutsDir;
@@ -31,6 +33,7 @@ let
     romsDir = romsDir;
     esDeAppImage = esDeAppImage;
     appImageRun = "${pkgs.appimage-run}/bin/appimage-run";
+    bash = "${pkgs.bash}/bin/bash";
   };
 
   # ES-DE uses specific system folder names. These are safe/common names.
