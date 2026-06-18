@@ -17,7 +17,6 @@ let
     steamShortcutsDir = steamShortcutsDir;
   };
   retroarchCfg = pkgs.replaceVars ../templates/emulation/retroarch.cfg {
-    emulationDir = emulationDir;
     savesDir = savesDir;
     statesDir = statesDir;
     biosDir = biosDir;
