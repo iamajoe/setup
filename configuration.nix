@@ -218,9 +218,8 @@ EOF
       pulseaudio
       wireplumber
       xorg.xrandr
-
-	  moonlight-embedded
-	  moonlight-qt
+  	  moonlight-embedded
+  	  moonlight-qt
     ]
     ++ lib.optionals enableCEC [
       libcec

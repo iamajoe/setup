@@ -25,6 +25,8 @@
       moonlightApp = "Steam";
 
       nasHost = "192.168.0.64";
+      nasUser = "username";
+      nasPassword = "password";
     };
   };
 }
