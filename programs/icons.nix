@@ -49,7 +49,7 @@ let
     # This URL may need adjusting if upstream moves the icon.
     download_icon \
       "ES-DE" \
-      "https://gitlab.com/es-de/emulationstation-de/-/raw/master/resources/graphics/window_icon_256.svg" \
+      "https://cdn2.steamgriddb.com/logo/65904bcd52a06cd64e57fc80b4b042d0.png" \
       "$ESDE_ICON" || true
   '';
 in
