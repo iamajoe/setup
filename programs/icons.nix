@@ -7,7 +7,7 @@ let
   iconsDir = "${steamShortcutsDir}/icons";
 
   moonlightIcon = "${iconsDir}/moonlight.svg";
-  esDeIcon = "${iconsDir}/es-de.svg";
+  esDeIcon = "${iconsDir}/es-de.png";
 
   installIconsSh = pkgs.writeShellScript "install-icons.sh" ''
     set -euo pipefail
