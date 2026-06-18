@@ -10,16 +10,28 @@ let
   statesDir = "${emulationDir}/states";
   steamShortcutsDir = "${homeDir}/SteamShortcuts";
 
+  esDeDir = "${homeDir}/Applications/ES-DE";
+  esDeAppImage = "${esDeDir}/ES-DE.AppImage";
+
+  retroarchSh = pkgs.replaceVars ../templates/emulation/retroarch.sh {
+    steamShortcutsDir = steamShortcutsDir;
+  };
   retroarchCfg = pkgs.replaceVars ../templates/emulation/retroarch.cfg {
     emulationDir = emulationDir;
     savesDir = savesDir;
     statesDir = statesDir;
     biosDir = biosDir;
   };
+
+  installEsDeSh = pkgs.replaceVars ../templates/emulation/install-es-de.sh {
+    steamShortcutsDir = steamShortcutsDir;
+  };
   esDeSh = pkgs.replaceVars ../templates/emulation/es-de.sh {
     steamShortcutsDir = steamShortcutsDir;
     biosDir = biosDir;
     romsDir = romsDir;
+    esDeAppImage = esDeAppImage;
+    appImageRun = "${pkgs.appimage-run}/bin/appimage-run";
   };
 
   # ES-DE uses specific system folder names. These are safe/common names.
@@ -62,8 +74,11 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    # Frontend
-    emulationstation-de
+    # ES-DE AppImage support
+    appimage-run
+    curl
+    cacert
+    python3
 
     # Multi-system emulator backend.
     # Good for NES, SNES, GB, GBC, GBA, Mega Drive, arcade, etc.
@@ -97,11 +112,21 @@ in
     mkdir -p "${savesDir}"
     mkdir -p "${statesDir}"
     mkdir -p "${steamShortcutsDir}"
+    mkdir -p "${esDeDir}"
     mkdir -p "${homeDir}/.config/retroarch"
 
     install -m 0644 -o ${username} -g users ${retroarchCfg} ${homeDir}/.config/retroarch/retroarch.cfg
+    install -m 0644 -o ${username} -g users ${retroarchSh} ${steamShortcutsDir}/retroarch.sh
+    chmod +x "${steamShortcutsDir}/retroarch.sh"
+
     install -m 0644 -o ${username} -g users ${esDeSh} ${steamShortcutsDir}/es-de.sh
+    install -m 0644 -o ${username} -g users ${installEsDeSh} ${steamShortcutsDir}/install-es-de.sh
     chmod +x "${steamShortcutsDir}/es-de.sh"
+    chmod +x "${steamShortcutsDir}/install-es-de.sh"
+
+    # Install ES-DE
+    PATH="${pkgs.curl}/bin:${pkgs.python3}/bin:${pkgs.coreutils}/bin:${pkgs.findutils}/bin:${pkgs.gnugrep}/bin:${pkgs.gnused}/bin" \
+    "${steamShortcutsDir}/install-es-de.sh"
 
     ${mkdirRomFolders}
 
@@ -109,22 +134,6 @@ in
     if [ ! -e "${homeDir}/ROMs" ]; then
       ln -s "${romsDir}" "${homeDir}/ROMs"
     fi
-
-    # Small helper to launch RetroArch directly if you ever need to debug it.
-    cat > "${steamShortcutsDir}/retroarch.sh" <<'EOF'
-#!/usr/bin/env bash
-set -e
-
-LOG="${steamShortcutsDir}/retroarch.log"
-
-echo "Launching RetroArch" > "$LOG"
-echo "Date: $(date)" >> "$LOG"
-
-unset LD_PRELOAD
-exec retroarch >> "$LOG" 2>&1
-EOF
-
-    chmod +x "${steamShortcutsDir}/retroarch.sh"
 
     chown -R ${username}:users "${emulationDir}"
     chown -h ${username}:users "${homeDir}/ROMs" || true
