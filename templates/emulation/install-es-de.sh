@@ -2,6 +2,22 @@
 set -euo pipefail
 
 ESDE_APPIMAGE="@esDeAppImage@"
+
+if [ -x "$ESDE_APPIMAGE" ]; then
+  echo "ES-DE AppImage already exists:"
+  echo "$ESDE_APPIMAGE"
+  echo "Skipping download."
+  exit 0
+fi
+
+if [ -e "$ESDE_APPIMAGE" ]; then
+  echo "ES-DE file already exists but is not executable:"
+  echo "$ESDE_APPIMAGE"
+  echo "Making it executable and skipping download."
+  chmod 0755 "$ESDE_APPIMAGE"
+  exit 0
+fi
+
 TMP_JSON="$(mktemp)"
 TMP_DOWNLOAD="$(mktemp)"
 PROJECT="es-de%2Femulationstation-de"
