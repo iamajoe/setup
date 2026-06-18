@@ -151,8 +151,8 @@ in
     chmod +x "${steamShortcutsDir}/install-es-de.sh"
 
     # Install ES-DE
-    PATH="${pkgs.curl}/bin:${pkgs.python3}/bin:${pkgs.coreutils}/bin:${pkgs.findutils}/bin:${pkgs.gnugrep}/bin:${pkgs.gnused}/bin" \
-    "${steamShortcutsDir}/install-es-de.sh"
+    # PATH="${pkgs.curl}/bin:${pkgs.python3}/bin:${pkgs.coreutils}/bin:${pkgs.findutils}/bin:${pkgs.gnugrep}/bin:${pkgs.gnused}/bin" \
+    # "${steamShortcutsDir}/install-es-de.sh"
 
     ${mkdirRomFolders}
 
