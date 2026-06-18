@@ -1,7 +1,7 @@
 { config, pkgs, lib, userConfig, ... }:
 
 let
-  inherit (userConfig) hostname username homeDir initialPassword networkInterface enableWakeOnLan enableCEC moonlightHost moonlightApp;
+  inherit (userConfig) hostname username homeDir initialPassword networkInterface enableWakeOnLan;
 in
 {
   nixpkgs.config.allowUnfree = true;
