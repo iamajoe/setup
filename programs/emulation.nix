@@ -24,7 +24,7 @@ let
   };
 
   installEsDeSh = pkgs.replaceVars ../templates/emulation/install-es-de.sh {
-    steamShortcutsDir = steamShortcutsDir;
+    esDeAppImage = esDeAppImage;
   };
   esDeSh = pkgs.replaceVars ../templates/emulation/es-de.sh {
     steamShortcutsDir = steamShortcutsDir;
