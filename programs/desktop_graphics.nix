@@ -59,7 +59,7 @@ in
     papirus-icon-theme
     adwaita-qt         # Qt5 Adwaita-dark style
     adwaita-qt6        # Qt6 Adwaita-dark style
-    qt6ct
+    qt6Packages.qt6ct
 
     # GPU testing/info tools
     vulkan-tools # vulkaninfo, vkcube
