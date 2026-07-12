@@ -1,5 +1,5 @@
 from libqtile import bar, layout, widget, hook, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown, Rule
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from qtile_extras import widget as widget_extras
 from qtile_extras.widget.decorations import RectDecoration
@@ -134,16 +134,6 @@ for i in groups:
         # Move window to workspace
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc=f"Move focused window to group {i.name}"),
     ])
-
-dgroups_app_rules = [
-    Rule(Match(wm_class=terminal), group="1"),
-    Rule(Match(wm_class=browser), group="9"),
-    Rule(Match(wm_class="google-chrome"), group="2"),
-    Rule(Match(wm_class="spotify"), group="7"),
-    Rule(Match(wm_class="discord"), group="8"),
-    Rule(Match(wm_class="slack"), group="3"),
-    Rule(Match(wm_class="steam"), group="6"),
-]
 
 ########################
 # SCRATCHPAD

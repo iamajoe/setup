@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker compose stack in ~/services
+After=default.target docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=%h/services
+ExecStart=docker compose up -d
+ExecStop=docker compose down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

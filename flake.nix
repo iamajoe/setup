@@ -1,26 +1,9 @@
 {
   description = "dev_machine";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hardware = {
-      url = "path:/etc/nixos/hardware-configuration.nix";
-      flake = false;
-    };
-
-    userenv = {
-      url = "path:/etc/nixos/env.json";
-      flake = false;
-    };
-    usersecrets = {
-      url = "path:/etc/nixos/secrets";
-      flake = false;
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    local-config.url = "path:/etc/nixos/local-config";
 
     qtile-flake = {
       url = "github:qtile/qtile";
@@ -28,48 +11,58 @@
     };
   };
 
-  outputs = { self, nixpkgs, hardware, home-manager, userenv, usersecrets, ... }@inputs:
+  outputs = inputs@{ self, nixpkgs, local-config, qtile-flake }:
   let
-    overlays = [];
-    buildEnv =
-      let
-        raw = builtins.readFile "${userenv}";
-        clean = builtins.replaceStrings
-          [ "\u00A0" "\u202F" "\u2009" "\u00AD" "\uFEFF" "\r" ]  # NBSP, NNBSP, thin space, soft hyphen, BOM, CR
-          [ " "      " "      " "      ""       ""      "" ]
-          raw;
-      in builtins.fromJSON clean;
-  in {
-    nixosConfigurations = {
-      nixos-conf-x86_64 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit buildEnv;
-          qtile-flake = inputs.qtile-flake;
-        };
-
-        modules = [
-          { nixpkgs.overlays = overlays; }
-          "${hardware}"
-          ./configuration.nix
-          home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = {
-                inherit inputs usersecrets;
-                buildEnv = buildEnv // {
-                  system = "x86_64-linux";
-                  nixosConfig = "nixos-conf-x86_64";
-                };
-              };
-              users.${buildEnv.username} = import ./home.nix;
-            };
-          }
-        ];
+    lib = nixpkgs.lib;
+    userConfig = local-config.userConfig;
+  in
+  {
+    nixosConfigurations.${userConfig.flakeName} = nixpkgs.lib.nixosSystem {
+      system = userConfig.system;
+      specialArgs = {
+        inherit userConfig qtile-flake;
       };
+
+      modules = [
+        userConfig.hardwareModule
+        ./configuration.nix
+
+        ./programs/basic.nix
+        ./programs/git.nix
+        ./programs/bash.nix
+        ./programs/zsh.nix
+        ./programs/helix.nix
+        ./programs/tmux.nix
+        ./programs/yazi.nix
+        ./programs/dev.nix
+        ./programs/docker-compose.nix
+      ]
+      ++ lib.optionals userConfig.addSyncBackup [
+        ./programs/syncdrive.nix
+      ]
+      ++ lib.optionals userConfig.addDesktop [
+        ./programs/audio.nix
+        ./programs/desktop_graphics.nix
+        ./programs/desktop_apps.nix
+        ./programs/qtile.nix
+        ./programs/firefox.nix
+        ./programs/dunst.nix
+        ./programs/picom.nix
+        ./programs/rofi.nix
+        ./programs/gaming.nix
+        ./programs/sunshine.nix
+        ./programs/alacritty.nix
+        ./programs/zed.nix
+      ]
+      ++ lib.optionals userConfig.addNasMounts [
+        ./programs/drives.nix
+      ]
+      ++ lib.optionals userConfig.addEmulation [
+        ./programs/emulation.nix
+        ./programs/clonehero.nix
+        ./programs/icons.nix
+      ]
+      ;
     };
   };
 }
-

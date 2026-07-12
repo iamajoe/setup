@@ -1,0 +1,55 @@
+{
+  description = "Local config";
+
+  outputs = { self }: {
+    userConfig = {
+      hardwareModule = ./hardware-configuration.nix;
+      system = "x86_64-linux"; # x86_64-linux, aarch64-linux, aarch64-darwin
+      platform = "linux"; # darwin, linux
+
+      flakePath = "/etc/nixos";
+      flakeName = "dev_machine";
+      hostname = "dev_machine";
+
+      username = "your-username";
+      homeDir = "/home/your-username";
+      userFullname = "Your Name";
+      userEmail = "you@example.com";
+
+      syncBackupEncryptionKey = "<setup_sync_key>";
+
+      addSyncBackup = false;
+      addDesktop = false;
+
+      # CIFS mounts from a NAS at /mnt/{music,video,roms} (TV/game station)
+      addNasMounts = false;
+      nasHost = "nas.local";
+      nasUser = "your-nas-username";
+      nasPassword = "<setup_nas_password>";
+
+      # RetroArch + ES-DE + Clone Hero, launched as Steam Big Picture shortcuts (TV/game station)
+      addEmulation = false;
+
+      # GPU driver to configure: "nvidia" | "intel" | "none"
+      gpu = "nvidia";
+
+      # xrandr output to lock the resolution on, e.g. "HDMI-1", "DP-2"
+      displayOutput = "HDMI-1";
+      # width in px; height is derived assuming 16:9 (1920 -> 1080, 2560 -> 1440, 3840 -> 2160)
+      maxResolution = 1920;
+      # auto-launch Steam in Big Picture mode when qtile starts (TV setups)
+      autoRunSteamBigPicture = false;
+
+      # X server / Xresources DPI (96 = standard, 144 = 1.5x HiDPI, 192 = 2x HiDPI)
+      dpi = 96;
+      # GTK/X cursor size in px
+      cursorSize = 24;
+
+      # never blank the screen / suspend / hibernate (TV); set false on a
+      # workstation that should suspend/hibernate/lock normally
+      neverSleep = true;
+      # power off the machine every night at 01:00 (TV); leave false elsewhere
+      autoPoweroffNightly = false;
+    };
+  };
+}

@@ -13,18 +13,14 @@ xsetroot -solid "#121312" &
 export GTK_THEME=Adwaita:dark
 export QT_STYLE_OVERRIDE=Adwaita-Dark
 
-# Set wallpaper (if you have nitrogen or feh installed)
-# nitrogen --restore &
-# feh --bg-scale /path/to/wallpaper.jpg &
+# Compositor
+picom &
 
-# Compositor (already handled by home-manager)
-# picom &
-
-# Notification daemon (already handled by home-manager)
-# dunst &
+# Notification daemon
+dunst &
 
 # Network manager applet
-# nm-applet &
+nm-applet &
 
 # Bluetooth manager (commented out - using qtile-extras Bluetooth widget instead)
 blueman-applet &
@@ -32,13 +28,18 @@ blueman-applet &
 # Clipboard manager daemon
 clipmenud &
 
-# Remote desktop
-# rustdesk --silent &
-
-# set display timeout, sleep, and poweroff
-# xset s off
-# xset s noblank
-# xset -dpms
+# disable screen blanking, screensaver, and DPMS power saving (TV always on)
+if [ "@neverSleep@" = "true" ]; then
+  xset s off
+  xset s noblank
+  xset -dpms
+fi
 
 # set keyboard repeat rate
 # xset r rate 350 60
+
+# launch Steam straight into Big Picture mode (TV setups)
+if [ "@autoRunSteamBigPicture@" = "true" ]; then
+  sleep 1
+  setsid steam -gamepadui &
+fi

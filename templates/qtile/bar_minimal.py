@@ -200,6 +200,67 @@ def create_bar(colors, terminal=None, browser=None):
 
         spacer(12),
 
+        # System stats: click the icon to expand/collapse CPU, disk, temp, network
+        widget_extras.WidgetBox(
+            font=FONT,
+            fontsize=ICON_SIZE,
+            foreground=FG_COLOR,
+            background=BG_COLOR,
+            text_closed="",
+            text_open="",
+            close_button_location="right",
+            widgets=[
+                widget.CPU(
+                    font=FONT,
+                    fontsize=FONT_SIZE - 4,
+                    foreground=FG_COLOR,
+                    background=BG_COLOR,
+                    format="CPU {load_percent}%",
+                    padding=8,
+                ),
+                widget.DF(
+                    font=FONT,
+                    fontsize=FONT_SIZE - 4,
+                    foreground=FG_COLOR,
+                    background=BG_COLOR,
+                    partition="/",
+                    format="Disk {r:.0%}",
+                    visible_on_warn=False,
+                    padding=8,
+                ),
+                widget.ThermalSensor(
+                    font=FONT,
+                    fontsize=FONT_SIZE - 4,
+                    foreground=FG_COLOR,
+                    background=BG_COLOR,
+                    padding=8,
+                ),
+                widget.Net(
+                    font=FONT,
+                    fontsize=FONT_SIZE - 4,
+                    foreground=FG_COLOR,
+                    background=BG_COLOR,
+                    padding=8,
+                ),
+            ],
+        ),
+        spacer(12),
+
+        # Help: shortcuts cheatsheet (left-click) / keyboard layout cheatsheet (right-click)
+        widget.TextBox(
+            font=FONT,
+            fontsize=ICON_SIZE,
+            foreground=FG_COLOR,
+            background=BG_COLOR,
+            text="",
+            padding=10,
+            mouse_callbacks={
+                "Button1": lazy.group["scratchpad"].dropdown_toggle("shortcuts"),
+                "Button3": lazy.group["scratchpad"].dropdown_toggle("keyboard"),
+            },
+        ),
+        spacer(12),
+
         # Keyboard / locale switcher
         widget.KeyboardLayout(
             font=FONT,
@@ -211,21 +272,6 @@ def create_bar(colors, terminal=None, browser=None):
                 "Button1": lazy.widget["keyboardlayout"].next_keyboard(),
             },
         ),
-
-        # Display resolution change
-        widget.TextBox(
-            text="🖥",
-            fontsize=FONT_SIZE,
-            padding=10,
-            foreground=FG_COLOR,
-            background=BG_COLOR,
-            mouse_callbacks={
-                "Button1": lazy.spawn("toggle-resolution"),
-                "Button3": lazy.spawn("alacritty -e sh -c 'xrandr; read -p \"Press enter to close\"'"),
-            },
-        ),
-
-        spacer(12),
 
         # Clock + Date
         widget.Clock(

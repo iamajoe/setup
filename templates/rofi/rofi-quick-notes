@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+NOTES_DIR="$HOME/.local/share/quick-notes"
+mkdir -p "$NOTES_DIR"
+
+option=$(printf "📝 New Note\n📋 View Notes\n🔍 Search Notes" | rofi -dmenu -i -p " Notes" -no-lazy-grab)
+
+case "$option" in
+  "📝 New Note")
+    title=$(rofi -dmenu -i -p "Note Title" -no-lazy-grab)
+    if [ -n "$title" ]; then
+      note=$(rofi -dmenu -i -p "Note Content" -lines 5 -no-lazy-grab)
+      if [ -n "$note" ]; then
+        timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+        {
+          echo "[$timestamp] $title"
+          echo "$note"
+          echo ""
+        } >> "$NOTES_DIR/notes.txt"
+        notify-send "Note Saved" "$title" -t 2000
+      fi
+    fi
+    ;;
+  "📋 View Notes")
+    if [ -f "$NOTES_DIR/notes.txt" ] && [ -s "$NOTES_DIR/notes.txt" ]; then
+      alacritty -e less -R "$NOTES_DIR/notes.txt"
+    else
+      notify-send "No Notes" "No notes found" -t 2000
+    fi
+    ;;
+  "🔍 Search Notes")
+    if [ -f "$NOTES_DIR/notes.txt" ] && [ -s "$NOTES_DIR/notes.txt" ]; then
+      query=$(rofi -dmenu -i -p "Search" -no-lazy-grab)
+      if [ -n "$query" ]; then
+        result=$(grep -i "$query" "$NOTES_DIR/notes.txt" || echo "")
+        if [ -n "$result" ]; then
+          echo "$result" | rofi -dmenu -i -p "Search Results" -no-lazy-grab
+        else
+          notify-send "No Results" "No matches found for: $query" -t 2000
+        fi
+      fi
+    else
+      notify-send "No Notes" "No notes to search" -t 2000
+    fi
+    ;;
+esac

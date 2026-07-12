@@ -1,80 +1,29 @@
-{ config, pkgs, buildEnv, lib, ... }:
+{ config, pkgs, lib, userConfig, ... }:
 
 let
-  username = buildEnv.username;
-  homeDir = config.home.homeDirectory;
+  inherit (userConfig) username homeDir;
 
-  sunshineApps = {
-    env = {
-      PATH = "$(PATH):$(HOME)/.local/bin";
-    };
-
-    apps = [
-      {
-        name = "Desktop";
-        image-path = "desktop.png";
-      }
-
-      {
-        name = "Steam";
-        image-path = "steam.png";
-
-        # Keep this empty because Steam relaunches / detaches itself.
-        cmd = "";
-
-        detached = [
-          "xrandr --output DP-2 --mode 1920x1080 --rate 60"
-          "setsid steam steam://open/bigpicture"
-        ];
-
-        prep-cmd = [
-          {
-            do = "qtile cmd-obj -o group 6 -f toscreen";
-            undo = "setsid steam steam://close/bigpicture; xrandr --output DP-2 --auto";
-          }
-        ];
-
-        auto-detach = true;
-        wait-all = true;
-        exit-timeout = 5;
-        exclude-global-prep-cmd = false;
-      }
-    ];
-  };
-
+  sunshineTemplate = ../templates/sunshine;
 in
 {
-  home.packages = with pkgs; [
-    sunshine
+  environment.systemPackages = [
+    pkgs.sunshine
   ];
 
-  home.file.".config/sunshine/apps.json".text =
-    builtins.toJSON sunshineApps;
+  system.activationScripts.sunshineConfig.text = ''
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config/sunshine
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config/systemd/user
 
-  systemd.user.services.sunshine = {
-    Unit = {
-      Description = "Sunshine Game Streaming Host";
-      After = [ "graphical-session.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
+    rm -f ${homeDir}/.config/sunshine/apps.json
+    rm -f ${homeDir}/.config/systemd/user/sunshine.service
 
-    Service = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
-      RestartSec = 5;
+    install -m 0644 -o ${username} -g users ${sunshineTemplate}/apps.json ${homeDir}/.config/sunshine/apps.json
+    install -m 0644 -o ${username} -g users ${sunshineTemplate}/sunshine.service ${homeDir}/.config/systemd/user/sunshine.service
 
-      Environment = [
-        "DISPLAY=:0"
-        "XAUTHORITY=${homeDir}/.Xauthority"
-        "XDG_RUNTIME_DIR=/run/user/%U"
-        # "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
-        # "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
-        "PATH=${homeDir}/.local/bin:/run/current-system/sw/bin:${config.home.profileDirectory}/bin"
-      ];
-    };
+    chown -R ${username}:users ${homeDir}/.config/sunshine
+    chown -R ${username}:users ${homeDir}/.config/systemd/user
 
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-  };
+    systemctl --user -M ${username}@ daemon-reload || true
+  '';
 }

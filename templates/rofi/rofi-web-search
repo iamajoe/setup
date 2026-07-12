@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+query=$(rofi -dmenu -i -p "  Search" -no-lazy-grab)
+
+if [ -n "$query" ]; then
+  encoded=$(printf %s "$query" | jq -sRr @uri)
+
+  option=$(printf "DuckDuckGo\nGoogle\nWikipedia\nYouTube\nGitHub\nRust Docs\nCrates.io\nNPM\nReddit\nGoogle Translate\nGoogle Maps\nAmazon" | rofi -dmenu -i -p "󰍉 Search Engine" -no-lazy-grab)
+
+  case "$option" in
+    "DuckDuckGo")
+      firefox "https://duckduckgo.com/?q=$encoded" &
+      ;;
+    "Google")
+      firefox "https://www.google.com/search?q=$encoded" &
+      ;;
+    "Wikipedia")
+      firefox "https://en.wikipedia.org/wiki/Special:Search?search=$encoded" &
+      ;;
+    "YouTube")
+      firefox "https://www.youtube.com/results?search_query=$encoded" &
+      ;;
+    "GitHub")
+      firefox "https://github.com/search?q=$encoded" &
+      ;;
+    "Rust Docs")
+      firefox "https://docs.rs/releases/search?query=$encoded" &
+      ;;
+    "Crates.io")
+      firefox "https://crates.io/search?q=$encoded" &
+      ;;
+    "NPM")
+      firefox "https://www.npmjs.com/search?q=$encoded" &
+      ;;
+    "Reddit")
+      firefox "https://www.reddit.com/search/?q=$encoded" &
+      ;;
+    "Google Translate")
+      firefox "https://translate.google.com/?sl=auto&tl=en&text=$encoded" &
+      ;;
+    "Google Maps")
+      firefox "https://www.google.com/maps/search/$encoded" &
+      ;;
+    "Amazon")
+      firefox "https://www.amazon.es/s?k=$encoded" &
+      ;;
+  esac
+fi
