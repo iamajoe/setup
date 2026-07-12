@@ -22,7 +22,7 @@ in
     chown ${username}:users ${homeDir}/services/docker-compose.yml
     chown -R ${username}:users ${homeDir}/.config/systemd/user
 
-    systemctl --user -M ${username}@ daemon-reload || true
-    systemctl --user -M ${username}@ enable --now docker-compose.service || true
+    ${pkgs.systemd}/bin/systemctl --user -M ${username}@ daemon-reload || true
+    ${pkgs.systemd}/bin/systemctl --user -M ${username}@ enable --now docker-compose.service || true
   '';
 }

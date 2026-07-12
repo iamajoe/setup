@@ -122,7 +122,7 @@ in
     ppsspp
     dolphin-emu
     flycast
-    melonDS
+    melonds
     mgba
 
     # Useful tools

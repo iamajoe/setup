@@ -70,6 +70,12 @@ in
     install -d -m 0755 -o ${username} -g users ${homeDir}/.config/gtk-3.0
     install -d -m 0755 -o ${username} -g users ${homeDir}/.config/gtk-4.0
 
+    # Remove any pre-existing file/symlink (e.g. a stale home-manager symlink
+    # into a since-collected /nix/store path) before writing.
+    rm -f ${homeDir}/.Xresources
+    rm -f ${homeDir}/.config/gtk-3.0/settings.ini
+    rm -f ${homeDir}/.config/gtk-4.0/settings.ini
+
     cat > ${homeDir}/.Xresources <<'EOF'
 ${xresources}
 EOF

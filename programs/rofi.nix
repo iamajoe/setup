@@ -25,10 +25,8 @@ in
 
     cp -r ${rofiTemplate} ${homeDir}/.config/rofi
 
-    install -m 0755 -o ${username} -g users ${rofiTemplate}/scripts/rofi-web-search ${homeDir}/.local/bin/rofi-web-search
-    install -m 0755 -o ${username} -g users ${rofiTemplate}/scripts/rofi-quick-notes ${homeDir}/.local/bin/rofi-quick-notes
-
-    rm -rf ${homeDir}/.config/rofi/scripts
+    install -m 0755 -o ${username} -g users ${rofiTemplate}/rofi-web-search ${homeDir}/.local/bin/rofi-web-search
+    install -m 0755 -o ${username} -g users ${rofiTemplate}/rofi-quick-notes ${homeDir}/.local/bin/rofi-quick-notes
 
     chown -R ${username}:users ${homeDir}/.config/rofi
     chown -R ${username}:users ${homeDir}/.local/share/quick-notes

@@ -24,6 +24,6 @@ in
     chown -R ${username}:users ${homeDir}/.config/sunshine
     chown -R ${username}:users ${homeDir}/.config/systemd/user
 
-    systemctl --user -M ${username}@ daemon-reload || true
+    ${pkgs.systemd}/bin/systemctl --user -M ${username}@ daemon-reload || true
   '';
 }

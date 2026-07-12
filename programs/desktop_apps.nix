@@ -33,9 +33,9 @@ in
       clipmenu        # clipboard manager (clipmenu + clipmenud), used by rofi/autostart
       xsel            # clipboard utility required by clipmenu
       blueman         # bluetooth manager, autostart runs blueman-applet
-      xorg.xset       # screen blanking/DPMS control, used by autostart
-      xorg.xsetroot   # root window background, used by autostart
-      xorg.xinput     # kensington trackball button remap, used by xinitrc
+      xset            # screen blanking/DPMS control, used by autostart
+      xsetroot        # root window background, used by autostart
+      xinput          # kensington trackball button remap, used by xinitrc
       networkmanagerapplet # nm-applet, used by autostart
 
       # Desktop utilities
@@ -60,9 +60,9 @@ in
       kicad
       orca-slicer
 
-      xfce.thunar                # file manager, used by qtile keybind
-      xfce.thunar-volman         # automatic management of removable devices
-      xfce.thunar-archive-plugin # archive support (unzip, unrar, etc.)
+      thunar                # file manager, used by qtile keybind
+      thunar-volman         # automatic management of removable devices
+      thunar-archive-plugin # archive support (unzip, unrar, etc.)
 
       # CPU temp sensors for the bar's ThermalSensor widget.
       # Run `sudo sensors-detect` once after first boot to load the right kernel modules.
