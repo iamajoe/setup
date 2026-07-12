@@ -15,7 +15,7 @@ in
 
     ln -sfn ${../templates/zed/settings.json} ${homeDir}/.config/zed/settings.json
 
-    chown ${username}:staff ${homeDir}/.config/zed
-    chown -h ${username}:staff ${homeDir}/.config/zed/settings.json
+    chown ${username}:users ${homeDir}/.config/zed
+    chown -h ${username}:users ${homeDir}/.config/zed/settings.json
   '';
 }
