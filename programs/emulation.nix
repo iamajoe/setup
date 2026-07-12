@@ -116,7 +116,8 @@ in
 
     # Standalone emulators
     dosbox-staging
-    duckstation
+    # duckstation removed from nixpkgs upstream (use the AppImage if needed);
+    # PS1 is still covered via the beetle-psx-hw RetroArch core above.
     pcsx2
     ppsspp
     dolphin-emu

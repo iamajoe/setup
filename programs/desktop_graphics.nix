@@ -39,6 +39,8 @@ in
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
     ];
+    # Pre-1.17 behaviour: use the first portal implementation found.
+    config.common.default = "*";
   };
 
   # Sync Qt apps to the GTK dark theme (Adwaita-dark, via adwaita-qt/adwaita-qt6)
