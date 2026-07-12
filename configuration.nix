@@ -6,6 +6,9 @@ in
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # Cap the boot menu so old generations stop pinning /nix/store space forever
+  # (nix.gc below can't reclaim a generation still listed as a boot entry).
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.kernel.sysctl."vm.overcommit_memory" = 1; # fixes memory warning on docker redis
 
   # Reduce USB error spam on console (hide info/debug messages)
