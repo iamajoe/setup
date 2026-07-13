@@ -180,7 +180,7 @@ keys.extend([
 ########################
 screens = [
     Screen(
-        top=create_bar(colors, terminal, browser),
+        top=create_bar(colors),
     ),
 ]
 

@@ -11,7 +11,7 @@ import subprocess
 import os
 
 
-def create_bar(colors, terminal=None, browser=None):
+def create_bar(colors):
     # Semantic color mappings
     BG_COLOR = colors["bg"]
     FG_COLOR = colors["fg"]
