@@ -95,6 +95,7 @@ in
   # Allow insecure packages (required for some Electron apps like Discord/Slack)
   nixpkgs.config.permittedInsecurePackages = [
     "openssl-1.1.1w"
+    "pnpm-9.15.9"
   ];
 
   # NOTE: required for zoom for example under aarch64
