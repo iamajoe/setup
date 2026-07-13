@@ -26,7 +26,7 @@ in
       slack
       zoom-us
 
-      # qtile keybind / autostart dependencies (config.py, bar_minimal.py, autostart.sh)
+      # qtile keybind / autostart dependencies (config.py, bar_default.py, autostart.sh)
       flameshot       # screenshot tool
       pamixer         # CLI audio mixer, used by volume keybinds
       playerctl       # CLI media player controller, used by media keybinds

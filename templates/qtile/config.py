@@ -8,7 +8,7 @@ import subprocess
 import time
 
 # Import bar configuration
-from bar_minimal import create_bar  # Minimal bar - centered, rounded, essential widgets only
+from @barModule@ import create_bar
 
 # Mod key (Mod4 = Super/Windows key)
 mod = "mod4"
@@ -125,7 +125,7 @@ mouse = [
 ########################
 # WORKSPACES/GROUPS
 ########################
-groups = [Group(i) for i in "123456789"]
+groups = [Group(i) for i in "@workspaceGroupChars@"]
 
 for i in groups:
     keys.extend([

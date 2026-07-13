@@ -26,6 +26,13 @@ let
     autoRunSteamBigPicture = if autoRunSteamBigPicture then "true" else "false";
     neverSleep = if neverSleep then "true" else "false";
   };
+
+  # Steam/TV setups get a full-width bar with 2 workspaces instead of the
+  # centered minimal bar with 9 workspaces used everywhere else.
+  configPy = pkgs.replaceVars ../templates/qtile/config.py {
+    barModule = if autoRunSteamBigPicture then "bar_steam_tv" else "bar_default";
+    workspaceGroupChars = if autoRunSteamBigPicture then "12" else "123456789";
+  };
 in
 {
   system.activationScripts.qtileConfig.text = ''
@@ -38,6 +45,7 @@ in
 
     cp -r ${qtileTemplate} ${homeDir}/.config/qtile
     install -m 0755 -o ${username} -g users ${autostart} ${homeDir}/.config/qtile/autostart.sh
+    install -m 0644 -o ${username} -g users ${configPy} ${homeDir}/.config/qtile/config.py
 
     chown -R ${username}:users ${homeDir}/.config/qtile
     find ${homeDir}/.config/qtile -type d -exec chmod 0755 {} \;
