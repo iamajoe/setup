@@ -9,11 +9,13 @@ let
   maxResolutionHeight = (maxResolution * 9) / 16;
 
   # TV overscan compensation. Off by default (0/0); set on a per-host basis
-  # in userConfig for TVs that clip the edges of the image.
+  # in userConfig for TVs that clip the edges of the image. Applied via the
+  # standard RandR "Border" property (left top right bottom), which is what
+  # current NVIDIA drivers expose instead of the old "underscan" property.
   underscanHBorder = userConfig.underscanHBorder or 0;
   underscanVBorder = userConfig.underscanVBorder or 0;
   underscanCmd = lib.optionalString (underscanHBorder != 0 || underscanVBorder != 0) ''
-    xrandr --output ${displayOutput} --set underscan on --set "underscan hborder" ${toString underscanHBorder} --set "underscan vborder" ${toString underscanVBorder}
+    xrandr --output ${displayOutput} --set Border "${toString underscanHBorder} ${toString underscanVBorder} ${toString underscanHBorder} ${toString underscanVBorder}"
   '';
 
   xinitrc = pkgs.replaceVars ../templates/x/xinitrc {

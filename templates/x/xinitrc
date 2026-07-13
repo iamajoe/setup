@@ -33,7 +33,7 @@ export SSH_AUTH_SOCK
 # Lock resolution (never go above the configured max)
 xrandr --output @displayOutput@ --mode @maxResolutionWidth@x@maxResolutionHeight@ --rate 60
 
-# TV overscan compensation (NVIDIA underscan), if configured
+# TV overscan compensation (NVIDIA RandR Border property), if configured
 @underscanCmd@
 
 # Load Xresources if present
