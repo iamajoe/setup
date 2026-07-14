@@ -188,6 +188,8 @@ in
   # ─── BLUETOOTH ───────────────────────────────────────────────────────
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  # Fixes pairing/disconnect issues with 8BitDo/PS-style Bluetooth controllers
+  boot.extraModprobeConfig = "options bluetooth disable_ertm=1";
 
   # ─── PRINTING ────────────────────────────────────────────────────────
   services.printing.enable = lib.mkIf isX86_64 true;
