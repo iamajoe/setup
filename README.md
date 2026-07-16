@@ -64,3 +64,7 @@ Copied from `local-config/flake.nix.dist` per-machine, gitignored (never committ
 
 ### Migrating an existing `~/services/docker-data`
 The docker-compose module only ever writes `~/services/docker-compose.yml` and its systemd unit — it never touches `~/services/docker-data` or `~/services/docker-config`. If you're moving from an older setup, copy those two folders into place under `~/services/` before the first `nixos-rebuild switch` and they'll be picked up as-is.
+
+## TODO
+- [ ] xorg.conf with underscan for tv
+- [ ] 8bitdo controllers do not work under bluetooth
