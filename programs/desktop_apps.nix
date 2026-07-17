@@ -5,22 +5,23 @@ let
   isLinux = userConfig.platform == "linux";
 in
 {
+  fonts.packages = with pkgs; [
+    nerd-fonts.noto
+    nerd-fonts.tinos
+    nerd-fonts.code-new-roman
+    nerd-fonts.inconsolata
+    nerd-fonts.commit-mono
+    nerd-fonts.zed-mono
+    nerd-fonts.jetbrains-mono
+    font-awesome # Font Awesome 6 Free (Solid, Regular, Brands)
+  ];
+
   environment.systemPackages =
     with pkgs;
     [
       # Miscellaneous
       obsidian
       spotify
-
-      # Fonts
-      nerd-fonts.noto
-      nerd-fonts.tinos
-      nerd-fonts.code-new-roman
-      nerd-fonts.inconsolata
-      nerd-fonts.commit-mono
-      nerd-fonts.zed-mono
-      nerd-fonts.jetbrains-mono
-      font-awesome # Font Awesome 6 Free (Solid, Regular, Brands)
 
       # Communication
       slack
