@@ -40,14 +40,14 @@ def create_bar(colors):
         make_mic(theme),
         make_restart_servers(theme),
         make_status_notifier(theme),
-        make_spacer(theme, 8),
+        # make_spacer(theme, 8),
         make_systray(theme),
         make_spacer(theme, 12),
 
-        make_stats_box(theme),
-        make_spacer(theme, 12),
+        # make_stats_box(theme),
+        # make_spacer(theme, 12),
 
-        make_help(theme),
+        # make_help(theme),
         make_spacer(theme, 12),
 
         make_keyboard_layout(theme),
