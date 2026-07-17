@@ -8,7 +8,7 @@ import subprocess
 import time
 
 # Import bar configuration
-from @barModule@ import create_bar
+from bar import create_bar
 
 # Mod key (Mod4 = Super/Windows key)
 mod = "mod4"

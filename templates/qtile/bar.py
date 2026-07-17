@@ -1,7 +1,7 @@
 """
-Full-width Bar for Qtile (Steam TV / Big Picture setups)
-Same widgets and theme as the minimal bar, but edge-to-edge instead of
-centered with side margins.
+Full-width Bar for Qtile
+Edge-to-edge bar; the only difference between setups (e.g. Steam Big
+Picture) is the number of workspace groups, configured in config.py.
 """
 
 from libqtile import bar
@@ -40,6 +40,7 @@ def create_bar(colors):
         make_mic(theme),
         make_restart_servers(theme),
         make_status_notifier(theme),
+        make_spacer(theme, 8),
         make_systray(theme),
         make_spacer(theme, 12),
 

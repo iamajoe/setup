@@ -22,7 +22,6 @@ let
   # Steam/TV setups get a full-width bar with 2 workspaces instead of the
   # centered minimal bar with 9 workspaces used everywhere else.
   configPy = pkgs.replaceVars ../templates/qtile/config.py {
-    barModule = if autoRunSteamBigPicture then "bar_steam_tv" else "bar_default";
     workspaceGroupChars = if autoRunSteamBigPicture then "12" else "123456789";
   };
 in

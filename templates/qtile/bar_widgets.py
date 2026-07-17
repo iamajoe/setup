@@ -99,7 +99,7 @@ def make_restart_servers(theme):
         fontsize=theme["ICON_SIZE"],
         foreground=theme["colors"]["yellow"],
         background=theme["BG_COLOR"],
-        text="",
+        text="",
         padding=10,
         mouse_callbacks={
             "Button1": lambda: (
@@ -139,8 +139,8 @@ def make_stats_box(theme):
         fontsize=theme["ICON_SIZE"],
         foreground=theme["FG_COLOR"],
         background=theme["BG_COLOR"],
-        text_closed="",
-        text_open="",
+        text_closed="",
+        text_open="",
         close_button_location="right",
         widgets=[
             widget.CPU(
@@ -185,7 +185,7 @@ def make_help(theme):
         fontsize=theme["ICON_SIZE"],
         foreground=theme["FG_COLOR"],
         background=theme["BG_COLOR"],
-        text="",
+        text="",
         padding=10,
         mouse_callbacks={
             "Button1": lazy.group["scratchpad"].dropdown_toggle("shortcuts"),
