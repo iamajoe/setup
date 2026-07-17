@@ -2,6 +2,17 @@
 
 let
   inherit (userConfig) username homeDir dpi cursorSize;
+  inherit (userConfig) maxResolution underscanH underscanV;
+
+  # Assumes 16:9 for the derived height (matches programs/qtile.nix).
+  maxResolutionHeight = (maxResolution * 9) / 16;
+
+  # TV overscan compensation via NVIDIA viewportout crop: px trimmed from
+  # each dimension, split evenly across both edges.
+  underscanViewportWidth = maxResolution - underscanH;
+  underscanViewportHeight = maxResolutionHeight - underscanV;
+  underscanOffsetX = underscanH / 2;
+  underscanOffsetY = underscanV / 2;
 
   cursorTheme = "Adwaita";
   iconTheme = "Papirus-Dark";
@@ -173,6 +184,14 @@ EOF
     package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  # TV overscan compensation via NVIDIA viewportout crop (see local-config
+  # flake.nix.dist underscanH/underscanV). Generated from an xorg.conf saved
+  # manually via nvidia-settings.
+  services.xserver.screenSection = lib.mkIf
+    (userConfig.gpu == "nvidia" && (underscanH > 0 || underscanV > 0)) ''
+    Option "metamodes" "${toString maxResolution}x${toString maxResolutionHeight}_60 +0+0 {viewportout=${toString underscanViewportWidth}x${toString underscanViewportHeight}+${toString underscanOffsetX}+${toString underscanOffsetY}}"
+  '';
 
   # Intel iGPU: fixes for display flicker/tearing on some 11th/12th gen chips
   boot.kernelParams = lib.optionals (userConfig.gpu == "intel") [

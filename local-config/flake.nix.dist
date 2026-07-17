@@ -40,6 +40,11 @@
       # auto-launch Steam in Big Picture mode when qtile starts (TV setups)
       autoRunSteamBigPicture = false;
 
+      # NVIDIA TV overscan compensation, in px trimmed from the picture (split
+      # evenly across both edges), via xorg.conf metamodes viewportout. 0 = off.
+      underscanH = 0;
+      underscanV = 0;
+
 
       # X server / Xresources DPI (96 = standard, 144 = 1.5x HiDPI, 192 = 2x HiDPI)
       dpi = 96;
