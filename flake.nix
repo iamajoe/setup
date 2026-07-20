@@ -54,6 +54,14 @@
         ./programs/alacritty.nix
         ./programs/zed.nix
       ]
+      ++ lib.optionals userConfig.addDevApplications [
+        ./programs/sublime.nix
+        ./programs/compass.nix
+        ./programs/cursor.nix
+        ./programs/claude.nix
+        ./programs/chatgpt.nix
+        ./programs/stripe.nix
+      ]
       ++ lib.optionals userConfig.addNasMounts [
         ./programs/drives.nix
       ]

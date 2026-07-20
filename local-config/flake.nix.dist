@@ -20,6 +20,7 @@
 
       addSyncBackup = false;
       addDesktop = false;
+      addDevApplications = false;
 
       # CIFS mounts from a NAS at /mnt/{music,video,roms} (TV/game station)
       addNasMounts = false;
