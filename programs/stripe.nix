@@ -7,5 +7,5 @@ in
 {
   environment.systemPackages = with pkgs; [
     stripe-cli
-  ]
+  ];
 }

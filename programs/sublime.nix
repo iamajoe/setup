@@ -8,5 +8,5 @@ in
   environment.systemPackages = with pkgs; [
     sublime-merge
     sublime4
-  ]
+  ];
 }

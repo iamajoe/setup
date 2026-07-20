@@ -57,5 +57,5 @@ in
     # JSON/YAML/data tools
     jq
     yq-go
-  ]
+  ];
 }
