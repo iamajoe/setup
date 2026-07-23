@@ -62,6 +62,7 @@
         ./programs/claude.nix
         ./programs/chatgpt.nix
         ./programs/stripe.nix
+        ./programs/dbeaver.nix
       ]
       ++ lib.optionals userConfig.addNasMounts [
         ./programs/drives.nix
