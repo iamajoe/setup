@@ -9,9 +9,6 @@ let
   '';
 in
 {
-  # Persistent per-session ssh-agent (systemd --user socket), so keys added
-  # via AddKeysToAgent only need the passphrase once per login instead of on
-  # every git operation.
   programs.ssh.startAgent = true;
 
   system.activationScripts.sshConfig.text = ''
