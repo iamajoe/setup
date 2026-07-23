@@ -8,6 +8,7 @@ building blocks instead of duplicating widget definitions.
 from libqtile import qtile, widget
 from libqtile.lazy import lazy
 from qtile_extras import widget as widget_extras
+from stats_popup_widget import make_stats_popup
 import subprocess
 
 
@@ -119,71 +120,23 @@ def make_restart_servers(theme):
 
 def make_status_notifier(theme):
     return widget_extras.StatusNotifier(
-        icon_size=theme["ICON_SIZE"],
-        padding=10,
+        font=theme["FONT"],
+        fontsize=theme["ICON_SIZE"],
         background=theme["BG_COLOR"],
+        padding=10,
     )
 
-
-def make_systray(theme):
-    return widget.Systray(
-        icon_size=theme["ICON_SIZE"],
-        padding=10,
-        background=theme["BG_COLOR"],
-    )
 
 
 def make_stats_box(theme):
-    return widget_extras.WidgetBox(
-        font=theme["FONT"],
-        fontsize=theme["ICON_SIZE"],
-        foreground=theme["FG_COLOR"],
-        background=theme["BG_COLOR"],
-        text_closed="",
-        text_open="",
-        close_button_location="right",
-        widgets=[
-            widget.CPU(
-                font=theme["FONT"],
-                fontsize=theme["FONT_SIZE"] - 4,
-                foreground=theme["FG_COLOR"],
-                background=theme["BG_COLOR"],
-                format="CPU {load_percent}%",
-                padding=8,
-            ),
-            widget.DF(
-                font=theme["FONT"],
-                fontsize=theme["FONT_SIZE"] - 4,
-                foreground=theme["FG_COLOR"],
-                background=theme["BG_COLOR"],
-                partition="/",
-                format="Disk {r:.0%}",
-                visible_on_warn=False,
-                padding=8,
-            ),
-            widget.ThermalSensor(
-                font=theme["FONT"],
-                fontsize=theme["FONT_SIZE"] - 4,
-                foreground=theme["FG_COLOR"],
-                background=theme["BG_COLOR"],
-                padding=8,
-            ),
-            widget.Net(
-                font=theme["FONT"],
-                fontsize=theme["FONT_SIZE"] - 4,
-                foreground=theme["FG_COLOR"],
-                background=theme["BG_COLOR"],
-                padding=8,
-            ),
-        ],
-    )
+    return make_stats_popup(theme)
 
 
 def make_help(theme):
     return widget.TextBox(
         font=theme["FONT"],
         fontsize=theme["ICON_SIZE"],
-        foreground=theme["FG_COLOR"],
+        foreground=theme["INACTIVE_COLOR"],
         background=theme["BG_COLOR"],
         text="",
         padding=10,

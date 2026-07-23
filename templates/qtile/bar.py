@@ -15,7 +15,6 @@ from bar_widgets import (
     make_mic,
     make_restart_servers,
     make_status_notifier,
-    make_systray,
     make_stats_box,
     make_help,
     make_keyboard_layout,
@@ -40,18 +39,13 @@ def create_bar(colors):
         make_mic(theme),
         make_restart_servers(theme),
         make_status_notifier(theme),
-        # make_spacer(theme, 8),
-        make_systray(theme),
+        make_spacer(theme, 8),
+
+        make_stats_box(theme),
         make_spacer(theme, 12),
-
-        # make_stats_box(theme),
-        # make_spacer(theme, 12),
-
-        # make_help(theme),
-        make_spacer(theme, 12),
-
         make_keyboard_layout(theme),
         make_clock(theme),
+        make_help(theme),
     ]
 
     return bar.Bar(

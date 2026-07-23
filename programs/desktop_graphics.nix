@@ -127,6 +127,8 @@ EOF
       });
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
+        pyxdg   # icon theme lookup for StatusNotifier
+        psutil  # system stats for the stats popup widget
       ];
     };
 
