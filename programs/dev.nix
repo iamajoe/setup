@@ -13,6 +13,8 @@ in
     ripgrep    # improved grep
     sd         # better sed
     pkg-config # wrapper script for allowing packages to get info on others
+    fzf        # fuzzy finder
+    zoxide     # smarter cd
 
     # C/C++
     gcc
