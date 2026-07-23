@@ -13,6 +13,8 @@ in
       unzip
       p7zip
       zip
+
+      just
     ]
 
     # Linux-specific packages
