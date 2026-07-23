@@ -20,8 +20,8 @@ source @zshSyntaxHighlighting@/share/zsh-syntax-highlighting/zsh-syntax-highligh
 
 # ─── Shared Shell Config ────────────────────────────────────────────────────
 
-[ -f "$HOME/.config/shell/dev-env.sh" ] && source "$HOME/.config/shell/dev-env.sh"
-[ -f "$HOME/.config/shell/tool-integrations.sh" ] && source "$HOME/.config/shell/tool-integrations.sh"
+[ -f "$HOME/.config/shell/dev_env.sh" ] && source "$HOME/.config/shell/dev_env.sh"
+[ -f "$HOME/.config/shell/tool_integrations.sh" ] && source "$HOME/.config/shell/tool_integrations.sh"
 [ -f "$HOME/.config/shell/alias.sh" ] && source "$HOME/.config/shell/alias.sh"
 
 # ─── Key Bindings ───────────────────────────────────────────────────────────
