@@ -97,8 +97,8 @@ style = "Block"
 # blinking = "On" seems not working
 
 [font]
-# size = 9.5
-size = 15
+size = 9.5
+# size = 15
 offset.x = 1
 offset.y = 2
 normal.family = "NotoSansM Nerd Font"
