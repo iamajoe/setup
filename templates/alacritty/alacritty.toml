@@ -97,7 +97,7 @@ style = "Block"
 # blinking = "On" seems not working
 
 [font]
-size = 9.5
+size = 11
 # size = 15
 offset.x = 1
 offset.y = 2
