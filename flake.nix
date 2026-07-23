@@ -29,6 +29,7 @@
 
         ./programs/basic.nix
         ./programs/git.nix
+        ./programs/ssh.nix
         ./programs/bash.nix
         ./programs/zsh.nix
         ./programs/helix.nix
