@@ -38,7 +38,8 @@ def create_bar(colors):
         make_volume(theme),
         make_mic(theme),
         make_restart_servers(theme),
-        make_status_notifier(theme),
+        # TODO: not working as expected
+        # make_status_notifier(theme),
         make_spacer(theme, 8),
 
         make_stats_box(theme),
