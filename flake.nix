@@ -34,6 +34,7 @@
         ./programs/zsh.nix
         ./programs/helix.nix
         ./programs/tmux.nix
+        ./programs/herdr.nix
         ./programs/yazi.nix
         ./programs/dev.nix
         ./programs/docker-compose.nix
