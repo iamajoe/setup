@@ -9,9 +9,14 @@
       url = "github:qtile/qtile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, local-config, qtile-flake }:
+  outputs = inputs@{ self, nixpkgs, local-config, qtile-flake, herdr }:
   let
     lib = nixpkgs.lib;
     userConfig = local-config.userConfig;
@@ -20,7 +25,7 @@
     nixosConfigurations.${userConfig.flakeName} = nixpkgs.lib.nixosSystem {
       system = userConfig.system;
       specialArgs = {
-        inherit userConfig qtile-flake;
+        inherit userConfig qtile-flake herdr;
       };
 
       modules = [

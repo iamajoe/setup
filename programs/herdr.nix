@@ -1,4 +1,4 @@
-{ config, pkgs, lib, userConfig, ... }:
+{ pkgs, herdr, userConfig, ... }:
 
 let
   inherit (userConfig) username homeDir;
@@ -7,7 +7,7 @@ let
 in
 {
   environment.systemPackages = [
-    pkgs.herdr
+    herdr.packages.${userConfig.system}.default
   ];
 
   system.activationScripts.herdrConfig.text = ''
