@@ -3,7 +3,8 @@
 let
   inherit (userConfig) username homeDir;
 
-  herdrTemplate = ../templates/herdr;
+  # TODO: change the templates
+  herdrTemplate = ../templates/tmux;
 in
 {
   environment.systemPackages = [
