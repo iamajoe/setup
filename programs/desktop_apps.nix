@@ -68,6 +68,9 @@ in
       # CPU temp sensors for the bar's ThermalSensor widget.
       # Run `sudo sensors-detect` once after first boot to load the right kernel modules.
       lm_sensors
+
+      # package to run the keyboard via app
+      via
     ]
 
     # macOS-specific packages

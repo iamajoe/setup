@@ -60,6 +60,7 @@
         ./programs/sunshine.nix
         ./programs/alacritty.nix
         ./programs/zed.nix
+        ./programs/via.nix
       ]
       ++ lib.optionals userConfig.addDevApplications [
         ./programs/sublime.nix
