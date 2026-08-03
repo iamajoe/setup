@@ -15,6 +15,7 @@ in
       zip
 
       just
+      lsof
     ]
 
     # Linux-specific packages
