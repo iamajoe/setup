@@ -6,7 +6,9 @@ live_config_reload = true
 
 [colors.primary]
 # background = "#1e1e2e"
-background = "#121312"
+=======
+# background = "#121312"
+background = "#181920"
 foreground = "#cdd6f4"
 dim_foreground = "#7f849c"
 bright_foreground = "#cdd6f4"
