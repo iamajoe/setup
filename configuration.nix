@@ -169,7 +169,11 @@ in
 
   # try to fix audio mic shutting down disabling the usb autosuspend
   services.udev.extraRules = ''
+    # Keep USB autosuspend disabled
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"
+
+    # NuPhy Air75 V2 - allow VIA access
+    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3246", MODE="0660", GROUP="input", TAG+="uaccess"
   '';
 
   programs.nix-ld = {

@@ -49,6 +49,7 @@ in
       hyprpicker    # color picker
       pavucontrol   # editing audio levels & devices
       rpi-imager    # raspberry pi sd card installer
+      filezilla     # ftp client
     ]
 
     # Linux-specific packages
