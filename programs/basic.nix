@@ -16,6 +16,9 @@ in
 
       just
       lsof
+
+      afpfs-ng
+      ffmpeg
     ]
 
     # Linux-specific packages
