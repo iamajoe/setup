@@ -4,6 +4,10 @@ let
   isX86_64 = userConfig.system == "x86_64-linux";
 in
 {
+  environment.systemPackages = [
+    pkgs.chromaprint # for fingerprinting music
+  ];
+
   # ─── AUDIO ───────────────────────────────────────────────────────────
   # PipeWire (modern audio, replaces PulseAudio + JACK)
   security.rtkit.enable = true; # realtime scheduling for audio
