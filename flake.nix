@@ -14,7 +14,7 @@
     };
 
     herdr = {
-      url = "github:ogulcancelik/herdr";
+      url = "github:ogulcancelik/herdr/346411fa21afd297f5ed3b3fa56f9e3fbf7654b7";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
