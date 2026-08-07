@@ -50,6 +50,7 @@ in
       pavucontrol   # editing audio levels & devices
       rpi-imager    # raspberry pi sd card installer
       filezilla     # ftp client
+      recordbox     # mp3 player
     ]
 
     # Linux-specific packages
