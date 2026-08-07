@@ -17,7 +17,6 @@ in
       just
       lsof
 
-      afpfs-ng
       ffmpeg
     ]
 
