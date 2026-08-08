@@ -125,6 +125,8 @@ in
     parted          # CLI partition editor
     ncdu            # utility for tree disk dimensions
     cifs-utils
+    samba
+    nfs-utils
 
     # Disk management & monitoring (CLI)
     smartmontools   # S.M.A.R.T. monitoring for drives
@@ -186,6 +188,23 @@ in
       curl
     ];
   };
+
+  # Lets mounting be done by the user
+  security.sudo.extraRules = [
+    {
+      users = [ userConfig.username ];
+      commands = [
+        {
+          command = "${pkgs.cifs-utils}/bin/mount.cifs";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "${pkgs.util-linux}/bin/umount";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   # ─── SYSTEM MAINTENANCE ──────────────────────────────────────────────
   services.fstrim.enable = true; # Automatic SSD TRIM (weekly)
