@@ -70,7 +70,6 @@
         ./programs/compass.nix
         ./programs/cursor.nix
         ./programs/claude.nix
-        ./programs/chatgpt.nix
         ./programs/stripe.nix
         ./programs/dbeaver.nix
       ]
