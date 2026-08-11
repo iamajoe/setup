@@ -1,7 +1,7 @@
 { config, pkgs, lib, userConfig, ... }:
 
 let
-  inherit (userConfig) username homeDir;
+  inherit (userConfig) username homeDir hostIp;
 
   templateDir = ../templates/services;
 in
@@ -32,5 +32,9 @@ in
 
     install -m 0644 -o ${username} -g users ${templateDir}/docker-compose.yml ${homeDir}/services/docker-compose.yml
     install -m 0644 -o ${username} -g users ${templateDir}/appflowy.nginx.conf ${homeDir}/shared_data/services/docker-config/appflowy/nginx.conf
+
+    printf 'HOST_IP=%s\n' "${hostIp}" > ${homeDir}/services/.env
+    chown ${username}:users ${homeDir}/services/.env
+    chmod 0644 ${homeDir}/services/.env
   '';
 }
