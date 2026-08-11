@@ -56,8 +56,8 @@ services:
       DISABLE_ADMIN_TOKEN: true
       ROCKET_TLS: '{certs="/certs/cloudflare_cert.pem",key="/certs/cloudflare_private.pem"}'
     volumes:
-      - "./docker-data/vaultwarden/:/data"
-      - "./docker-config/certificates/:/certs"
+      - "~/shared_data/services/docker-data/vaultwarden/:/data"
+      - "~/shared_data/services/docker-config/certificates/:/certs"
 
   # huginn:
   #   container_name: huginn
@@ -83,9 +83,9 @@ services:
       - 7575:7575
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./docker-config/homarr/data:/data
-      - ./docker-config/homarr/configs:/app/data/configs
-      - ./docker-config/homarr/icons:/app/public/icons
+      - ~/shared_data/services/docker-config/homarr/data:/data
+      - ~/shared_data/services/docker-config/homarr/configs:/app/data/configs
+      - ~/shared_data/services/docker-config/homarr/icons:/app/public/icons
     restart: unless-stopped
 
   # TODO: would adguard/adguardhome be better?
@@ -127,7 +127,7 @@ services:
     container_name: paperlessbroker
     restart: unless-stopped
     volumes:
-      - "./docker-data/paperlessbroker:/data"
+      - "~/shared_data/services/docker-data/paperlessbroker:/data"
   paperless:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless
@@ -137,10 +137,10 @@ services:
     ports:
       - "8017:8000"
     volumes:
-      - "./docker-data/paperless/data:/usr/src/paperless/data"
-      - "./docker-data/paperless/media:/usr/src/paperless/media"
-      - "./docker-data/paperless/export:/usr/src/paperless/export"
-      - "./docker-data/paperless/consume:/usr/src/paperless/consume"
+      - "~/shared_data/services/docker-data/paperless/data:/usr/src/paperless/data"
+      - "~/shared_data/services/docker-data/paperless/media:/usr/src/paperless/media"
+      - "~/shared_data/services/docker-data/paperless/export:/usr/src/paperless/export"
+      - "~/shared_data/services/docker-data/paperless/consume:/usr/src/paperless/consume"
     environment:
       - PGID=1000
       - PUID=1000
@@ -223,7 +223,7 @@ services:
       - USER_UID=1000
       - USER_GID=1000
     volumes:
-      - ./docker-data/forgejo:/data
+      - ~/shared_data/services/docker-data/forgejo:/data
       - /etc/localtime:/etc/localtime:ro
     ports:
       - '3000:3000'
@@ -247,7 +247,7 @@ services:
       FORGEJO_RUNNER_NAME: "docker-runner-1"
       FORGEJO_RUNNER_LABELS: "ubuntu-latest:docker://node:20-bookworm,linux:docker://node:20-bookworm"
     volumes:
-      - ./docker-data/forgejo-runner:/data
+      - ~/shared_data/services/docker-data/forgejo-runner:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
