@@ -13,6 +13,7 @@ in
   system.activationScripts.herdrConfig.text = ''
     install -d -m 0755 -o ${username} -g users ${homeDir}
     install -d -m 0755 -o ${username} -g users ${homeDir}/.config
+    install -d -m 0755 -o ${username} -g users ${homeDir}/.config/herdr
 
     rm -rf ${homeDir}/.config/herdr/config.toml
     cp -r ${herdrTemplate}/config.toml ${homeDir}/.config/herdr/config.toml
