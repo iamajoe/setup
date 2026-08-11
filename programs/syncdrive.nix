@@ -9,69 +9,71 @@ in
     pkgs.openssl
   ];
 
-  systemd.services.rclone-bisync-joe-mac = {
-    description = "rclone bisync with Joe's Mac";
+  # TODO: these can cause conflicts. we dont want that
 
-    serviceConfig = {
-      Type = "oneshot";
-      User = "${username}";
+  # systemd.services.rclone-bisync-joe-mac = {
+  #   description = "rclone bisync with Joe's Mac";
 
-      ExecStart = "${pkgs.rclone}/bin/rclone bisync ${homeDir}/shared_data joe_mac:/Users/joel/shared_data";
-    };
-  };
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "${username}";
 
-  systemd.timers.rclone-bisync-joe-mac = {
-    description = "Run rclone bisync with Joe's Mac";
+  #     ExecStart = "${pkgs.rclone}/bin/rclone bisync ${homeDir}/shared_data joe_mac:/Users/joel/shared_data";
+  #   };
+  # };
 
-    wantedBy = [ "timers.target" ];
+  # systemd.timers.rclone-bisync-joe-mac = {
+  #   description = "Run rclone bisync with Joe's Mac";
 
-    timerConfig = {
-      OnCalendar = "*-*-* *:00:00";
-      Persistent = true;
-    };
-  };
+  #   wantedBy = [ "timers.target" ];
 
-  systemd.services.rclone-bisync-tv-steam = {
-    description = "rclone bisync with tv steam";
+  #   timerConfig = {
+  #     OnCalendar = "*-*-* *:00:00";
+  #     Persistent = true;
+  #   };
+  # };
 
-    serviceConfig = {
-      Type = "oneshot";
-      User = "${username}";
+  # systemd.services.rclone-bisync-tv-steam = {
+  #   description = "rclone bisync with tv steam";
 
-      ExecStart = "${pkgs.rclone}/bin/rclone bisync ${homeDir}/shared_data tv_steam:/home/${username}/shared_data";
-    };
-  };
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "${username}";
 
-  systemd.timers.rclone-bisync-tv-steam = {
-    description = "Run rclone bisync with tv steam";
+  #     ExecStart = "${pkgs.rclone}/bin/rclone bisync ${homeDir}/shared_data tv_steam:/home/${username}/shared_data";
+  #   };
+  # };
 
-    wantedBy = [ "timers.target" ];
+  # systemd.timers.rclone-bisync-tv-steam = {
+  #   description = "Run rclone bisync with tv steam";
 
-    timerConfig = {
-      OnCalendar = "*-*-* *:00:00";
-      Persistent = true;
-    };
-  };
+  #   wantedBy = [ "timers.target" ];
 
-  systemd.services.rclone-bisync-joe-workstation = {
-    description = "rclone bisync with Joe's workstation";
+  #   timerConfig = {
+  #     OnCalendar = "*-*-* *:00:00";
+  #     Persistent = true;
+  #   };
+  # };
 
-    serviceConfig = {
-      Type = "oneshot";
-      User = "${username}";
+  # systemd.services.rclone-bisync-joe-workstation = {
+  #   description = "rclone bisync with Joe's workstation";
 
-      ExecStart = "${pkgs.rclone}/bin/rclone bisync ${homeDir}/shared_data joe_workstation:/home/${username}/shared_data";
-    };
-  };
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "${username}";
 
-  systemd.timers.rclone-bisync-joe-workstation = {
-    description = "Run rclone bisync with Joe's workstation";
+  #     ExecStart = "${pkgs.rclone}/bin/rclone bisync ${homeDir}/shared_data joe_workstation:/home/${username}/shared_data";
+  #   };
+  # };
 
-    wantedBy = [ "timers.target" ];
+  # systemd.timers.rclone-bisync-joe-workstation = {
+  #   description = "Run rclone bisync with Joe's workstation";
 
-    timerConfig = {
-      OnCalendar = "*-*-* *:00:00";
-      Persistent = true;
-    };
-  };
+  #   wantedBy = [ "timers.target" ];
+
+  #   timerConfig = {
+  #     OnCalendar = "*-*-* *:00:00";
+  #     Persistent = true;
+  #   };
+  # };
 }
