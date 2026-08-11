@@ -12,7 +12,7 @@ in
 
   users.users.${username}.linger = true;
 
-  systemd.user.services.docker-compose = {
+  systemd.user.services.userservices = {
     description = "Docker compose stack in ~/services";
     after = [ "default.target" "docker.service" ];
     wantedBy = [ "default.target" ];
@@ -26,7 +26,7 @@ in
     };
   };
 
-  system.activationScripts.dockerComposeConfig.text = ''
+  system.activationScripts.userservicesConfig.text = ''
     install -d -m 0755 -o ${username} -g users ${homeDir}/services
     install -d -m 0755 -o ${username} -g users ${homeDir}/shared_data/services/docker-config/appflowy
 
