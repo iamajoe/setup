@@ -14,31 +14,6 @@ services:
   #     - /var/run/docker.sock:/var/run/docker.sock
   #   restart: unless-stopped
 
-  # syncthing:
-  #   container_name: syncthing
-  #   image: lscr.io/linuxserver/syncthing:latest
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Etc/UTC
-  #   volumes:
-  #     - "./docker-data/syncthing/config:/config"
-  #     # syncing folders
-  #     - "/home/donkey/.config/tessera:/data/tessera"
-  #     - "./docker-data/backups:/data/backups"
-  #     - "./docker-data/vaultwarden/:/data/vaultwarden"
-  #     - "./docker-config/certificates/:/data/certs"
-  #     - "./docker-config/homarr:/data/homarr"
-  #     - "./docker-data/paperless:/data/paperless"
-  #   # ports:
-  #   #   - 8384:8384
-  #   #   - 22000:22000/tcp
-  #   #   - 22000:22000/udp
-  #   #   - 21027:21027/udp
-  #   network_mode: host
-  #   restart: unless-stopped
-
-
   # TODO: this will fail not being localhost and not having https
   #       it needs a reverse proxy with certificates
   #       https://github.com/dani-garcia/vaultwarden/wiki/Using-Docker-Compose#caddy-with-dns-challenge
@@ -198,23 +173,6 @@ services:
   ##########################################
   # Development
   ##########################################
-
-  # gitea:
-  #   container_name: gitea
-  #   image: gitea/gitea:1.20.5-rootless
-  #   environment:
-  #     - PGID=1000
-  #     - PUID=1000
-  #     - TZ=Europe/Lisbon
-  #   ports:
-  #     - 3000:3000
-  #     - 2222:2222
-  #   volumes:
-  #     - ./docker-config/gitea:/etc/gitea
-  #     - ./docker-data/gitea:/var/lib/gitea
-  #     - /etc/timezone:/etc/timezone:ro
-  #     - /etc/localtime:/etc/localtime:ro
-  #   restart: unless-stopped
 
   forgejo:
     image: codeberg.org/forgejo/forgejo:15
@@ -396,3 +354,246 @@ services:
   #   #   - /dev/ttyUSB0:/dev/ttyUSB0
   #   # network_mode: host
   #   user: "${PUID}:${PGID}"
+
+  ##########################################
+  # AppFlowy
+  ##########################################
+
+  appflowy_nginx:
+    image: nginx:latest
+    container_name: appflowy_nginx
+    restart: unless-stopped
+    depends_on:
+      appflowy_cloud:
+        condition: service_healthy
+      appflowy_gotrue:
+        condition: service_healthy
+      appflowy_web:
+        condition: service_started
+      appflowy_admin_frontend:
+        condition: service_started
+      appflowy_minio:
+        condition: service_healthy
+    ports:
+      - "8090:80"
+    volumes:
+      - ~/shared_data/services/docker-config/appflowy/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  appflowy_minio:
+    image: minio/minio:latest
+    container_name: appflowy_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: appflowy
+      MINIO_ROOT_PASSWORD: appflowy
+    volumes:
+      - "~/shared_data/services/docker-data/appflowy/minio:/data"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  appflowy_postgres:
+    image: pgvector/pgvector:pg16
+    container_name: appflowy_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: appflowy
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: appflowy_postgres
+      PGPORT: 5432
+      SUPABASE_PASSWORD: appflowy
+      APPFLOWY_S3_USE_MINIO: "true"
+      APPFLOWY_S3_MINIO_URL: http://appflowy_minio:9000
+      APPFLOWY_S3_ACCESS_KEY: appflowy
+      APPFLOWY_S3_SECRET_KEY: appflowy
+      APPFLOWY_S3_BUCKET: appflowy
+    volumes:
+      - "~/shared_data/services/docker-data/appflowy/postgres:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  appflowy_redis:
+    image: redis:latest
+    container_name: appflowy_redis
+    restart: unless-stopped
+
+  appflowy_gotrue:
+    image: appflowyinc/gotrue:latest
+    container_name: appflowy_gotrue
+    restart: unless-stopped
+    depends_on:
+      appflowy_postgres:
+        condition: service_healthy
+    environment:
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://postgres:appflowy@appflowy_postgres:5432/postgres?search_path=auth
+
+      GOTRUE_ADMIN_EMAIL: admin@localhost
+      GOTRUE_ADMIN_PASSWORD: appflowy
+
+      GOTRUE_JWT_SECRET: appflowy-local-jwt-secret
+      GOTRUE_JWT_EXP: 604800
+
+      API_EXTERNAL_URL: http://localhost:8090/gotrue
+
+      # No email required.
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+      GOTRUE_DISABLE_SIGNUP: "false"
+
+      # No OAuth.
+      GOTRUE_EXTERNAL_GOOGLE_ENABLED: "false"
+      GOTRUE_EXTERNAL_GITHUB_ENABLED: "false"
+      GOTRUE_EXTERNAL_DISCORD_ENABLED: "false"
+      GOTRUE_EXTERNAL_APPLE_ENABLED: "false"
+      GOTRUE_SAML_ENABLED: "false"
+
+      PORT: 9999
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:9999/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+
+  appflowy_cloud:
+    image: appflowyinc/appflowy_cloud:latest
+    container_name: appflowy_cloud
+    restart: unless-stopped
+    depends_on:
+      appflowy_postgres:
+        condition: service_healthy
+      appflowy_redis:
+        condition: service_started
+      appflowy_gotrue:
+        condition: service_healthy
+      appflowy_minio:
+        condition: service_healthy
+    environment:
+      RUST_LOG: info
+
+      APPFLOWY_GOTRUE_BASE_URL: http://appflowy_gotrue:9999
+
+      APPFLOWY_DATABASE_URL: postgres://postgres:appflowy@appflowy_postgres:5432/postgres
+      APPFLOWY_DATABASE_MAX_CONNECTIONS: 40
+
+      APPFLOWY_REDIS_URI: redis://appflowy_redis:6379
+
+      APPFLOWY_ACCESS_CONTROL: "true"
+      APPFLOWY_WEBSOCKET_MAILBOX_SIZE: 6000
+
+      # Local MinIO storage.
+      APPFLOWY_S3_USE_MINIO: "true"
+      APPFLOWY_S3_CREATE_BUCKET: "true"
+      APPFLOWY_S3_MINIO_URL: http://appflowy_minio:9000
+      APPFLOWY_S3_ACCESS_KEY: appflowy
+      APPFLOWY_S3_SECRET_KEY: appflowy
+      APPFLOWY_S3_BUCKET: appflowy
+
+      # No AI.
+      AI_ENABLED: "false"
+      AI_OPENAI_API_KEY: ""
+
+      # No external mail.
+      APPFLOWY_MAILER_SMTP_HOST: ""
+      APPFLOWY_MAILER_SMTP_PORT: ""
+      APPFLOWY_MAILER_SMTP_USERNAME: ""
+      APPFLOWY_MAILER_SMTP_EMAIL: ""
+      APPFLOWY_MAILER_SMTP_PASSWORD: ""
+      APPFLOWY_MAILER_SMTP_TLS_KIND: ""
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "http://127.0.0.1:8000/api/health"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  appflowy_worker:
+    image: appflowyinc/appflowy_worker:latest
+    container_name: appflowy_worker
+    restart: unless-stopped
+    depends_on:
+      appflowy_postgres:
+        condition: service_healthy
+      appflowy_redis:
+        condition: service_started
+    environment:
+      RUST_LOG: info
+
+      APPFLOWY_WORKER_REDIS_URL: redis://appflowy_redis:6379
+      APPFLOWY_WORKER_DATABASE_URL: postgres://postgres:appflowy@appflowy_postgres:5432/postgres
+      APPFLOWY_WORKER_DATABASE_NAME: postgres
+
+      APPFLOWY_S3_USE_MINIO: "true"
+      APPFLOWY_S3_MINIO_URL: http://appflowy_minio:9000
+      APPFLOWY_S3_ACCESS_KEY: appflowy
+      APPFLOWY_S3_SECRET_KEY: appflowy
+      APPFLOWY_S3_BUCKET: appflowy
+
+  appflowy_search:
+    image: appflowyinc/appflowy_search:latest
+    container_name: appflowy_search
+    restart: unless-stopped
+    depends_on:
+      appflowy_postgres:
+        condition: service_healthy
+      appflowy_redis:
+        condition: service_started
+    environment:
+      RUST_LOG: info
+
+      APPFLOWY_SEARCH_HOST: "[::]"
+      APPFLOWY_SEARCH_PORT: 4002
+
+      APPFLOWY_SEARCH_DATABASE_URL: postgres://postgres:appflowy@appflowy_postgres:5432/postgres
+      APPFLOWY_SEARCH_REDIS_URL: redis://appflowy_redis:6379
+
+      APPFLOWY_KEYWORD_SEARCH_ENABLED: "true"
+      APPFLOWY_KEYWORD_WORKER_ENABLED: "true"
+
+      APPFLOWY_S3_USE_MINIO: "true"
+      APPFLOWY_S3_MINIO_URL: http://appflowy_minio:9000
+      APPFLOWY_S3_ACCESS_KEY: appflowy
+      APPFLOWY_S3_SECRET_KEY: appflowy
+      APPFLOWY_S3_BUCKET: appflowy
+
+    volumes:
+      - "~/shared_data/services/docker-data/appflowy/keyword_index:/var/lib/appflowy/keyword_index"
+
+  appflowy_admin_frontend:
+    image: appflowyinc/admin_frontend:latest
+    container_name: appflowy_admin_frontend
+    restart: unless-stopped
+    depends_on:
+      appflowy_gotrue:
+        condition: service_healthy
+      appflowy_cloud:
+        condition: service_healthy
+    environment:
+      ADMIN_FRONTEND_REDIS_URL: redis://appflowy_redis:6379
+      ADMIN_FRONTEND_GOTRUE_URL: http://appflowy_gotrue:9999
+      ADMIN_FRONTEND_APPFLOWY_CLOUD_URL: http://appflowy_cloud:8000
+      ADMIN_FRONTEND_PATH_PREFIX: /console
+
+  appflowy_web:
+    image: appflowyinc/appflowy_web:latest
+    container_name: appflowy_web
+    restart: unless-stopped
+    depends_on:
+      appflowy_cloud:
+        condition: service_healthy
+    environment:
+      AF_BASE_URL: http://localhost:8090
+      AF_GOTRUE_URL: http://localhost:8090/gotrue

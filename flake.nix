@@ -47,7 +47,7 @@
         ./programs/herdr.nix
         ./programs/yazi.nix
         ./programs/dev.nix
-        ./programs/docker-compose.nix
+        ./programs/services.nix
         ./programs/syncdrive.nix
       ]
       ++ lib.optionals userConfig.addDesktop [
