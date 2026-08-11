@@ -51,7 +51,8 @@ in
       rpi-imager    # raspberry pi sd card installer
       filezilla     # ftp client
       recordbox     # mp3 player
-      puddletag     # mp3 metadata tags
+      # puddletag     # mp3 metadata tags
+      picard        # mp3 metadata tags
     ]
 
     # Linux-specific packages

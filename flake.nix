@@ -17,9 +17,11 @@
       url = "github:ogulcancelik/herdr/346411fa21afd297f5ed3b3fa56f9e3fbf7654b7";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixpkgs-compass.url = "github:NixOS/nixpkgs/61e6900d4bbf3dc13c7444f7521296a4cdbde6e2";
   };
 
-  outputs = inputs@{ self, nixpkgs, local-config, qtile-flake, herdr }:
+  outputs = inputs@{ self, nixpkgs, local-config, qtile-flake, herdr, nixpkgs-compass }:
   let
     lib = nixpkgs.lib;
     userConfig = local-config.userConfig;
@@ -28,7 +30,7 @@
     nixosConfigurations.${userConfig.flakeName} = nixpkgs.lib.nixosSystem {
       system = userConfig.system;
       specialArgs = {
-        inherit userConfig qtile-flake herdr;
+        inherit userConfig qtile-flake herdr nixpkgs-compass;
       };
 
       modules = [
@@ -46,8 +48,6 @@
         ./programs/yazi.nix
         ./programs/dev.nix
         ./programs/docker-compose.nix
-      ]
-      ++ lib.optionals userConfig.addSyncBackup [
         ./programs/syncdrive.nix
       ]
       ++ lib.optionals userConfig.addDesktop [

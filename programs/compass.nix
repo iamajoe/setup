@@ -1,11 +1,19 @@
-{ config, pkgs, lib, userConfig, ... }:
+{ config, pkgs, nixpkgs-compass, lib, userConfig, ... }:
 
 let
-  isDarwin = userConfig.platform == "darwin";
-  isLinux = userConfig.platform == "linux";
+  compassPkgs = import nixpkgs-compass {
+    system = pkgs.system;
+
+    config = {
+      allowUnfreePredicate = pkg:
+        builtins.elem (lib.getName pkg) [
+          "mongodb-compass"
+        ];
+    };
+  };
 in
 {
-  environment.systemPackages = with pkgs; [
-    mongodb-compass
+  environment.systemPackages = [
+    compassPkgs.mongodb-compass
   ];
 }
