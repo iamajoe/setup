@@ -356,8 +356,22 @@ services:
   #   user: "${PUID}:${PGID}"
 
   ##########################################
-  # AppFlowy
+  # Task management / notes
   ##########################################
+
+  siyuan:
+    image: b3log/siyuan
+    container_name: siyuan
+    command: ['serve', '--workspace=/siyuan/workspace/', '--accessAuthCode=${AuthCode}']
+    ports:
+      - 6806:6806
+    volumes:
+      - ~/shared_data/services/docker-data/siyuan/workspace:/siyuan/workspace
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Lisbon
+      - PUID=1000
+      - PGID=1000
 
   appflowy_nginx:
     image: nginx:latest
