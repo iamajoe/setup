@@ -362,7 +362,7 @@ services:
   siyuan:
     image: b3log/siyuan
     container_name: siyuan
-    command: ['serve', '--workspace=/siyuan/workspace/', '--accessAuthCode=${AuthCode}']
+    command: ['serve', '--workspace=/siyuan/workspace/', '--accessAuthCode=joesantos']
     ports:
       - 6806:6806
     volumes:
