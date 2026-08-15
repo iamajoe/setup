@@ -47,6 +47,7 @@
         ./programs/herdr.nix
         ./programs/yazi.nix
         ./programs/dev.nix
+        ./programs/ai.nix
         ./programs/services.nix
         ./programs/syncdrive.nix
       ]
