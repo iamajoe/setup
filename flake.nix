@@ -79,8 +79,6 @@
       ]
       ++ lib.optionals userConfig.addEmulation [
         ./programs/emulation.nix
-        ./programs/clonehero.nix
-        ./programs/icons.nix
       ]
       ;
     };
