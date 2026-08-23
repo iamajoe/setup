@@ -8,7 +8,7 @@ building blocks instead of duplicating widget definitions.
 from libqtile import qtile, widget
 from libqtile.lazy import lazy
 # from qtile_extras import widget as widget_extras
-from stats_popup_widget import make_stats_popup
+# from stats_popup_widget import make_stats_popup
 import subprocess
 
 
@@ -128,8 +128,8 @@ def make_restart_servers(theme):
 
 
 
-def make_stats_box(theme):
-    return make_stats_popup(theme)
+# def make_stats_box(theme):
+#     return make_stats_popup(theme)
 
 
 def make_help(theme):
