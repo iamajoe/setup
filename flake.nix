@@ -7,10 +7,10 @@
 
     qtile-flake = {
       # master
-      # url = "github:qtile/qtile";
+      url = "github:qtile/qtile";
       # v0.36
-      url = "github:qtile/qtile/8ec00d083cc39098aa149e785d9fec85b593b49c";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # url = "github:qtile/qtile/8ec00d083cc39098aa149e785d9fec85b593b49c";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     herdr = {
@@ -34,16 +34,6 @@
       };
 
       modules = [
-        ({ pkgs, ... }: {
-          nixpkgs.overlays = [
-            (final: prev: {
-              qtile = prev.qtile.overrideAttrs (old: {
-                doCheck = false;
-              });
-            })
-          ];
-        })
-
         userConfig.hardwareModule
         ./configuration.nix
 
