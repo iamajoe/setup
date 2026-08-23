@@ -34,6 +34,16 @@
       };
 
       modules = [
+        ({ pkgs, ... }: {
+          nixpkgs.overlays = [
+            (final: prev: {
+              qtile = prev.qtile.overrideAttrs (old: {
+                doCheck = false;
+              });
+            })
+          ];
+        })
+
         userConfig.hardwareModule
         ./configuration.nix
 

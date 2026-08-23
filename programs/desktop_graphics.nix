@@ -120,12 +120,6 @@ EOF
     windowManager.qtile = {
       enable = true;
 
-      package =
-        qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
-        .override {
-          doCheck = false;
-        };
-
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
         pyxdg
