@@ -7,7 +7,7 @@ building blocks instead of duplicating widget definitions.
 
 from libqtile import qtile, widget
 from libqtile.lazy import lazy
-from qtile_extras import widget as widget_extras
+# from qtile_extras import widget as widget_extras
 from stats_popup_widget import make_stats_popup
 import subprocess
 
@@ -117,14 +117,14 @@ def make_restart_servers(theme):
         },
     )
 
-
-def make_status_notifier(theme):
-    return widget_extras.StatusNotifier(
-        font=theme["FONT"],
-        fontsize=theme["ICON_SIZE"],
-        background=theme["BG_COLOR"],
-        padding=10,
-    )
+# TODO: qtile_extras is failing with qtile 0.37.0
+# def make_status_notifier(theme):
+#     return widget_extras.StatusNotifier(
+#         font=theme["FONT"],
+#         fontsize=theme["ICON_SIZE"],
+#         background=theme["BG_COLOR"],
+#         padding=10,
+#     )
 
 
 
