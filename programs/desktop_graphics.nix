@@ -1,4 +1,5 @@
-{ config, pkgs, lib, userConfig, qtile-flake, ... }:
+# { config, pkgs, lib, userConfig, qtile-flake, ... }:
+{ config, pkgs, lib, userConfig, ... }:
 
 let
   inherit (userConfig) username homeDir dpi cursorSize;
