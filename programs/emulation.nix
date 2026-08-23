@@ -81,6 +81,7 @@ in
       flycast
 
       # Sony
+      beetle-psx
       beetle-psx-hw
       ppsspp
 
@@ -104,11 +105,6 @@ in
     flycast
     melonds
     mgba
-
-    # Sony
-    beetle-psx-hw
-    swanstation
-    ppsspp
 
     # Useful tools
     unzip
