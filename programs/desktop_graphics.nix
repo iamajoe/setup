@@ -4,13 +4,24 @@ let
   inherit (userConfig) username homeDir dpi cursorSize;
   inherit (userConfig) maxResolution underscanH underscanV;
 
+  qtileBase =
+    qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  patchQtile = qtile:
+    qtile.overridePythonAttrs (old: {
+      disabledTests = (old.disabledTests or []) ++ [
+        "test_repl_server_executes_code"
+      ];
+    });
+
   qtilePackage =
-    qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default.overridePythonAttrs
-      (old: {
-        disabledTests = (old.disabledTests or []) ++ [
-          "test_repl_server_executes_code"
-        ];
-      });
+    (patchQtile qtileBase) // {
+      # The NixOS Qtile module calls package.override to inject
+      # extraPackages. Re-run our patch after that override so that
+      # disabledTests isn't lost.
+      override = args:
+        patchQtile (qtileBase.override args);
+    };
 
   # Assumes 16:9 for the derived height (matches programs/qtile.nix).
   maxResolutionHeight = (maxResolution * 9) / 16;
