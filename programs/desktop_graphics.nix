@@ -122,9 +122,9 @@ EOF
 
       package =
         qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
-        .overridePythonAttrs (old: {
+        .override {
           doCheck = false;
-        });
+        };
 
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
