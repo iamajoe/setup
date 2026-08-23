@@ -12,6 +12,10 @@
     #   url = "github:qtile/qtile/8ec00d083cc39098aa149e785d9fec85b593b49c";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+    qtile-flake = {
+      url = "github:qtile/qtile/v0.37.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     herdr = {
       url = "github:ogulcancelik/herdr/346411fa21afd297f5ed3b3fa56f9e3fbf7654b7";
@@ -21,8 +25,7 @@
     nixpkgs-compass.url = "github:NixOS/nixpkgs/61e6900d4bbf3dc13c7444f7521296a4cdbde6e2";
   };
 
-  outputs = inputs@{ self, nixpkgs, local-config, herdr, nixpkgs-compass }:
-  # outputs = inputs@{ self, nixpkgs, local-config, qtile-flake, herdr, nixpkgs-compass }:
+  outputs = inputs@{ self, nixpkgs, local-config, qtile-flake, herdr, nixpkgs-compass }:
   let
     lib = nixpkgs.lib;
     userConfig = local-config.userConfig;
@@ -31,8 +34,7 @@
     nixosConfigurations.${userConfig.flakeName} = nixpkgs.lib.nixosSystem {
       system = userConfig.system;
       specialArgs = {
-        inherit userConfig herdr nixpkgs-compass;
-        # inherit userConfig qtile-flake herdr nixpkgs-compass;
+        inherit userConfig qtile-flake herdr nixpkgs-compass;
       };
 
       modules = [
@@ -47,9 +49,7 @@
                     qtile = python-prev.qtile.overridePythonAttrs (old: {
                       disabledTests =
                         (old.disabledTests or [])
-                        ++ [
-                          "test_repl_server_executes_code"
-                        ];
+                        ++ [ "test_repl_server_executes_code" ];
                     });
                   })
                 ];

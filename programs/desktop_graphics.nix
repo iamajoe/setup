@@ -1,5 +1,4 @@
-# { config, pkgs, lib, userConfig, qtile-flake, ... }:
-{ config, pkgs, lib, userConfig, ... }:
+{ config, pkgs, lib, userConfig, qtile-flake, ... }:
 
 let
   inherit (userConfig) username homeDir dpi cursorSize;
@@ -120,6 +119,8 @@ EOF
 
     windowManager.qtile = {
       enable = true;
+
+      package = qtile-flake.packages.${pkgs.system}.default;
 
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
