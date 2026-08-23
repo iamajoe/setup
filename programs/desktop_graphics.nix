@@ -140,7 +140,7 @@ EOF
       enable = true;
       package = qtilePackage;
       extraPackages = python3Packages: with python3Packages; [
-        # qtile-extras
+        qtile-extras
         pyxdg
         psutil
       ];
