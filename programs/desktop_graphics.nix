@@ -119,16 +119,17 @@ EOF
 
     windowManager.qtile = {
       enable = true;
-      # package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
       package =
-    (qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default).overrideAttrs
-      (old: {
-        doCheck = false;
-      });
+        qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
+        .overridePythonAttrs (old: {
+          doCheck = false;
+        });
+
       extraPackages = python3Packages: with python3Packages; [
         qtile-extras
-        pyxdg   # icon theme lookup for StatusNotifier
-        psutil  # system stats for the stats popup widget
+        pyxdg
+        psutil
       ];
     };
 
