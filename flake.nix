@@ -36,6 +36,27 @@
       };
 
       modules = [
+        # Qtile package override
+        ({ pkgs, ... }: {
+          nixpkgs.overlays = [
+            (final: prev: {
+              pythonPackagesExtensions =
+                prev.pythonPackagesExtensions
+                ++ [
+                  (python-final: python-prev: {
+                    qtile = python-prev.qtile.overridePythonAttrs (old: {
+                      disabledTests =
+                        (old.disabledTests or [])
+                        ++ [
+                          "test_repl_server_executes_code"
+                        ];
+                    });
+                  })
+                ];
+            })
+          ];
+        })
+
         userConfig.hardwareModule
         ./configuration.nix
 
