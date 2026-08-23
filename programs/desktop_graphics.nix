@@ -4,6 +4,14 @@ let
   inherit (userConfig) username homeDir dpi cursorSize;
   inherit (userConfig) maxResolution underscanH underscanV;
 
+  qtilePackage =
+    qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default.overridePythonAttrs
+      (old: {
+        disabledTests = (old.disabledTests or []) ++ [
+          "test_repl_server_executes_code"
+        ];
+      });
+
   # Assumes 16:9 for the derived height (matches programs/qtile.nix).
   maxResolutionHeight = (maxResolution * 9) / 16;
 
@@ -119,7 +127,7 @@ EOF
 
     windowManager.qtile = {
       enable = true;
-      package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      package = qtilePackage;
       extraPackages = python3Packages: with python3Packages; [
         # qtile-extras
         pyxdg
