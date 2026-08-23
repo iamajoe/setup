@@ -133,7 +133,6 @@ in
     mkdir -p "${savesDir}"
     mkdir -p "${statesDir}"
     mkdir -p "${steamShortcutsDir}"
-    mkdir -p "${esDeDir}"
     mkdir -p "${homeDir}/.config/retroarch"
 
     install -m 0644 -o ${username} -g users ${retroarchCfg} ${homeDir}/.config/retroarch/retroarch.cfg
