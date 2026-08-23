@@ -83,6 +83,7 @@ in
       # Sony
       beetle-psx
       beetle-psx-hw
+      swanstation
       ppsspp
 
       # Arcade / Neo Geo
