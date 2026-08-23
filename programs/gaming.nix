@@ -23,6 +23,9 @@ in
   # Enable gamemode for better game performance
   programs.gamemode.enable = lib.mkIf isX86_64 true;
 
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
+
   # ─── FIREWALL ──────────────────────────────────────────────
   networking.firewall.allowedTCPPorts = [
     # sunshine / gaming
