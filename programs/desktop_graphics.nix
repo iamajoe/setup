@@ -119,11 +119,9 @@ EOF
 
     windowManager.qtile = {
       enable = true;
-
-      package = qtile-flake.packages.${pkgs.system}.default;
-
+      package = qtile-flake.packages.${pkgs.stdenv.hostPlatform.system}.default;
       extraPackages = python3Packages: with python3Packages; [
-        qtile-extras
+        # qtile-extras
         pyxdg
         psutil
       ];
