@@ -39,5 +39,12 @@ in
     48002
     48010
   ];
+
+  # ─── PACKAGES ──────────────────────────────────────────────
+  environment.systemPackages =
+    with pkgs;
+    [
+      solaar        # logitech service
+    ];
 }
 
