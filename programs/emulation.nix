@@ -10,30 +10,10 @@ let
   statesDir = "${emulationDir}/states";
   steamShortcutsDir = "${homeDir}/SteamShortcuts";
 
-  esDeDir = "${homeDir}/Applications/ES-DE";
-  esDeAppImage = "${esDeDir}/ES-DE.AppImage";
-
-  retroarchSh = pkgs.replaceVars ../templates/emulation/retroarch.sh {
-    steamShortcutsDir = steamShortcutsDir;
-    bash = "${pkgs.bash}/bin/bash";
-  };
   retroarchCfg = pkgs.replaceVars ../templates/emulation/retroarch.cfg {
     savesDir = savesDir;
     statesDir = statesDir;
     biosDir = biosDir;
-  };
-
-  installEsDeSh = pkgs.replaceVars ../templates/emulation/install-es-de.sh {
-    esDeAppImage = esDeAppImage;
-    bash = "${pkgs.bash}/bin/bash";
-  };
-  esDeSh = pkgs.replaceVars ../templates/emulation/es-de.sh {
-    steamShortcutsDir = steamShortcutsDir;
-    biosDir = biosDir;
-    romsDir = romsDir;
-    esDeAppImage = esDeAppImage;
-    appImageRun = "${pkgs.appimage-run}/bin/appimage-run";
-    bash = "${pkgs.bash}/bin/bash";
   };
 
   # ES-DE uses specific system folder names. These are safe/common names.
@@ -125,6 +105,11 @@ in
     melonds
     mgba
 
+    # Sony
+    beetle-psx-hw
+    swanstation
+    ppsspp
+
     # Useful tools
     unzip
     p7zip
@@ -152,17 +137,6 @@ in
     mkdir -p "${homeDir}/.config/retroarch"
 
     install -m 0644 -o ${username} -g users ${retroarchCfg} ${homeDir}/.config/retroarch/retroarch.cfg
-    install -m 0644 -o ${username} -g users ${retroarchSh} ${steamShortcutsDir}/retroarch.sh
-    chmod +x "${steamShortcutsDir}/retroarch.sh"
-
-    install -m 0644 -o ${username} -g users ${esDeSh} ${steamShortcutsDir}/es-de.sh
-    install -m 0644 -o ${username} -g users ${installEsDeSh} ${steamShortcutsDir}/install-es-de.sh
-    chmod +x "${steamShortcutsDir}/es-de.sh"
-    chmod +x "${steamShortcutsDir}/install-es-de.sh"
-
-    # Install ES-DE
-    # PATH="${pkgs.curl}/bin:${pkgs.python3}/bin:${pkgs.coreutils}/bin:${pkgs.findutils}/bin:${pkgs.gnugrep}/bin:${pkgs.gnused}/bin" \
-    # "${steamShortcutsDir}/install-es-de.sh"
 
     # PS2 is a special case for the bios
     mkdir -p ${homeDir}/.config/PCSX2/bios
