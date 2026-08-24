@@ -5,11 +5,15 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     local-config.url = "path:/etc/nixos/local-config";
 
+    # qtile-flake = {
+    #   # master
+    #   # url = "github:qtile/qtile";
+    #   # v0.36
+    #   url = "github:qtile/qtile/8ec00d083cc39098aa149e785d9fec85b593b49c";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     qtile-flake = {
-      # master
-      # url = "github:qtile/qtile";
-      # v0.36
-      url = "github:qtile/qtile/8ec00d083cc39098aa149e785d9fec85b593b49c";
+      url = "github:qtile/qtile/v0.37.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -47,6 +51,7 @@
         ./programs/herdr.nix
         ./programs/yazi.nix
         ./programs/dev.nix
+        ./programs/ai.nix
         ./programs/services.nix
         ./programs/syncdrive.nix
       ]
@@ -78,8 +83,6 @@
       ]
       ++ lib.optionals userConfig.addEmulation [
         ./programs/emulation.nix
-        ./programs/clonehero.nix
-        ./programs/icons.nix
       ]
       ;
     };

@@ -16,6 +16,9 @@ in
     font-awesome # Font Awesome 6 Free (Solid, Regular, Brands)
   ];
 
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
+
   environment.systemPackages =
     with pkgs;
     [
@@ -53,6 +56,8 @@ in
       recordbox     # mp3 player
       puddletag     # mp3 metadata tags
       picard        # mp3 metadata tags
+
+      solaar        # logitech service
     ]
 
     # Linux-specific packages

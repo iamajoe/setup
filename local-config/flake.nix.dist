@@ -19,6 +19,9 @@
       addDesktop = false;
       addDevApplications = false;
 
+      enableAi = true;
+      enableAiModel = false;
+
       # CIFS mounts from a NAS at /mnt/{music,video,roms} (TV/game station)
       addNasMounts = false;
       nasHost = "nas.local";
