@@ -58,6 +58,7 @@ in
       picard        # mp3 metadata tags
 
       solaar        # logitech service
+      pinta         # photoshop alternative
     ]
 
     # Linux-specific packages
