@@ -56,7 +56,7 @@ in
   users.users.${userConfig.username} = {
     isNormalUser = true;
     description = userConfig.username;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "input" "uinput" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "libvirtd" "input" "uinput" "dialout" ];
     packages = with pkgs; [];
   };
 
