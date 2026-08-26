@@ -28,6 +28,7 @@ in
     openocd
     mosquitto
     mqttx
+    meshtastic
   ];
 
   services.udev.packages = [
