@@ -26,6 +26,8 @@ in
     esptool
 
     openocd
+    mosquitto
+    mqttx
   ];
 
   services.udev.packages = [
