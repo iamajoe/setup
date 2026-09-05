@@ -117,16 +117,20 @@ def make_restart_servers(theme):
         },
     )
 
-# TODO: qtile_extras is failing with qtile 0.37.0
-# def make_status_notifier(theme):
-#     return widget_extras.StatusNotifier(
-#         font=theme["FONT"],
-#         fontsize=theme["ICON_SIZE"],
-#         background=theme["BG_COLOR"],
-#         padding=10,
-#     )
-
-
+def make_status_notifier(theme):
+    # TODO: qtile_extras is failing with qtile 0.37.0
+    #     return widget_extras.StatusNotifier(
+    #         font=theme["FONT"],
+    #         fontsize=theme["ICON_SIZE"],
+    #         background=theme["BG_COLOR"],
+    #         padding=10,
+    return widget.StatusNotifier(
+        font=theme["FONT"],
+        fontsize=theme["ICON_SIZE"],
+        background=theme["BG_COLOR"],
+        padding=10,
+    )
+)
 
 # def make_stats_box(theme):
 #     return make_stats_popup(theme)

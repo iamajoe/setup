@@ -28,17 +28,15 @@ blueman-applet &
 # Clipboard manager daemon
 clipmenud &
 
-# auto mount drives
-@hook.subscribe.startup_once
-def start_once():
-    subprocess.Popen(["udiskie", "--tray"])
-
 # disable screen blanking, screensaver, and DPMS power saving (TV always on)
 if [ "@neverSleep@" = "true" ]; then
   xset s off
   xset s noblank
   xset -dpms
 fi
+
+# auto mount drives
+subprocess.Popen(["udiskie", "--tray"])
 
 # set keyboard repeat rate
 # xset r rate 350 60

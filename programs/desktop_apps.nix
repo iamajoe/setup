@@ -55,6 +55,7 @@ in
       appimage-run  # runs AppImages
       udiskie       # automounts drives
       gparted       # GUI partition editor
+      gnome-disk-utility # hard drive mount
       gsimplecal    # lightweight calendar popup
       xclip         # clipboard utility
       xdotool       # X11 automation

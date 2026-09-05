@@ -14,13 +14,12 @@ from bar_widgets import (
     make_volume,
     make_mic,
     make_restart_servers,
-    # make_status_notifier,
+    make_status_notifier,
     # make_stats_box,
     make_help,
     make_keyboard_layout,
     make_clock,
 )
-
 
 def create_bar(colors):
     theme = get_theme(colors)
@@ -38,8 +37,7 @@ def create_bar(colors):
         make_volume(theme),
         make_mic(theme),
         make_restart_servers(theme),
-        # TODO: not working as expected
-        # make_status_notifier(theme),
+        make_status_notifier(theme),
         make_spacer(theme, 8),
 
         # make_stats_box(theme),
