@@ -28,6 +28,11 @@ blueman-applet &
 # Clipboard manager daemon
 clipmenud &
 
+# auto mount drives
+@hook.subscribe.startup_once
+def start_once():
+    subprocess.Popen(["udiskie", "--tray"])
+
 # disable screen blanking, screensaver, and DPMS power saving (TV always on)
 if [ "@neverSleep@" = "true" ]; then
   xset s off
@@ -40,6 +45,7 @@ fi
 
 # launch Steam straight into Big Picture mode (TV setups)
 if [ "@autoRunSteamBigPicture@" = "true" ]; then
-  sleep 1
+  sleep 5
   setsid steam -gamepadui &
 fi
+

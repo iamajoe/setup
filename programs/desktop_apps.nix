@@ -19,6 +19,14 @@ in
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
 
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-volman
+      thunar-archive-plugin
+    ];
+  };
+
   environment.systemPackages =
     with pkgs;
     [
@@ -45,6 +53,7 @@ in
       # Desktop utilities
       brightnessctl # screen brightness control
       appimage-run  # runs AppImages
+      udiskie       # automounts drives
       gparted       # GUI partition editor
       gsimplecal    # lightweight calendar popup
       xclip         # clipboard utility
@@ -59,21 +68,15 @@ in
 
       solaar        # logitech service
       pinta         # photoshop alternative
-    ]
+      gimp          # photoshop alternative
+      inkscape      # illustrator alternative
 
-    # Linux-specific packages
-    ++ lib.optionals isLinux [
       discord # goes crazy with the updates on mac
       transmission_4-gtk
       google-chrome
-      gimp
       vlc
       kicad
       orca-slicer
-
-      thunar                # file manager, used by qtile keybind
-      thunar-volman         # automatic management of removable devices
-      thunar-archive-plugin # archive support (unzip, unrar, etc.)
 
       # CPU temp sensors for the bar's ThermalSensor widget.
       # Run `sudo sensors-detect` once after first boot to load the right kernel modules.
@@ -81,14 +84,5 @@ in
 
       # package to run the keyboard via app
       via
-    ]
-
-    # macOS-specific packages
-    ++ lib.optionals isDarwin [
-      transmission_4
-      # TODO: missing these
-      # - vlc
-      # - kicad
-      # - orca slicer
     ];
 }
