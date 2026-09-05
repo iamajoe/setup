@@ -130,7 +130,6 @@ def make_status_notifier(theme):
         background=theme["BG_COLOR"],
         padding=10,
     )
-)
 
 # def make_stats_box(theme):
 #     return make_stats_popup(theme)
