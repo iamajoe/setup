@@ -8,5 +8,6 @@ in
     kdePackages.k3b
     cdrtools
     dvdplusrwtools
+    cdrkit
   ];
 }
