@@ -70,6 +70,7 @@
         ./programs/alacritty.nix
         ./programs/zed.nix
         ./programs/via.nix
+        ./programs/burner.nix
       ]
       ++ lib.optionals userConfig.addDevApplications [
         ./programs/sublime.nix

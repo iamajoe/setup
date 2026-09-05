@@ -28,10 +28,12 @@ in
 
   system.activationScripts.userservicesConfig.text = ''
     install -d -m 0755 -o ${username} -g users ${homeDir}/services
-    install -d -m 0755 -o ${username} -g users ${homeDir}/shared_data/services/docker-config/appflowy
 
-    install -m 0644 -o ${username} -g users ${templateDir}/docker-compose.yml ${homeDir}/services/docker-compose.yml
-    install -m 0644 -o ${username} -g users ${templateDir}/appflowy.nginx.conf ${homeDir}/shared_data/services/docker-config/appflowy/nginx.conf
+    if [ ! -e ${homeDir}/services/docker-compose.yml ]; then
+      install -m 0644 -o ${username} -g users \
+        ${templateDir}/docker-compose.yml \
+        ${homeDir}/services/docker-compose.yml
+    fi
 
     printf 'HOST_IP=%s\n' "${hostIp}" > ${homeDir}/services/.env
     chown ${username}:users ${homeDir}/services/.env
