@@ -10,4 +10,11 @@ in
     dvdplusrwtools
     cdrkit
   ];
+
+  security.wrappers.cdrecord = {
+    source = "${pkgs.cdrtools}/bin/cdrecord";
+    owner = "root";
+    group = "cdrom";
+    setuid = true;
+  };
 }

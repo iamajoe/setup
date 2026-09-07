@@ -177,6 +177,9 @@ in
 
     # NuPhy Air75 V2 - allow VIA access
     SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", ATTRS{idProduct}=="3246", MODE="0660", GROUP="input", TAG+="uaccess"
+
+    # Permissions for burner
+    KERNEL=="sr[0-9]*", GROUP="cdrom", MODE="0660"
   '';
 
   programs.nix-ld = {
