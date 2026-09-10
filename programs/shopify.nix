@@ -6,6 +6,6 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    shopify
+    shopify-cli
   ];
 }
