@@ -77,6 +77,7 @@
         ./programs/compass.nix
         ./programs/cursor.nix
         ./programs/claude.nix
+        ./programs/shopify.nix
         ./programs/stripe.nix
         ./programs/dbeaver.nix
       ]
