@@ -104,7 +104,7 @@ services:
     volumes:
       - "~/shared_data/services/docker-data/paperlessbroker:/data"
   paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20
     container_name: paperless
     restart: unless-stopped
     depends_on:
