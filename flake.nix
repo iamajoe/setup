@@ -74,9 +74,9 @@
       ]
       ++ lib.optionals userConfig.addDevApplications [
         ./programs/sublime.nix
-        ./programs/compass.nix
+        # ./programs/compass.nix
         # ./programs/cursor.nix
-        ./programs/claude.nix
+        # ./programs/claude.nix
         ./programs/stripe.nix
         ./programs/dbeaver.nix
       ]

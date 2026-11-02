@@ -7,6 +7,7 @@ in
   environment.systemPackages = [
     pkgs.rclone
     pkgs.openssl
+    pkgs.synology-drive-client
   ];
 
   # TODO: these can cause conflicts. we dont want that
