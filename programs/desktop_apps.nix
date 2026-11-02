@@ -74,6 +74,7 @@ in
 
       discord # goes crazy with the updates on mac
       transmission_4-gtk
+      handbrake
       google-chrome
       vlc
       kicad
