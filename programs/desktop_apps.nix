@@ -79,6 +79,7 @@ in
       vlc
       kicad
       orca-slicer
+      thunderbird
 
       # CPU temp sensors for the bar's ThermalSensor widget.
       # Run `sudo sensors-detect` once after first boot to load the right kernel modules.
