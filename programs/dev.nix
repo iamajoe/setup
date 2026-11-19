@@ -61,5 +61,7 @@ in
     yq-go
 
     mongodb-tools
+
+    cloudflared
   ];
 }
